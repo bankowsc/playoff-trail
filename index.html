@@ -2495,7 +2495,7 @@
 
     const MODES = {
       pro: {
-        teams: TEAMS, filterBy: "sport", prefix: "t", shareName: "PLAYOFF TRAIL · Pro",
+        teams: TEAMS, filterBy: "sport", prefix: "t", shareName: "Pro",
         labels: ["Sport", "Conference", "Division"],
         icons: ["✕", "", "", "", "", "🏆", ""],
         legend: [["t1", "", "First Round / Wild Card"], ["t2", "", "Divisional / Conference Semis"],
@@ -2507,7 +2507,7 @@
           "Coyotes and Utah Mammoth have separate franchise histories."]
       },
       ncaa: {
-        teams: TEAMS2, filterBy: "conference", prefix: "u", shareName: "PLAYOFF TRAIL · NCAA",
+        teams: TEAMS2, filterBy: "conference", prefix: "u", shareName: "NCAA",
         labels: ["Sport", "Conference", "Colors"],
         icons: ["✕", "", "", "", "", "", "", "🏆", ""],
         legend: [["u1", "", "First Four / Round of 64"], ["u2", "", "Round of 32"], ["u3", "", "Sweet 16"],
@@ -2518,7 +2518,7 @@
         ]
       },
       ucl: {
-        teams: TEAMS3, filterBy: "division", prefix: "t", shareName: "PLAYOFF TRAIL · UCL",
+        teams: TEAMS3, filterBy: "division", prefix: "t", shareName: "UCL",
         labels: ["Sport", "Conference", "League"],
         icons: ["✕", "", "", "", "", "🏆", ""],
         legend: [["t1", "", "Round of 16"], ["t2", "", "Quarterfinal"],
@@ -2892,7 +2892,8 @@
       const seen = state.won ? Math.min(YEARS, STEP + STEP * (n - 1)) : YEARS;
       const groups = Math.ceil(YEARS / STEP), lit = Math.ceil(seen / STEP);
       return [
-        `${cfg().shareName} · ${game ? "Practice #" + game : dayKey}`,
+        `PLAYOFF-TRAIL · ${cfg().shareName}`,
+        `${game ? "Practice #" + game : "Daily: " + dayKey}`,
         //`PLAYOFF TRAIL · ${game ? "Practice #" + game : dayKey}`,
         ...(hard ? ["🔥 HARD MODE 🔥"] : []),
         state.won ? `🏆 ${RANKS[Math.min(n, RANKS.length) - 1]} · ${n}/${MAX_GUESSES}` : `💀 · X/${MAX_GUESSES}`,
