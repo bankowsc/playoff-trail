@@ -2208,7 +2208,7 @@
         legend: [["t1", "", "Round of 16"], ["t2", "", "Quarterfinal"],
         ["t3", "", "Semifinal"], ["t4", "", "Runner-up (Lost Final)"],
         ["t5", "🏆", "Champions League Winner"], ["x", "✕", "Missed UCL Round of 16"]],
-        notes: [ "League is where the team plays this season",
+        notes: ["League is where the team plays this season",
           "Year is the season's end year: 2025-26 is listed under 2026.",
           "Teams who lose in groups or first phase KO round count as misses. Reaching round of 16 is the first level."]
       }
@@ -2514,15 +2514,29 @@
     };
 
     // Theme
+    // function applyTheme(t) {
+    //   document.documentElement.dataset.theme = t;
+    //   $("theme").checked = t === "Patterns";
+    //   try { localStorage.setItem("playoffTrail:theme", t); } catch (e) { }
+    // }
+    // let savedTheme = null;
+    // try { savedTheme = localStorage.getItem("playoffTrail:theme"); } catch (e) { }
+    // applyTheme(savedTheme || (matchMedia("(prefers-color-scheme: Default)").matches ? "Default" : "Patterns"));
+    // $("theme").onchange = () => applyTheme($("theme").checked ? "Patterns" : "Default");
     function applyTheme(t) {
       document.documentElement.dataset.theme = t;
       $("theme").checked = t === "Patterns";
-      try { localStorage.setItem("playoffTrail:theme", t); } catch (e) { }
     }
+
     let savedTheme = null;
     try { savedTheme = localStorage.getItem("playoffTrail:theme"); } catch (e) { }
-    applyTheme(savedTheme || (matchMedia("(prefers-color-scheme: Default)").matches ? "Default" : "Patterns"));
-    $("theme").onchange = () => applyTheme($("theme").checked ? "Patterns" : "Default");
+
+    applyTheme(savedTheme === "Patterns" ? "Patterns" : "Default");
+    $("theme").onchange = () => {
+      const t = $("theme").checked ? "Patterns" : "Default";
+      applyTheme(t);
+      try { localStorage.setItem("playoffTrail:theme", t); } catch (e) { }
+    };
 
 
     const SHARE_URL = ""; // set to your game's public URL; blank uses the current page address
