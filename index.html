@@ -1796,6 +1796,304 @@
     .titleRow {
       flex-wrap: wrap
     }
+
+
+    .modes #statsBtn {
+      margin-left: auto
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background: rgba(0, 0, 0, .55);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+      animation: fade .2s ease both
+    }
+
+    .modal[hidden] {
+      display: none
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    .modalCard {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      max-height: 90vh;
+      overflow: auto;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+      animation: endIn .35s cubic-bezier(.2, 1.3, .4, 1) both
+    }
+
+    .modalCard h2 {
+      font: 900 1.9rem var(--head);
+      margin: 0 0 12px
+    }
+
+    .modalClose {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--dim);
+      border: 1px solid var(--line)
+    }
+
+    /* stats */
+    .statRow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      text-align: center;
+      margin-bottom: 16px
+    }
+
+    .statRow b {
+      display: block;
+      font: 900 1.9rem/1 var(--head)
+    }
+
+    .statRow small {
+      color: var(--dim);
+      font-size: .7rem
+    }
+
+    .bar {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 8px;
+      align-items: center;
+      margin: 5px 0
+    }
+
+    .bar i {
+      font-style: normal;
+      color: var(--dim);
+      font-weight: 600;
+      text-align: right
+    }
+
+    .bar span {
+      display: block;
+      min-width: 24px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--good);
+      color: #fff;
+      font-weight: 700;
+      font-size: .8rem;
+      text-align: right;
+      width: calc(var(--w) * 1%);
+      animation: grow .6s ease both
+    }
+
+    .bar span.lossbar {
+      background: var(--bad);
+      color: var(--chipbad)
+    }
+
+    @keyframes grow {
+      from {
+        width: 0
+      }
+    }
+
+    /* calendar */
+    .calHead {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: 700
+    }
+
+    .calHead button {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      background: var(--bg);
+      color: var(--chalk);
+      border: 1px solid var(--line)
+    }
+
+    .calGrid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px
+    }
+
+    .dow {
+      font-size: .7rem;
+      color: var(--dim);
+      text-align: center
+    }
+
+    .day {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--chalk);
+      font-weight: 700
+    }
+
+    .day:disabled {
+      opacity: .25;
+      cursor: not-allowed
+    }
+
+    .day.today {
+      border-color: var(--r3)
+    }
+
+    .day.sel {
+      outline: 2px solid var(--r3);
+      outline-offset: 1px
+    }
+
+    .day.win {
+      background: var(--good);
+      color: #fff
+    }
+
+    .day.loss {
+      background: var(--bad);
+      color: var(--chipbad)
+    }
+
+    .day.part {
+      background: var(--r3);
+      color: #1c1503
+    }
+
+    .calKey {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin-top: 12px;
+      font-size: .75rem;
+      color: var(--dim)
+    }
+
+    .calKey i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      margin-right: 5px;
+      vertical-align: middle
+    }
+
+    .calKey .w {
+      background: var(--good)
+    }
+
+    .calKey .l {
+      background: var(--chipbad)
+    }
+
+    .calKey .p {
+      background: var(--r3)
+    }
+
+    #statsBtn,
+    #calBtn {
+      transition: transform .2s cubic-bezier(.3, 1.6, .5, 1), box-shadow .2s, border-color .2s;
+    }
+
+    @media (hover: hover) {
+
+      #statsBtn:hover,
+      #calBtn:hover,
+      #statsBtn:focus-visible,
+      #calBtn:focus-visible {
+        border-color: var(--r3);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, .25), 0 0 0 3px rgba(240, 185, 46, .2);
+        transform: translateY(-3px) scale(1.1);
+      }
+
+      #statsBtn:hover {
+        animation: hop .5s ease
+      }
+
+      #calBtn:hover {
+        animation: wiggle .55s ease
+      }
+    }
+
+    #statsBtn:active,
+    #calBtn:active {
+      transform: translateY(0) scale(.94)
+    }
+
+    @keyframes hop {
+      0% {
+        transform: none
+      }
+
+      40% {
+        transform: translateY(-10px) scale(1.15)
+      }
+
+      70% {
+        transform: translateY(0) scale(1.06)
+      }
+
+      100% {
+        transform: translateY(-3px) scale(1.1)
+      }
+    }
+
+    @keyframes wiggle {
+      0% {
+        transform: none
+      }
+
+      20% {
+        transform: translateY(-3px) scale(1.1) rotate(-14deg)
+      }
+
+      40% {
+        transform: translateY(-3px) scale(1.1) rotate(12deg)
+      }
+
+      60% {
+        transform: translateY(-3px) scale(1.1) rotate(-8deg)
+      }
+
+      80% {
+        transform: translateY(-3px) scale(1.1) rotate(4deg)
+      }
+
+      100% {
+        transform: translateY(-3px) scale(1.1) rotate(0)
+      }
+    }
   </style>
 </head>
 
@@ -1826,6 +2124,9 @@
         <label class="switch" title="Patterns / Default mode">
           <input type="checkbox" id="theme"><span class="track"></span><span>Patterns</span>
         </label>
+
+        <button id="statsBtn" type="button" aria-label="Stats" title="Stats">📊</button>
+        <button id="calBtn" type="button" aria-label="Calendar" title="Calendar">📅</button>
       </div>
       <div class="actions">
         <button id="inf" type="button" aria-label="New random game" title="New random game">∞</button>
@@ -1876,6 +2177,14 @@
       <section id="end"></section>
     </div>
   </main>
+
+  <div class="modal" id="modal" hidden>
+    <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modalClose" id="modalClose" type="button" aria-label="Close">✕</button>
+      <h2 id="modalTitle"></h2>
+      <div id="modalBody"></div>
+    </div>
+  </div>
 
   <script>
 
@@ -2176,7 +2485,14 @@
     const START_YEAR = 2026, YEARS = 21, MAX_GUESSES = 7, STEP = 3;
     const ICON = ["✕", "", "", "", "", "🏆", ""]; const $ = id => document.getElementById(id);
     const today = new Date();
-    const dayKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    //const dayKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    let dayKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    const TODAY = dayKey;
+    const LAUNCH = new Date(2026, 9, 1);   // first playable day; month is 0-based, so 9 = October. Set your real launch date.
+    const keyOf = d => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    const dateOf = k => { const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d); };
+    function playDay(k) { dayKey = k; readDailyMode(); loadGame(0); reset(); }
+
     const MODES = {
       pro: {
         teams: TEAMS, filterBy: "sport", prefix: "t", shareName: "PLAYOFF TRAIL · Pro",
@@ -2233,10 +2549,18 @@
     readDailyMode();
 
     const needsChoice = () => game === 0 && dailyMode === null;
+    // function dailyDone() {
+    //   if (dailyMode === null) return false;     // hasn't picked a difficulty yet, so not started
+    //   try {
+    //     const s = JSON.parse(localStorage.getItem(NS() + dayKey + (dailyMode ? "!hard" : "")));
+    //     return !!(s && s.over);
+    //   } catch (e) { return false; }
+    // }
     function dailyDone() {
-      if (dailyMode === null) return false;     // hasn't picked a difficulty yet, so not started
       try {
-        const s = JSON.parse(localStorage.getItem(NS() + dayKey + (dailyMode ? "!hard" : "")));
+        const dm = localStorage.getItem(NS() + "dm:" + TODAY);
+        if (dm === null) return false;
+        const s = JSON.parse(localStorage.getItem(NS() + TODAY + (dm === "1" ? "!hard" : "")));
         return !!(s && s.over);
       } catch (e) { return false; }
     }
@@ -2295,6 +2619,7 @@
       order.forEach((yr, pos) => rank[yr] = pos);
       state = { guesses: [], over: false, won: false };
       try { const s = JSON.parse(localStorage.getItem(STORE)); if (s) state = s; } catch (e) { }
+      if (state.t) { const f = all.find(t => t.name === state.t); if (f) target = f; } //new
       if (n === 0 && dailyMode === null && state.guesses.length) setDailyMode(hard);
     }
     const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) { } };
@@ -2410,7 +2735,7 @@
           : chip(c.div ? "ok" : "", g.division);
         return `<div class="guess"><span class="n">${g.name}</span>${chip(c.sport ? "ok" : "", g.sport)}${chip(c.conf ? "ok" : "", g.conference)}${third}</div>`;
       }).join("");
-      $("count").textContent = (hard ? "Hard · " : "") + (game ? `Practice ${game}: ` : "") + `Guess ${Math.min(state.guesses.length + 1, MAX_GUESSES)} of ${MAX_GUESSES}`;
+      $("count").textContent = (!game && dayKey !== TODAY ? dateOf(dayKey).toLocaleDateString(undefined, { month: "short", day: "numeric" }) + " · " : "") + (hard ? "Hard · " : "") + (game ? `Practice ${game}: ` : "") + `Guess ${Math.min(state.guesses.length + 1, MAX_GUESSES)} of ${MAX_GUESSES}`;
     }
 
     // function renderEnd() {
@@ -2437,7 +2762,7 @@
     }
 
     function renderStart() {
-      $("start").innerHTML = `<h2>Today's Daily</h2><p>Pick your difficulty before the first clues appear. It locks once you start.</p>
+      $("start").innerHTML = `<h2>${dayKey === TODAY ? "Today's Daily" : dateOf(dayKey).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}</h2><p>Pick your difficulty before the first clues appear. It locks once you start.</p>
     <div class="choices">
       <button type="button" data-h="0">Normal<small>Newest seasons first</small></button>
       <button type="button" data-h="1">Hard<small>Random seasons, random order</small></button>
@@ -2451,7 +2776,8 @@
     }
     function renderAll(prev = 0) {
       const pending = needsChoice();
-      $("daily").hidden = !game;
+      // $("daily").hidden = !game;
+      $("daily").hidden = !(game || dayKey !== TODAY);
       $("daily").classList.toggle("done", dailyDone());
 
       //new
@@ -2489,6 +2815,7 @@
       if (g.name === target.name) { state.over = state.won = true; }
       else if (state.guesses.length >= MAX_GUESSES) { state.over = true; }
       $("input").value = "";
+      if (dayKey !== TODAY) state.late = true;
       save(); renderAll(prev);
       if (state.over) $("input").blur();
       if (state.won) confetti();
@@ -2497,12 +2824,14 @@
     //function reset() { $("msg").textContent = ""; $("input").value = ""; renderAll(0); }
     function reset() { $("msg").textContent = ""; $("input").value = ""; renderAll(0); swapIn(); }
     $("inf").onclick = () => {
+      if (dayKey !== TODAY) { dayKey = TODAY; readDailyMode(); readPracticeN(); }
       practiceN++;
       try { localStorage.setItem(NS() + "n:" + dayKey, practiceN); } catch (e) { }
       //try { localStorage.setItem("playoffTrail:n:" + dayKey, practiceN); } catch (e) { }
       loadGame(practiceN); reset();
     };
-    $("daily").onclick = () => { loadGame(0); reset(); };
+    // $("daily").onclick = () => { loadGame(0); reset(); };
+    $("daily").onclick = () => { dayKey = TODAY; readDailyMode(); loadGame(0); reset(); };
 
     // Hard mode
     $("hard").checked = hard;
@@ -2738,6 +3067,95 @@
     function swapIn() { const p = $("play"); p.classList.remove("swapIn"); void p.offsetWidth; p.classList.add("swapIn"); }
     function shake() { const f = $("form"); f.classList.remove("shake"); void f.offsetWidth; f.classList.add("shake"); }
 
+    function openModal() { $("modal").hidden = false; $("modalClose").focus(); }
+    function closeModal() { $("modal").hidden = true; }
+    $("modalClose").onclick = closeModal;
+    $("modal").onclick = e => { if (e.target === $("modal")) closeModal(); };
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("modal").hidden) closeModal(); });
+
+    function openStats() {
+      const s = computeStats(), loss = s.played - s.wins;
+      const max = Math.max(1, loss, ...s.dist.slice(1));
+      $("modalTitle").textContent = "Stats · " + (modeKey === "pro" ? "Pro" : modeKey.toUpperCase());
+      $("modalBody").innerHTML = `
+    <div class="statRow">
+      <div><b>${s.played}</b><small>Played</small></div>
+      <div><b>${s.played ? Math.round(100 * s.wins / s.played) : 0}</b><small>Win %</small></div>
+      <div><b>${s.cur}</b><small>Streak</small></div>
+      <div><b>${s.best}</b><small>Best</small></div>
+    </div>
+    ${s.dist.slice(1).map((n, i) => `<div class="bar"><i>${i + 1}</i><span style="--w:${Math.max(8, 100 * n / max)}">${n}</span></div>`).join("")}
+    <div class="bar"><i>✕</i><span class="lossbar" style="--w:${Math.max(8, 100 * loss / max)}">${loss}</span></div>`;
+      openModal();
+    }
+
+    let calMonth = null;
+    function openCal() {
+      const t = dateOf(TODAY);
+      calMonth = new Date(t.getFullYear(), t.getMonth(), 1);
+      $("modalTitle").textContent = "Calendar · " + (modeKey === "pro" ? "Pro" : modeKey.toUpperCase());
+      renderCal(); openModal();
+    }
+    function renderCal() {
+      const days = dailyHistory(), today = dateOf(TODAY);
+      const y = calMonth.getFullYear(), m = calMonth.getMonth();
+      const startDow = new Date(y, m, 1).getDay(), count = new Date(y, m + 1, 0).getDate();
+      const canPrev = new Date(y, m, 0) >= LAUNCH, canNext = new Date(y, m + 1, 1) <= today;
+      let cells = ["S", "M", "T", "W", "T", "F", "S"].map(d => `<div class="dow">${d}</div>`).join("");
+      for (let i = 0; i < startDow; i++) cells += "<div></div>";
+      for (let d = 1; d <= count; d++) {
+        const dt = new Date(y, m, d), k = keyOf(dt), r = days[k];
+        const off = dt > today || dt < LAUNCH;                      // future (or before launch) = not clickable
+        const cls = ["day", k === TODAY ? "today" : "", k === dayKey && !game ? "sel" : "", r ? (r.over ? (r.won ? "win" : "loss") : "part") : ""].join(" ");
+        cells += `<button type="button" class="${cls}" data-k="${k}" ${off ? "disabled" : ""}>${d}</button>`;
+      }
+      $("modalBody").innerHTML = `
+    <div class="calHead"><button type="button" id="calPrev" ${canPrev ? "" : "disabled"}>‹</button>
+      <span>${new Date(y, m, 1).toLocaleDateString(undefined, { month: "long", year: "numeric" })}</span>
+      <button type="button" id="calNext" ${canNext ? "" : "disabled"}>›</button></div>
+    <div class="calGrid">${cells}</div>
+    <div class="calKey"><span><i class="w"></i>Won</span><span><i class="l"></i>Lost</span><span><i class="p"></i>In progress</span></div>`;
+      $("calPrev").onclick = () => { calMonth = new Date(y, m - 1, 1); renderCal(); };
+      $("calNext").onclick = () => { calMonth = new Date(y, m + 1, 1); renderCal(); };
+      $("modalBody").querySelectorAll(".day:not(:disabled)").forEach(b => b.onclick = () => { closeModal(); playDay(b.dataset.k); });
+    }
+    $("statsBtn").onclick = openStats;
+    $("calBtn").onclick = openCal;
+
+    function dailyHistory() {
+      const days = {};
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (!k.startsWith(NS())) continue;
+          const m = k.slice(NS().length).match(/^(\d{4}-\d{1,2}-\d{1,2})(!hard)?$/);   // dailies only, not practice
+          if (!m) continue;
+          const s = JSON.parse(localStorage.getItem(k));
+          if (!s || !s.guesses || !s.guesses.length) continue;
+          const cur = days[m[1]];
+          if (!cur || (s.over && !cur.over)) days[m[1]] = { over: !!s.over, won: !!s.won, n: s.guesses.length, late: !!s.late };
+        }
+      } catch (e) { }
+      return days;
+    }
+
+    function computeStats() {
+      const days = dailyHistory();
+      const dist = Array(MAX_GUESSES + 1).fill(0);
+      let played = 0, wins = 0;
+      Object.values(days).forEach(d => { if (!d.over) return; played++; if (d.won) { wins++; dist[d.n]++; } });
+
+      const ok = new Set(Object.entries(days).filter(([, d]) => d.over && !d.late).map(([k]) => k));
+      const step = (date, n) => { const x = new Date(date); x.setDate(x.getDate() + n); return x; };
+      let cur = 0, d = dateOf(TODAY);
+      if (!ok.has(keyOf(d))) d = step(d, -1);                 // today not finished yet: don't break the streak
+      while (ok.has(keyOf(d))) { cur++; d = step(d, -1); }
+
+      let best = 0, run = 0;
+      const sorted = [...ok].map(dateOf).sort((a, b) => a - b);
+      sorted.forEach((dt, i) => { run = i && keyOf(step(sorted[i - 1], 1)) === keyOf(dt) ? run + 1 : 1; best = Math.max(best, run); });
+      return { played, wins, dist, cur, best };
+    }
     renderAll(YEARS);
   </script>
 </body>
