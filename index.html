@@ -2118,6 +2118,123 @@
         transform: translateY(-3px) scale(1.1) rotate(0)
       }
     }
+
+
+    .acWrap {
+      position: relative;
+      flex: 1;
+      min-width: 0
+    }
+
+    .acWrap input {
+      width: 100%
+    }
+
+    .acList {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 6px);
+      z-index: 20;
+      margin: 0;
+      padding: 4px;
+      list-style: none;
+      max-height: 240px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, .4);
+      animation: drop .15s ease both
+    }
+
+    .acList[hidden] {
+      display: none
+    }
+
+    .acList.up {
+      top: auto;
+      bottom: calc(100% + 6px)
+    }
+
+    /* opens upward when the keyboard leaves no room below */
+    .acList li {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      padding: 9px 12px;
+      min-height: 44px;
+      border-radius: 8px;
+      cursor: pointer
+    }
+
+    .acList li b {
+      font-weight: 600
+    }
+
+    .acList li small {
+      color: var(--dim);
+      font-size: .75rem
+    }
+
+    .acList li:hover,
+    .acList li.on {
+      background: var(--bg)
+    }
+
+    .acList {
+      transform-origin: top;
+      animation: acOpen .18s cubic-bezier(.2, 1.2, .4, 1) both
+    }
+
+    .acList.up {
+      transform-origin: bottom
+    }
+
+    .acList.closing {
+      animation: acCollapse .18s ease-in forwards;
+      pointer-events: none
+    }
+
+    @keyframes acOpen {
+      from {
+        opacity: 0;
+        transform: scaleY(.88)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    @keyframes acCollapse {
+      to {
+        opacity: 0;
+        transform: scaleY(.82)
+      }
+    }
+
+    .acWrap input {
+      padding-right: 34px
+    }
+
+    .acWrap::after {
+      content: "▾";
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--dim);
+      pointer-events: none;
+      transition: transform .25s cubic-bezier(.3, 1.5, .5, 1), color .2s
+    }
+
+    .acWrap:has(.acList:not([hidden]):not(.closing))::after {
+      transform: translateY(-50%) rotate(180deg);
+      color: var(--r3)
+    }
   </style>
 </head>
 
@@ -2192,8 +2309,16 @@
       <section class="hints" id="hints"></section>
 
       <form id="form" autocomplete="off">
-        <input id="input" list="teams" placeholder="Pick a team" aria-label="Team guess">
-        <datalist id="teams"></datalist>
+        <!-- <input id="input" list="teams" placeholder="Pick a team" aria-label="Team guess">
+        <datalist id="teams"></datalist> -->
+
+        <div class="acWrap">
+          <input id="input" placeholder="Pick a team" aria-label="Team guess" autocomplete="off" autocapitalize="off"
+            autocorrect="off" spellcheck="false" enterkeyhint="go" role="combobox" aria-expanded="false"
+            aria-controls="acList">
+          <ul class="acList" id="acList" role="listbox" hidden></ul>
+        </div>
+
         <button id="btn" type="submit">Guess</button>
       </form>
       <div class="msg" id="msg" role="status"></div>
@@ -2822,10 +2947,11 @@
       $("input").disabled = $("btn").disabled = state.over;
     }
 
-    function renderList() {
-      const used = new Set(state.guesses);
-      $("teams").innerHTML = cfg().teams.filter(t => !used.has(t.name)).map(t => `<option value="${t.name}">${t.sport} · ${t.conference}</option>`).join("");
-    }
+    // function renderList() {
+    //   const used = new Set(state.guesses);
+    //   $("teams").innerHTML = cfg().teams.filter(t => !used.has(t.name)).map(t => `<option value="${t.name}">${t.sport} · ${t.conference}</option>`).join("");
+    // }
+    function renderList() { closeList(); }
 
     function renderStart() {
       $("start").innerHTML = `<h2>${dayKey === TODAY ? "Today's Daily" : dateOf(dayKey).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}</h2><p>Pick your difficulty before the first clues appear. It locks once you start.</p>
@@ -3223,6 +3349,87 @@
       sorted.forEach((dt, i) => { run = i && keyOf(step(sorted[i - 1], 1)) === keyOf(dt) ? run + 1 : 1; best = Math.max(best, run); });
       return { played, wins, dist, cur, best };
     }
+
+
+    let acItems = [], acActive = -1;
+    const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();   // "Montreal" finds "Montréal"
+    const acDetail = t => [t.sport, t.conference, t.division].filter(Boolean).join(" · ");
+
+    // function closeList() {
+    //   acItems = []; acActive = -1;
+    //   $("acList").hidden = true;
+    //   $("input").setAttribute("aria-expanded", "false");
+    // }
+    function closeList(instant) {
+      acItems = []; acActive = -1;
+      $("input").setAttribute("aria-expanded", "false");
+      const L = $("acList");
+      if (L.hidden) return;
+      if (instant || matchMedia("(prefers-reduced-motion: reduce)").matches) { L.hidden = true; L.classList.remove("closing"); return; }
+      L.classList.add("closing");                              // play the collapse, then hide
+      L.addEventListener("animationend", () => {
+        if (L.classList.contains("closing")) { L.hidden = true; L.classList.remove("closing"); }
+      }, { once: true });
+    }
+
+    // function showList() {
+    //   const q = norm($("input").value.trim());
+    //   if (!q || state.over) return closeList();
+    //   const used = new Set(state.guesses);
+    //   const rank = t => norm(t.name).startsWith(q) ? 0 : 1;
+    //   acItems = cfg().teams.filter(t => !used.has(t.name) && norm(t.name).includes(q)).sort((a, b) => rank(a) - rank(b)).slice(0, 30);
+    //   if (!acItems.length) return closeList();
+    //   acActive = -1;
+    //   const L = $("acList");
+    //   L.innerHTML = acItems.map((t, i) => `<li role="option" data-i="${i}"><b>${t.name}</b><small>${acDetail(t)}</small></li>`).join("");
+    //   L.hidden = false;
+    //   $("input").setAttribute("aria-expanded", "true");
+    //   const r = $("input").getBoundingClientRect(), vv = window.visualViewport;
+    //   const below = (vv ? vv.offsetTop + vv.height : innerHeight) - r.bottom;    // space left above the phone keyboard
+    //   L.classList.toggle("up", below < 200 && r.top > below);
+    // }
+    function showList() {
+      if (state.over) return closeList();
+      const q = norm($("input").value.trim());
+      const pc = matchMedia("(hover: hover) and (pointer: fine)").matches;
+      if (!q && !pc) return closeList();                       // phones: wait until they type
+      const used = new Set(state.guesses);
+      const rank = t => norm(t.name).startsWith(q) ? 0 : 1;
+      let items = cfg().teams.filter(t => !used.has(t.name) && (!q || norm(t.name).includes(q)));
+      if (q) items = items.sort((a, b) => rank(a) - rank(b)).slice(0, 30);   // empty box = full list, in your data order
+      if (!items.length) return closeList();
+      acItems = items; acActive = -1;
+      const L = $("acList");
+      L.classList.remove("closing");
+      L.innerHTML = acItems.map((t, i) => `<li role="option" data-i="${i}"><b>${t.name}</b><small>${acDetail(t)}</small></li>`).join("");
+      L.hidden = false; L.scrollTop = 0;
+      $("input").setAttribute("aria-expanded", "true");
+      const r = $("input").getBoundingClientRect(), vv = window.visualViewport;
+      const below = (vv ? vv.offsetTop + vv.height : innerHeight) - r.bottom;
+      L.classList.toggle("up", below < 200 && r.top > below);
+    }
+    function pick(i) { $("input").value = acItems[i].name; closeList(); }
+
+    $("input").addEventListener("input", showList);
+    $("input").addEventListener("focus", showList);
+    $("input").addEventListener("click", showList);
+    $("acList").addEventListener("mousedown", e => e.preventDefault());          // keep focus in the box on desktop
+    $("acList").addEventListener("click", e => { const li = e.target.closest("li"); if (li) pick(+li.dataset.i); });
+    document.addEventListener("pointerdown", e => { if (!e.target.closest(".acWrap")) closeList(); });
+    $("input").addEventListener("keydown", e => {
+
+      if ($("acList").hidden && e.key === "ArrowDown") { showList(); return; }
+      if ($("acList").hidden) return;
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        acActive = (acActive + (e.key === "ArrowDown" ? 1 : -1) + acItems.length) % acItems.length;
+        [...$("acList").children].forEach((li, i) => li.classList.toggle("on", i === acActive));
+        $("acList").children[acActive].scrollIntoView({ block: "nearest" });
+      } else if (e.key === "Enter" && acActive >= 0) { e.preventDefault(); pick(acActive); }   // pick, don't submit
+      else if (e.key === "Escape") closeList();
+    });
+
+
     renderAll(YEARS);
   </script>
 </body>
