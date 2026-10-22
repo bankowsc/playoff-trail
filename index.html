@@ -2828,17 +2828,29 @@
       if (t.colors) return t.colors;
       return [...graphemes.segment(t.division || "")].map(s => s.segment).filter(s => s.trim());
     }
-    function colorScore(g) {
-      const tc = [...new Set(teamColors(target).map(key))];
+    // function colorScore(g) {
+    //   const tc = [...new Set(teamColors(target).map(key))];
+    //   const gc = new Set(teamColors(g).map(key));
+    //   const hits = tc.filter(c => gc.has(c)).length;
+    //   return !hits ? 0 : hits === tc.length ? 2 : 1;
+    // }
+    // function compare(g) {
+    //   const sport = g.sport === target.sport;
+    //   const conf = sport && g.conference === target.conference;
+    //   const div = conf && g.division === target.division;
+    //   return { sport, conf, div, col: colorScore(g) };
+    // }
+    function colorScore(g, tgt = target) {
+      const tc = [...new Set(teamColors(tgt).map(key))];
       const gc = new Set(teamColors(g).map(key));
       const hits = tc.filter(c => gc.has(c)).length;
       return !hits ? 0 : hits === tc.length ? 2 : 1;
     }
-    function compare(g) {
-      const sport = g.sport === target.sport;
-      const conf = sport && g.conference === target.conference;
-      const div = conf && g.division === target.division;
-      return { sport, conf, div, col: colorScore(g) };
+    function compare(g, tgt = target) {
+      const sport = g.sport === tgt.sport;
+      const conf = sport && g.conference === tgt.conference;
+      const div = conf && g.division === tgt.division;
+      return { sport, conf, div, col: colorScore(g, tgt) };
     }
     function visibleYears() {
       return state.over ? YEARS : Math.min(YEARS, STEP + STEP * state.guesses.length);
@@ -2942,6 +2954,7 @@
     <p>${game ? "Ready for another one?" : "Come back tomorrow, or keep playing in infinity mode."}</p>
     <div class="endBtns">
       <button id="share" type="button" onclick="share(this)">Share result</button>
+      <button class="alt" type="button" onclick="shareAll(this)">Share all</button>
       <button class="alt" type="button" onclick="document.getElementById('inf').click()">∞ New Game</button>
     </div></div>`;
       $("input").disabled = $("btn").disabled = state.over;
@@ -3071,16 +3084,30 @@
     //   return `Playoff Trail ${game ? "Practice #" + game : dayKey} ${score}/${MAX_GUESSES}\n${rows.join("\n")}\n${SHARE_URL || location.href.split("#")[0]}`;
     // }
     const RANKS = ["Hall of Famer", "MVP", "All-Star", "Starter", "Role Player", "Bench Warmer", "Buzzer Beater"];
+    function shareRows(m, st, tgt) {
+      const teams = MODES[m].teams, n = st.guesses.length;
+      return st.guesses.map((name, i) => {
+        const g = teams.find(t => t.name === name);
+        if (!g) return "";
+        const c = compare(g, tgt);
+        const third = m === "ncaa" ? ["🟥", "🟨", "🟩"][c.col] : (c.div ? "🟩" : "🟥");
+        const r = (c.sport ? "🟩" : "🟥") + (c.conf ? "🟩" : "🟥") + third;
+        return i === n - 1 ? (st.won ? r + " 🏆" : st.over ? r + " ❌" : r) : r;
+      });
+    }
     function shareText() {
       const n = state.guesses.length;
-      const rows = state.guesses.map((g, i) => {
-        const c = compare(byName(g));
-        //const r = [c.sport, c.conf, c.div].map(ok => ok ? "🟩" : "🟥").join("");
-        const third = modeKey === "ncaa" ? ["🟥", "🟨", "🟩"][c.col] : (c.div ? "🟩" : "🟥");
-        const r = (c.sport ? "🟩" : "🟥") + (c.conf ? "🟩" : "🟥") + third;
-        //return state.won && i === n - 1 ? r + " 🏆" : r;
-        return i === n - 1 ? (state.won ? r + " 🏆" : state.over ? r + " ❌" : r) : r;
-      });
+      const rows = shareRows(modeKey, state, target);
+      // const rows = state.guesses.map((g, i) => {
+      //   const c = compare(byName(g));
+      //   //const r = [c.sport, c.conf, c.div].map(ok => ok ? "🟩" : "🟥").join("");
+      //   const third = modeKey === "ncaa" ? ["🟥", "🟨", "🟩"][c.col] : (c.div ? "🟩" : "🟥");
+      //   const r = (c.sport ? "🟩" : "🟥") + (c.conf ? "🟩" : "🟥") + third;
+      //   //return state.won && i === n - 1 ? r + " 🏆" : r;
+      //   return i === n - 1 ? (state.won ? r + " 🏆" : state.over ? r + " ❌" : r) : r;
+      // });
+
+
       const seen = state.won ? Math.min(YEARS, STEP + STEP * (n - 1)) : YEARS;
       const groups = Math.ceil(YEARS / STEP), lit = Math.ceil(seen / STEP);
       return [
@@ -3095,16 +3122,59 @@
         SHARE_URL || location.href.split("#")[0]
       ].join("\n");
     }
-    async function share(btn) {
-      const t = shareText();
+
+    function dailyRecord(m) {
+      const day = typeof TODAY === "undefined" ? dayKey : TODAY;      // always today's daily, even if you're viewing a past date
+      const ns = m === "pro" ? "playoffTrail:" : "playoffTrail:" + m + ":";
+      try {
+        const dm = localStorage.getItem(ns + "dm:" + day);            // which difficulty was picked that day
+        if (dm === null) return null;
+        const hd = dm === "1";
+        const st = JSON.parse(localStorage.getItem(ns + day + (hd ? "!hard" : "")));
+        if (!st || !st.over) return null;                             // not started or not finished
+        const teams = MODES[m].teams;
+        const tgt = (st.t && teams.find(t => t.name === st.t)) || teams[hash(day) % teams.length];
+        return { st, tgt, hd };
+      } catch (e) { return null; }
+    }
+
+    function shareAllText() {
+      const day = typeof TODAY === "undefined" ? dayKey : TODAY;
+      const blocks = Object.keys(MODES).map(m => {
+        const name = m === "pro" ? "PRO" : m.toUpperCase();
+        const rec = dailyRecord(m);
+        if (!rec) return `${name}\n- - -`;
+        const { st, tgt, hd } = rec, n = st.guesses.length;
+        const status = st.won ? `🏆 ${RANKS[Math.min(n, RANKS.length) - 1]} · ${n}/${MAX_GUESSES}` : `💀 · X/${MAX_GUESSES}`;
+        return [`${name}${hd ? " 🔥" : ""}`, status, ...shareRows(m, st, tgt)].join("\n");
+      });
+      return [`PLAYOFF TRAIL · Daily ${day}`, "", blocks.join("\n\n"), "", SHARE_URL || location.href.split("#")[0]].join("\n");
+    }
+
+
+    async function copyText(t) {
       try { await navigator.clipboard.writeText(t); }
       catch (e) {
         const a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select();
         try { document.execCommand("copy"); } catch (_) { }
         a.remove();
       }
-      btn.textContent = "Copied!"; setTimeout(() => btn.textContent = "Share result", 1800);
     }
+    function copied(btn, label) { btn.textContent = "Copied!"; setTimeout(() => btn.textContent = label, 1800); }
+    async function share(btn) { await copyText(shareText()); copied(btn, "Share result"); }
+    async function shareAll(btn) { await copyText(shareAllText()); copied(btn, "Share all"); }
+
+
+    // async function share(btn) {
+    //   const t = shareText();
+    //   try { await navigator.clipboard.writeText(t); }
+    //   catch (e) {
+    //     const a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select();
+    //     try { document.execCommand("copy"); } catch (_) { }
+    //     a.remove();
+    //   }
+    //   btn.textContent = "Copied!"; setTimeout(() => btn.textContent = "Share result", 1800);
+    // }
     // function confetti() {
     //   if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
     //   const c = document.createElement("canvas"); c.id = "confetti"; document.body.appendChild(c);
