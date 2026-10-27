@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-scheme="dark" data-theme="Default">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Playoff Duel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Figtree:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <script>
+    /* runs before the first paint so a saved choice never flashes the other theme */
+    try {
+      var d = document.documentElement;
+      if (localStorage.getItem("duel:scheme") === "light") d.dataset.scheme = "light";
+      if (localStorage.getItem("duel:patterns") === "1") d.dataset.theme = "Patterns";
+    } catch (e) { }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="bgfx" id="bgfx" aria-hidden="true"></div>
+  <main>
+    <div class="ticker" aria-hidden="true">
+      <div class="tickerTrack">
+        <span>🏈 NFL ★ ⚾ MLB ★ 🏀 NBA ★ 🏒 NHL ★ 🎓 NCAA ★ ⚽ UCL ★ 1V1 ★ 30 SECONDS A TURN ★ </span>
+        <span>🏈 NFL ★ ⚾ MLB ★ 🏀 NBA ★ 🏒 NHL ★ 🎓 NCAA ★ ⚽ UCL ★ 1V1 ★ 30 SECONDS A TURN ★ </span>
+      </div>
+    </div>
+
+    <header class="top">
+      <h1 class="siteTitle">Playoff Duel</h1>
+      <div class="topRight">
+        <label class="switch" title="Switch between the dark and light look">
+          <input type="checkbox" id="light"><span class="track"></span><span>Light</span>
+        </label>
+        <label class="switch" title="Colour-blind friendly colours, plus a pattern on each dot">
+          <input type="checkbox" id="patterns"><span class="track"></span><span>Patterns</span>
+        </label>
+        <span class="pill" id="status" data-state="connecting">Connecting…</span>
+      </div>
+    </header>
+    <p class="sub">Two players take turns naming the franchise. 30 seconds each, and new seasons appear after every turn.</p>
+
+    <div class="banner" id="banner" hidden></div>
+
+    <!-- ============ LOBBY ============ -->
+    <section id="screen-lobby">
+      <div class="card">
+        <label class="field">
+          <span>Your name</span>
+          <input id="name" maxlength="16" placeholder="Player" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </label>
+        <div class="field">
+          <span>Game</span>
+          <div class="modeSeg" id="modeSeg"></div>
+        </div>
+        <label class="switch" title="Seasons are revealed in a random order instead of newest first">
+          <input type="checkbox" id="hard"><span class="track"></span>
+          <span>Hard mode <small>(random reveal order)</small></span>
+        </label>
+        <button class="primary big" id="find" type="button">Find match</button>
+        <div class="or">or play a friend</div>
+        <button class="alt big" id="invite" type="button">🔗 Invite a friend</button>
+        <div class="joinRow">
+          <input id="codeIn" maxlength="8" placeholder="Got a code? Type it here" autocomplete="off" autocapitalize="characters"
+            autocorrect="off" spellcheck="false" aria-label="Friend's room code">
+          <button class="alt" id="joinBtn" type="button">Join</button>
+        </div>
+      </div>
+
+      <ol class="how">
+        <li>You are matched with another player in the same game and difficulty.</li>
+        <li>On your turn you have a limited time to name the franchise from the seasons shown.</li>
+        <li>After every turn, a guess or a timeout, three more seasons appear and the other player is on the clock.</li>
+        <li>First correct guess wins. Both players can play again, or look for a new opponent.</li>
+      </ol>
+    </section>
+
+    <!-- ============ SEARCHING ============ -->
+    <section id="screen-searching" hidden>
+      <div class="card center">
+        <div class="spinner" aria-hidden="true"></div>
+        <h2 id="searchTitle">Looking for an opponent…</h2>
+        <p class="dim" id="searchInfo"></p>
+        <button class="primary" id="inviteInstead" type="button">🔗 Nobody here? Invite a friend instead</button>
+        <button class="alt" id="cancel" type="button">Cancel</button>
+      </div>
+    </section>
+
+    <!-- ============ PRIVATE ROOM (waiting for a friend) ============ -->
+    <section id="screen-room" hidden>
+      <div class="card center">
+        <h2>Invite a friend</h2>
+        <p class="dim" id="roomInfo"></p>
+        <div class="roomCode" id="roomCode" aria-label="Room code"></div>
+        <input id="roomLink" readonly aria-label="Invite link">
+        <div class="endBtns">
+          <button class="primary" id="shareLink" type="button">Share invite</button>
+          <button class="alt" id="copyLink" type="button">Copy link</button>
+        </div>
+        <div class="spinner" aria-hidden="true"></div>
+        <p class="dim">Waiting for your friend to open the link…</p>
+        <button class="alt" id="cancelRoom" type="button">Cancel</button>
+      </div>
+    </section>
+
+    <!-- ============ MATCH ============ -->
+    <section id="screen-match" hidden>
+      <div class="turnBar" id="bar">
+        <div class="vs" id="vs"></div>
+        <div class="clock">
+          <span id="clockNum" aria-live="off"></span>
+          <div class="clockTrack"><i id="clockBar"></i></div>
+        </div>
+        <div class="turnMsg" id="turnMsg"></div>
+      </div>
+
+      <div class="legend" id="legend" aria-label="Legend"></div>
+
+      <section class="trail" id="trail" aria-label="Playoff history"></section>
+      <div class="status"><span id="count"></span><em id="shown"></em></div>
+      <section class="hints" id="hints"></section>
+
+      <form id="form" autocomplete="off">
+        <div class="acWrap">
+          <input id="input" placeholder="Pick a team" aria-label="Team guess" autocomplete="off" autocapitalize="off"
+            autocorrect="off" spellcheck="false" enterkeyhint="go" role="combobox" aria-expanded="false" aria-controls="acList">
+          <ul class="acList" id="acList" role="listbox" hidden></ul>
+        </div>
+        <button class="primary" id="btn" type="submit">Guess</button>
+      </form>
+
+      <section id="guesses"></section>
+      <section id="end"></section>
+    </section>
+
+    <div class="toast" id="toast" hidden role="status"></div>
+    <noscript>This game needs JavaScript.</noscript>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

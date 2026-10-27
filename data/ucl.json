@@ -1,0 +1,317 @@
+[
+    {
+        "name": "Arsenal",
+        "sport": "UCL",
+        "conference": "England",
+        "division": "Premier League",
+        "history": "432000000111111123214"
+    },
+    {
+        "name": "Aston Villa",
+        "sport": "UCL",
+        "conference": "England",
+        "division": "Premier League",
+        "history": "020000000000000000000"
+    },
+    {
+        "name": "Chelsea",
+        "sport": "UCL",
+        "conference": "England",
+        "division": "Premier League",
+        "history": "100225101011305213431"
+    },
+    {
+        "name": "Leicester City",
+        "sport": "UCL",
+        "conference": "England",
+        "division": "League One",
+        "history": "000000000200000000000"
+    },
+    {
+        "name": "Liverpool",
+        "sport": "UCL",
+        "conference": "England",
+        "division": "Premier League",
+        "history": "210142154000000002341"
+    },
+    {
+        "name": "Manchester City",
+        "sport": "UCL",
+        "conference": "England",
+        "division": "Premier League",
+        "history": "102534222131100000000"
+    },
+    {
+        "name": "Manchester United",
+        "sport": "UCL",
+        "conference": "England",
+        "division": "Premier League",
+        "history": "000010021000210424530"
+    },
+    {
+        "name": "Newcastle United",
+        "sport": "UCL",
+        "conference": "England",
+        "division": "Premier League",
+        "history": "100000000000000000000"
+    },
+    {
+        "name": "Tottenham Hotspur",
+        "sport": "UCL",
+        "conference": "England",
+        "division": "Premier League",
+        "history": "100100141100000200000"
+    },
+    {
+        "name": "Atlético Madrid",
+        "sport": "UCL",
+        "conference": "Spain",
+        "division": "La Liga",
+        "history": "312021210342400001000"
+    },
+    {
+        "name": "Barcelona",
+        "sport": "UCL",
+        "conference": "Spain",
+        "division": "La Liga",
+        "history": "232001232225233535315"
+    },
+    {
+        "name": "Málaga",
+        "sport": "UCL",
+        "conference": "Spain",
+        "division": "La Liga",
+        "history": "000000000000020000000"
+    },
+    {
+        "name": "Real Madrid",
+        "sport": "UCL",
+        "conference": "Spain",
+        "division": "La Liga",
+        "history": "225353115553533311111"
+    },
+    {
+        "name": "Real Sociedad",
+        "sport": "UCL",
+        "conference": "Spain",
+        "division": "La Liga",
+        "history": "001000000000000000000"
+    },
+    {
+        "name": "Sevilla",
+        "sport": "UCL",
+        "conference": "Spain",
+        "division": "La Liga",
+        "history": "000001002100000010100"
+    },
+    {
+        "name": "Valencia",
+        "sport": "UCL",
+        "conference": "Spain",
+        "division": "La Liga",
+        "history": "000000100000010100020"
+    },
+    {
+        "name": "Villarreal",
+        "sport": "UCL",
+        "conference": "Spain",
+        "division": "La Liga",
+        "history": "000030000000000002003"
+    },
+    {
+        "name": "Bayer Leverkusen",
+        "sport": "UCL",
+        "conference": "Germany",
+        "division": "Bundesliga",
+        "history": "110000000101111000000"
+    },
+    {
+        "name": "Bayern Munich",
+        "sport": "UCL",
+        "conference": "Germany",
+        "division": "Bundesliga",
+        "history": "323222513233354142021"
+    },
+    {
+        "name": "Borussia Dortmund",
+        "sport": "UCL",
+        "conference": "Germany",
+        "division": "Bundesliga",
+        "history": "124112111201241000000"
+    },
+    {
+        "name": "Eintracht Frankfurt",
+        "sport": "UCL",
+        "conference": "Germany",
+        "division": "Bundesliga",
+        "history": "000100000000000000000"
+    },
+    {
+        "name": "RB Leipzig",
+        "sport": "UCL",
+        "conference": "Germany",
+        "division": "Bundesliga",
+        "history": "011111301000000000000"
+    },
+    {
+        "name": "Schalke 04",
+        "sport": "UCL",
+        "conference": "Germany",
+        "division": "Bundesliga",
+        "history": "000000010001110300201"
+    },
+    {
+        "name": "VfL Wolfsburg",
+        "sport": "UCL",
+        "conference": "Germany",
+        "division": "2. Bundesliga",
+        "history": "000010000020000010000"
+    },
+    {
+        "name": "Atalanta",
+        "sport": "UCL",
+        "conference": "Italy",
+        "division": "Serie A",
+        "history": "100001200000000000000"
+    },
+    {
+        "name": "Inter Milan",
+        "sport": "UCL",
+        "conference": "Italy",
+        "division": "Serie A",
+        "history": "041410000000001251112"
+    },
+    {
+        "name": "Juventus",
+        "sport": "UCL",
+        "conference": "Italy",
+        "division": "Serie A",
+        "history": "000011122414020001002"
+    },
+    {
+        "name": "Lazio",
+        "sport": "UCL",
+        "conference": "Italy",
+        "division": "Serie A",
+        "history": "001001000000000000000"
+    },
+    {
+        "name": "AC Milan",
+        "sport": "UCL",
+        "conference": "Italy",
+        "division": "Serie A",
+        "history": "000300000000112110153"
+    },
+    {
+        "name": "Napoli",
+        "sport": "UCL",
+        "conference": "Italy",
+        "division": "Serie A",
+        "history": "001200100100001000000"
+    },
+    {
+        "name": "Roma",
+        "sport": "UCL",
+        "conference": "Italy",
+        "division": "Serie A",
+        "history": "000000013010000101220"
+    },
+    {
+        "name": "Bordeaux",
+        "sport": "UCL",
+        "conference": "France",
+        "division": "Régionale 1",
+        "history": "000000000000000020000"
+    },
+    {
+        "name": "Lyon",
+        "sport": "UCL",
+        "conference": "France",
+        "division": "Ligue 1",
+        "history": "000000310000001131112"
+    },
+    {
+        "name": "Marseille",
+        "sport": "UCL",
+        "conference": "France",
+        "division": "Ligue 1",
+        "history": "100101000000102111100"
+    },
+    {
+        "name": "Monaco",
+        "sport": "UCL",
+        "conference": "France",
+        "division": "Ligue 1",
+        "history": "000000000302000000000"
+    },
+    {
+        "name": "Paris Saint-Germain",
+        "sport": "UCL",
+        "conference": "France",
+        "division": "Ligue 1",
+        "history": "553113411122220000000"
+    },
+    {
+        "name": "Benfica",
+        "sport": "UCL",
+        "conference": "Portugal",
+        "division": "Primeira Liga",
+        "history": "010220000120002000002"
+    },
+    {
+        "name": "Porto",
+        "sport": "UCL",
+        "conference": "Portugal",
+        "division": "Primeira Liga",
+        "history": "001102021102010012110"
+    },
+    {
+        "name": "Sporting CP",
+        "sport": "UCL",
+        "conference": "Portugal",
+        "division": "Primeira Liga",
+        "history": "200010000000000001000"
+    },
+    {
+        "name": "Ajax",
+        "sport": "UCL",
+        "conference": "Netherlands",
+        "division": "Eredivisie",
+        "history": "000010030000000000001"
+    },
+    {
+        "name": "PSV Eindhoven",
+        "sport": "UCL",
+        "conference": "Netherlands",
+        "division": "Eredivisie",
+        "history": "011000000010000000021"
+    },
+    {
+        "name": "Fenerbahçe",
+        "sport": "UCL",
+        "conference": "Turkey",
+        "division": "Süper Lig",
+        "history": "000000000000000000200"
+    },
+    {
+        "name": "Galatasaray",
+        "sport": "UCL",
+        "conference": "Turkey",
+        "division": "Süper Lig",
+        "history": "100000000000120000000"
+    },
+    {
+        "name": "CSKA Moscow",
+        "sport": "UCL",
+        "conference": "Russia",
+        "division": "Russian Premier League",
+        "history": "000000000000001020000"
+    },
+    {
+        "name": "Zenit Saint Petersburg",
+        "sport": "UCL",
+        "conference": "Russia",
+        "division": "Russian Premier League",
+        "history": "000000000010101000000"
+    }
+]

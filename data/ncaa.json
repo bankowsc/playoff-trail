@@ -1,0 +1,744 @@
+[
+    {
+        "name": "Illinois",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🟠🔵",
+        "history": "524122000000020201012"
+    },
+    {
+        "name": "Indiana",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔴⚪",
+        "history": "000210000032033000122"
+    },
+    {
+        "name": "Iowa",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "⚫🟡",
+        "history": "400112020022100000001"
+    },
+    {
+        "name": "Maryland",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔴🟡",
+        "history": "030202020132000022020"
+    },
+    {
+        "name": "Michigan",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🟡🔵",
+        "history": "730034036310461202000"
+    },
+    {
+        "name": "Michigan State",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🟢⚪",
+        "history": "342321052215433256321"
+    },
+    {
+        "name": "Minnesota",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔴🟡",
+        "history": "000000020100020011000"
+    },
+    {
+        "name": "Nebraska",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔴⚪",
+        "history": "301000000000100000000"
+    },
+    {
+        "name": "Northwestern",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🟣⚪",
+        "history": "002200000200000000000"
+    },
+    {
+        "name": "Ohio State",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔴⚪",
+        "history": "100021022002145331062"
+    },
+    {
+        "name": "Oregon",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🟢🟡",
+        "history": "022003030542230000140"
+    },
+    {
+        "name": "Penn State",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔵⚪",
+        "history": "000200000000000100000"
+    },
+    {
+        "name": "Purdue",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🟡⚫",
+        "history": "436131043311002233220"
+    },
+    {
+        "name": "Rutgers",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔴⚪",
+        "history": "000012000000000000000"
+    },
+    {
+        "name": "UCLA",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔵🟡",
+        "history": "220335001303310202552"
+    },
+    {
+        "name": "Southern California",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔴🟡",
+        "history": "000114000210000102130"
+    },
+    {
+        "name": "Washington",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🟣🟡",
+        "history": "000000020000000232003"
+    },
+    {
+        "name": "Wisconsin",
+        "sport": "NCAAM",
+        "conference": "BigTen",
+        "division": "🔴⚪",
+        "history": "121022010336513322321"
+    },
+    {
+        "name": "Alabama",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🔴⚪",
+        "history": "345313002000001000002"
+    },
+    {
+        "name": "Arkansas",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🔴⚪",
+        "history": "330344001202000000211"
+    },
+    {
+        "name": "Auburn",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🟠🔵",
+        "history": "051220052000000000000"
+    },
+    {
+        "name": "Florida",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🟠🔵",
+        "history": "271002022400544410077"
+    },
+    {
+        "name": "Georgia",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🔴⚫",
+        "history": "110000000001000100100"
+    },
+    {
+        "name": "Kentucky",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🔵⚪",
+        "history": "231210043425607540122"
+    },
+    {
+        "name": "Lousiana State",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🟣🟡",
+        "history": "000012030001000002005"
+    },
+    {
+        "name": "Mississippi State",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🔴⚪",
+        "history": "011100010000000001200"
+    },
+    {
+        "name": "Missouri",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🟡⚫",
+        "history": "110201001000011124000"
+    },
+    {
+        "name": "Ole Miss",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🔴🔵",
+        "history": "030000010001020000000"
+    },
+    {
+        "name": "Oklahoma",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🔴⚪",
+        "history": "010002021053110004201"
+    },
+    {
+        "name": "South Carolina",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🔴⚫",
+        "history": "001000000500000000000"
+    },
+    {
+        "name": "Tennessee",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🟠⚪",
+        "history": "444321032000300141332"
+    },
+    {
+        "name": "Texas",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🟠⚪",
+        "history": "312421001011201212424"
+    },
+    {
+        "name": "Texas A&M",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "🔴⚪",
+        "history": "222100003030000122232"
+    },
+    {
+        "name": "Vanderbilt",
+        "sport": "NCAAM",
+        "conference": "SEC",
+        "division": "⚫🟡",
+        "history": "210000000110002110130"
+    },
+    {
+        "name": "Boston College",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔴🟡",
+        "history": "000000000000000001023"
+    },
+    {
+        "name": "California",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔵🟡",
+        "history": "000000000010021021001"
+    },
+    {
+        "name": "Clemson",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🟠🟣",
+        "history": "114001003000000111100"
+    },
+    {
+        "name": "Duke",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔵⚪",
+        "history": "454250044237141374213"
+    },
+    {
+        "name": "Florida State",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔴🟡",
+        "history": "000003034200002311000"
+    },
+    {
+        "name": "Georgia Tech",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🟡🔵",
+        "history": "000001000000000020010"
+    },
+    {
+        "name": "Louisville",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔴⚫",
+        "history": "210000010204375114420"
+    },
+    {
+        "name": "Miami",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🟢🟠",
+        "history": "200540001130030000200"
+    },
+    {
+        "name": "North Carolina State",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔴⚪",
+        "history": "105100001003113000002"
+    },
+    {
+        "name": "North Carolina",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔵⚪",
+        "history": "113061032763224407542"
+    },
+    {
+        "name": "Notre Dame",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔵🟡",
+        "history": "000020000244011210210"
+    },
+    {
+        "name": "Pittsburgh",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔵🟡",
+        "history": "000200000010210224232"
+    },
+    {
+        "name": "Southern Methodist",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔴🔵",
+        "history": "100000000101000000000"
+    },
+    {
+        "name": "Stanford",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🔴⚪",
+        "history": "000000000000300000310"
+    },
+    {
+        "name": "Syracuse",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🟠🔵",
+        "history": "000003013050254233001"
+    },
+    {
+        "name": "Virginia",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🟠🔵",
+        "history": "201101071242301000020"
+    },
+    {
+        "name": "Virginia Tech",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "🟠🟣",
+        "history": "000011031100000000020"
+    },
+    {
+        "name": "Wake Forest",
+        "sport": "NCAAM",
+        "conference": "ACC",
+        "division": "⚫🟡",
+        "history": "000000000100000021000"
+    },
+    {
+        "name": "Arizona",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🔴🔵",
+        "history": "533130001314430403112"
+    },
+    {
+        "name": "Arizona State",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🟡🔴",
+        "history": "000100011000100002000"
+    },
+    {
+        "name": "Baylor",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🟢🟡",
+        "history": "022227020311304040100"
+    },
+    {
+        "name": "Brigham Young",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🔵⚪",
+        "history": "131001000001101321110"
+    },
+    {
+        "name": "Cincinnati",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🔴⚫",
+        "history": "000000012212113200000"
+    },
+    {
+        "name": "Colorado",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "⚫🟡",
+        "history": "002002000010112000000"
+    },
+    {
+        "name": "Houston",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🔴⚪",
+        "history": "363345032000000010000"
+    },
+    {
+        "name": "Iowa State",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🔴🟡",
+        "history": "323130010231322000000"
+    },
+    {
+        "name": "Kansas",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🔵🔴",
+        "history": "212272025442236423741"
+    },
+    {
+        "name": "Kansas State",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🟣⚪",
+        "history": "000400014100112240200"
+    },
+    {
+        "name": "Oklahoma State",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🟠⚫",
+        "history": "000002000101110012000"
+    },
+    {
+        "name": "Texas Christian",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🟣⚪",
+        "history": "201220001000000000000"
+    },
+    {
+        "name": "Texas Tech",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🔴⚫",
+        "history": "241032064010000000010"
+    },
+    {
+        "name": "Central Florida",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "⚫🟡",
+        "history": "100000020000000000000"
+    },
+    {
+        "name": "Utah",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🔴⚪",
+        "history": "000000000023000001000"
+    },
+    {
+        "name": "West Virginia",
+        "sport": "NCAAM",
+        "conference": "Big12",
+        "division": "🔵🟡",
+        "history": "000102003313001251303"
+    },
+    {
+        "name": "Butler",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔵⚪",
+        "history": "000000002322020661230"
+    },
+    {
+        "name": "Creighton",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔵⚪",
+        "history": "023423001100222000010"
+    },
+    {
+        "name": "DePaul",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔵🔴",
+        "history": "000000000000000000000"
+    },
+    {
+        "name": "Georgetown",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔵⚪",
+        "history": "000001000002012110253"
+    },
+    {
+        "name": "Marquette",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔵🟡",
+        "history": "013210010100043312211"
+    },
+    {
+        "name": "Providence",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "⚫🔵",
+        "history": "000130001121100000000"
+    },
+    {
+        "name": "Seton Hall",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔵⚪",
+        "history": "000010012110000000001"
+    },
+    {
+        "name": "St. John's",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔴⚪",
+        "history": "320000010001000100000"
+    },
+    {
+        "name": "Connecticut",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔵⚪",
+        "history": "627711000020701705105"
+    },
+    {
+        "name": "Villanova",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔵⚪",
+        "history": "100053027272210125314"
+    },
+    {
+        "name": "Xavier",
+        "sport": "NCAAM",
+        "conference": "BigEast",
+        "division": "🔵⚪",
+        "history": "010300002423103133421"
+    },
+    {
+        "name": "Davidson",
+        "sport": "NCAAM",
+        "conference": "A10",
+        "division": "🔴⚫",
+        "history": "000010001001011000411"
+    },
+    {
+        "name": "Dayton",
+        "sport": "NCAAM",
+        "conference": "A10",
+        "division": "🔴🔵",
+        "history": "002000000112300002000"
+    },
+    {
+        "name": "La Salle",
+        "sport": "NCAAM",
+        "conference": "A10",
+        "division": "🟡🔵",
+        "history": "000000000000030000000"
+    },
+    {
+        "name": "Loyola Chicago",
+        "sport": "NCAAM",
+        "conference": "A10",
+        "division": "🔴🟡",
+        "history": "000013005000000000000"
+    },
+    {
+        "name": "George Mason",
+        "sport": "NCAAM",
+        "conference": "A10",
+        "division": "🟢🟡",
+        "history": "000000000000000200105"
+    },
+    {
+        "name": "Richmond",
+        "sport": "NCAAM",
+        "conference": "A10",
+        "division": "🔴🔵",
+        "history": "000020000000000310000"
+    },
+    {
+        "name": "VCU",
+        "sport": "NCAAM",
+        "conference": "A10",
+        "division": "🟡⚫",
+        "history": "210101010121122501020"
+    },
+    {
+        "name": "Memphis",
+        "sport": "NCAAM",
+        "conference": "AAC",
+        "division": "🔵⚪",
+        "history": "010120000000221103644"
+    },
+    {
+        "name": "Wichita State",
+        "sport": "NCAAM",
+        "conference": "AAC",
+        "division": "🟡⚫",
+        "history": "000001001223251000003"
+    },
+    {
+        "name": "Florida Atlantic",
+        "sport": "NCAAM",
+        "conference": "AAC",
+        "division": "🔵🔴",
+        "history": "001500000000000000000"
+    },
+    {
+        "name": "FGCU",
+        "sport": "NCAAM",
+        "conference": "ASUN",
+        "division": "🔵🟢",
+        "history": "000000000110030000000"
+    },
+    {
+        "name": "Western Kentucky",
+        "sport": "NCAAM",
+        "conference": "CUSA",
+        "division": "🔴⚪",
+        "history": "001000000000011002300"
+    },
+    {
+        "name": "Princeton",
+        "sport": "NCAAM",
+        "conference": "IVY",
+        "division": "🟠⚫",
+        "history": "000300000100000100000"
+    },
+    {
+        "name": "Cornell",
+        "sport": "NCAAM",
+        "conference": "IVY",
+        "division": "🔴⚪",
+        "history": "000000000000000031100"
+    },
+    {
+        "name": "Saint Peter's",
+        "sport": "NCAAM",
+        "conference": "MAAC",
+        "division": "🔵⚪",
+        "history": "001040000000000100000"
+    },
+    {
+        "name": "Ohio",
+        "sport": "NCAAM",
+        "conference": "MAC",
+        "division": "🟢⚪",
+        "history": "000002000000003020000"
+    },
+    {
+        "name": "Northern Iowa",
+        "sport": "NCAAM",
+        "conference": "MVC",
+        "division": "🟣🟡",
+        "history": "100000000022000031001"
+    },
+    {
+        "name": "Southern Illinois",
+        "sport": "NCAAM",
+        "conference": "MVC",
+        "division": "🔴⚪",
+        "history": "000000000000000000031"
+    },
+    {
+        "name": "Bradley",
+        "sport": "NCAAM",
+        "conference": "MVC",
+        "division": "🔴⚪",
+        "history": "000000010000000000003"
+    },
+    {
+        "name": "San Diego State",
+        "sport": "NCAAM",
+        "conference": "MW",
+        "division": "🔴⚫",
+        "history": "013611001002321310001"
+    },
+    {
+        "name": "Nevada",
+        "sport": "NCAAM",
+        "conference": "MW",
+        "division": "🔵⚪",
+        "history": "001100013100000000021"
+    },
+    {
+        "name": "UNLV",
+        "sport": "NCAAM",
+        "conference": "MW",
+        "division": "🔴⚫",
+        "history": "000000000000011110230"
+    },
+    {
+        "name": "Gonzaga",
+        "sport": "NCAAM",
+        "conference": "PAC12",
+        "division": "🔵🔴",
+        "history": "223436043634222223113"
+    },
+    {
+        "name": "Oregon State",
+        "sport": "NCAAM",
+        "conference": "PAC12",
+        "division": "🟠⚫",
+        "history": "000004000010000000000"
+    },
+    {
+        "name": "Washington State",
+        "sport": "NCAAM",
+        "conference": "PAC12",
+        "division": "🔴⚪",
+        "history": "002000000000000000320"
+    },
+    {
+        "name": "Oral Roberts",
+        "sport": "NCAAM",
+        "conference": "Summit",
+        "division": "🔵🟡",
+        "history": "000103000000000000111"
+    },
+    {
+        "name": "Saint Mary's",
+        "sport": "NCAAM",
+        "conference": "WCC",
+        "division": "🔵🔴",
+        "history": "121220010200011030100"
+    }
+]
