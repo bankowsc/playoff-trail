@@ -7,3 +7,4 @@ export const GRACE_MS = Number(process.env.GRACE_MS) || 20_000;          // how 
 export const HEARTBEAT_MS = Number(process.env.HEARTBEAT_MS) || 15_000;  // ping interval; dead sockets get dropped
 export const MAX_MSG_BYTES = 2048;                                       // bigger messages are rejected
 export const MSGS_PER_SEC = 12;                                          // per-connection flood guard
+
