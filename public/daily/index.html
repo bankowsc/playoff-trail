@@ -1,0 +1,3507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Playoff Trail</title>
+
+
+    <!-- NEW -->
+    <meta name="description" content="7 guesses. A new franchise daily." />
+    <!-- iMessage and other rich link previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Playoff Trail" />
+    <meta property="og:description" content="7 guesses. A new franchise daily." />
+    <meta property="og:url" content="https://www.playoff-trail.com/" />
+    <meta property="og:image" content="https://www.playoff-trail.com/coverphoto.jpeg" />
+    <meta property="og:image:width" content="696" />
+    <meta property="og:image:height" content="285" />
+    <meta property="og:site_name" content="Playoff Trail" />
+
+    <!-- Fallback website icon -->
+    <link rel="apple-touch-icon" href="https://www.playoff-trail.com/coverphoto.jpeg" />
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Figtree:wght@400;600&display=swap"
+        rel="stylesheet">
+
+
+
+
+
+    <style>
+        :root {
+            --bg: #0e1f1c;
+            --panel: #16302b;
+            --line: #2b4a43;
+            --chalk: #e8efe9;
+            --dim: #7f9a92;
+            --miss: #4d625c;
+
+            --r1: #3b8dff;
+            --r2: #34c26b;
+            --r3: #f0b92e;
+            --r4: #d946ef;
+
+            --r5: #f97316;
+            --r6: #ef4444;
+
+            --good: #2f9e5a;
+            --bad: #3a2a2a;
+            --msg: #ffb4a8;
+            --chipbad: #e6c7c7;
+
+            --head: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+            --body: 'Figtree', system-ui, sans-serif;
+            color-scheme: Patterns;
+        }
+
+        :root[data-theme="Patterns"] {
+            --bg: #0e1f1c;
+            --panel: #16302b;
+            --line: #2b4a43;
+            --chalk: #e8efe9;
+            --dim: #7f9a92;
+            --miss: #4d625c;
+
+            /* Color-blind-friendly palette */
+            --r1: #56B4E9;
+            --r2: #009E73;
+            --r3: #F0E442;
+            --r4: #CC79A7;
+            --r5: #E69F00;
+            --r6: #D55E00;
+
+            --good: #2f9e5a;
+            --bad: #3a2a2a;
+            --msg: #ffb4a8;
+            --chipbad: #e6c7c7;
+
+            --head: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+            --body: 'Figtree', system-ui, sans-serif;
+
+            color-scheme: Patterns;
+        }
+
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--chalk);
+            font-family: var(--body);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 24px 14px 48px
+        }
+
+        main {
+            width: 100%;
+            max-width: 560px
+        }
+
+        h1 {
+            font: 900 clamp(2.6rem, 9vw, 3.8rem)/.9 var(--head);
+            margin: 0;
+            letter-spacing: .01em
+        }
+
+        .sub {
+            color: var(--dim);
+            margin: 8px 0 22px
+        }
+
+        .legend {
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+            display: flex;
+            gap: 6px 16px;
+            font-size: .82rem;
+            color: var(--dim);
+            margin-bottom: 14px
+        }
+
+        /*.legend {
+      align-items: center
+    }*/
+
+
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-grid;
+            place-items: center;
+            font-size: .62rem;
+            line-height: 1
+        }
+
+        .dot.x {
+            font-style: normal;
+            background: none;
+            color: var(--miss);
+            font-weight: 900;
+            font-size: .8rem
+        }
+
+        .dot.t0 {
+            background: none
+        }
+
+        .dot.t1 {
+            background: var(--r1)
+        }
+
+        .dot.t2 {
+            background: var(--r4)
+        }
+
+        .dot.t3 {
+            background: var(--r2)
+        }
+
+        .dot.t4 {
+            background: var(--r3)
+        }
+
+        .dot.t5 {
+            font-style: normal;
+            background: none;
+            font-size: 0.8rem;
+
+        }
+
+        .season .dot.t5 {
+            font-style: normal;
+            font-size: 1.6rem;
+        }
+
+        .dot.t6 {
+            background: #000;
+            box-shadow: 0 0 0 1px var(--line);
+        }
+
+        .trail {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 14px 10px
+        }
+
+        .season {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px
+        }
+
+        .season .dot {
+            width: min(38px, 100%);
+            aspect-ratio: 1;
+            height: auto;
+            font-size: 1.25rem
+        }
+
+        .season .dot.x {
+            font-size: 1.5rem
+        }
+
+        .season .dot.t4 {
+            font-size: 1.6rem
+        }
+
+        .season b {
+            font: 700 .78rem var(--body);
+            color: var(--dim)
+        }
+
+        .season.hidden .dot {
+            border: 2px dashed var(--line);
+            background: none;
+            color: var(--line);
+            font-weight: 700
+        }
+
+        .season.new .dot {
+            animation: pop .45s ease-out
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(.4);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        .status {
+            display: flex;
+            justify-content: space-between;
+            margin: 16px 2px 10px;
+            font-weight: 600
+        }
+
+        .status em {
+            font-style: normal;
+            color: var(--dim);
+            font-weight: 400
+        }
+
+        .hints {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px
+        }
+
+        .hint {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 8px 10px;
+            background: var(--panel);
+            min-height: 58px
+        }
+
+        .hint small {
+            display: block;
+            color: var(--dim);
+            font-size: .75rem
+        }
+
+        .hint strong {
+            font: 700 1.2rem var(--head);
+            letter-spacing: .02em
+        }
+
+        .hint.on {
+            background: var(--good);
+            border-color: var(--good)
+        }
+
+        .hint.on small {
+            color: #d6f2e0
+        }
+
+        .hint.reveal {
+            border-color: var(--r3)
+        }
+
+        form {
+            display: flex;
+            gap: 8px
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            color: var(--chalk);
+            font: inherit
+        }
+
+        input:focus,
+        button:focus-visible {
+            outline: 2px solid var(--r3);
+            outline-offset: 2px
+        }
+
+        button {
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 0;
+            background: var(--r3);
+            color: #1c1503;
+            font: 700 1rem var(--body);
+            cursor: pointer
+        }
+
+        button:disabled,
+        input:disabled {
+            opacity: .4;
+            cursor: not-allowed
+        }
+
+        .msg {
+            min-height: 1.4em;
+            margin: 8px 2px;
+            color: var(--msg);
+            font-size: .9rem
+        }
+
+        .guess {
+            display: grid;
+            grid-template-columns: 1fr repeat(3, auto);
+            gap: 6px;
+            align-items: center;
+            margin-top: 6px
+        }
+
+        .guess .n {
+            font-weight: 600;
+            padding: 8px 10px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel)
+        }
+
+        .chip {
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: .82rem;
+            font-weight: 600;
+            background: var(--bad);
+            color: var(--chipbad);
+            min-width: 58px;
+            text-align: center
+        }
+
+        .chip.ok {
+            background: var(--good);
+            color: #fff
+        }
+
+        .end {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 10px;
+            background: var(--panel);
+            border: 1px solid var(--r3);
+            text-align: center
+        }
+
+        .end h2 {
+            font: 900 1.9rem var(--head);
+            margin: 0 0 4px
+        }
+
+        .end p {
+            margin: 4px 0;
+            color: var(--dim)
+        }
+
+        .hint.on strong {
+            color: #fff
+        }
+
+        @media (max-width:420px) {
+            .guess {
+                grid-template-columns: 1fr 1fr 1fr
+            }
+
+            .guess .n {
+                grid-column: 1/-1
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            .season.new .dot {
+                animation: none
+            }
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px
+        }
+
+        /* .modes {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding-top: 6px
+    } */
+        .modes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 8px 12px;
+            align-items: center;
+            padding-top: 6px
+        }
+
+        .switch {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .8rem;
+            color: var(--dim);
+            cursor: pointer;
+            position: relative;
+            user-select: none
+        }
+
+        .switch input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            flex: none;
+            padding: 0
+        }
+
+        .track {
+            width: 34px;
+            height: 20px;
+            border-radius: 20px;
+            background: var(--line);
+            position: relative;
+            transition: background .2s
+        }
+
+        .track::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--chalk);
+            transition: transform .2s
+        }
+
+        .switch input:checked+.track {
+            background: var(--r3)
+        }
+
+        .switch input:checked+.track::after {
+            transform: translateX(14px)
+        }
+
+        .switch input:focus-visible+.track {
+            outline: 2px solid var(--r3);
+            outline-offset: 2px
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            .track,
+            .track::after {
+                transition: none
+            }
+        }
+
+        .modes button {
+            padding: 6px 14px;
+            background: var(--panel);
+            color: var(--chalk);
+            border: 1px solid var(--line)
+        }
+
+        #inf {
+            font: 700 1.7rem/1 var(--body);
+            padding: 2px 14px
+        }
+
+        /* #confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50
+    } */
+        #confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            /* fallback for older browsers */
+            height: 100lvh;
+            /* full height even when the keyboard or address bar changes the viewport */
+            pointer-events: none;
+            z-index: 50
+        }
+
+        .end button {
+            margin-top: 10px
+        }
+
+        .switch.locked {
+            opacity: .45;
+            cursor: not-allowed
+        }
+
+        .start {
+            margin: 4px 0 18px;
+            padding: 18px;
+            border-radius: 10px;
+            background: var(--panel);
+            border: 1px solid var(--r3);
+            text-align: center
+        }
+
+        .start h2 {
+            font: 900 1.9rem var(--head);
+            margin: 0 0 4px
+        }
+
+        .start p {
+            margin: 4px 0 14px;
+            color: var(--dim)
+        }
+
+        .start .choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .start .choices button {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 14px 10px;
+            background: var(--bg);
+            color: var(--chalk);
+            border: 1px solid var(--line)
+        }
+
+        .start .choices button:hover {
+            border-color: var(--r3)
+        }
+
+        .start .choices small {
+            font: 400 .75rem var(--body);
+            color: var(--dim)
+        }
+
+        @media (max-width:420px) {
+            .start .choices {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .filtPanel {
+            margin: 0 0 16px;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--panel)
+        }
+
+        .filtPanel p {
+            margin: 0 0 8px;
+            color: var(--dim);
+            font-size: .82rem
+        }
+
+        .filtPanel .opts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .filtPanel label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .filtPanel label:has(input:checked) {
+            background: var(--r3);
+            color: #1c1503;
+            border-color: var(--r3)
+        }
+
+        .filtPanel input {
+            flex: none;
+            width: auto;
+            padding: 0
+        }
+
+        .info {
+            align-self: flex-end;
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            border-radius: 50%;
+            background: var(--panel);
+            color: var(--chalk);
+            border: 1px solid var(--line);
+            font: italic 700 .85rem/1 Georgia, serif
+        }
+
+        .info:hover {
+            border-color: var(--r3)
+        }
+
+        .info[aria-expanded="true"] {
+            background: var(--r3);
+            color: #1c1503;
+            border-color: var(--r3)
+        }
+
+        .notes {
+            margin: -4px 0 14px;
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--panel);
+            font-size: .82rem;
+            color: var(--dim)
+        }
+
+        .notes ol {
+            margin: 0;
+            padding-left: 18px;
+            display: grid;
+            gap: 6px
+        }
+
+        .top {
+            flex-wrap: wrap
+        }
+
+        h1 {
+            white-space: nowrap
+        }
+
+        .modes {
+            margin-left: auto
+        }
+
+        /*#filt {
+      padding: 10px 10px;
+      margin: 0 0 14px;
+      background: var(--panel);
+      color: var(--chalk);
+      border: 1px solid var(--line)
+    }
+
+    #filt[hidden] {
+      display: block;
+       keep it in the layout..
+      visibility: hidden;
+      ...but invisible and unclickable 
+    }*/
+
+
+
+        .top {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .modes {
+            width: 100%;
+            justify-content: flex-start;
+            margin-left: 0;
+        }
+
+        /*#daily {
+      margin-left: auto;
+    }
+
+    #daily[hidden]+#inf {
+      margin-left: auto;
+    }*/
+
+        .top {
+            gap: 6px;
+        }
+
+        .top .sub {
+            margin: 0 0 5px
+        }
+
+        .siteTitle {
+            margin: 0 0 10px
+        }
+
+        .modes {
+            padding-top: 0;
+            margin: 0 0 10px
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .actions button {
+            min-height: 36px;
+            padding: 6px 14px;
+            background: var(--panel);
+            color: var(--chalk);
+            border: 1px solid var(--line);
+            margin: 0 0 40px
+        }
+
+        #inf {
+            padding: 2px 14px
+        }
+
+        /* hidden buttons keep their space, so nothing shifts between Daily and Infinity */
+        #daily[hidden],
+        #filt[hidden] {
+            display: inline-block;
+            visibility: hidden
+        }
+
+        .filtPanel {
+            margin: 0 0 1px
+        }
+
+        .legend {
+            position: relative;
+            padding-right: 44px;
+            gap: 4px;
+            margin-bottom: 10px
+        }
+
+        .info {
+            position: absolute;
+            top: 0;
+            right: 0
+        }
+
+        .notes {
+            margin: 0 0 10px
+        }
+
+        .actions {
+            margin: 0 0 -30px;
+            position: relative;
+            z-index: 2
+        }
+
+        .filtPanel {
+            margin: 4px 0 25px
+        }
+
+
+        .dot.u1 {
+            background: var(--r1);
+        }
+
+        .dot.u2 {
+            background: var(--r4);
+        }
+
+        .dot.u3 {
+            background: var(--r2);
+        }
+
+        .dot.u4 {
+            background: var(--r5);
+        }
+
+        .dot.u5 {
+            background: var(--r6);
+        }
+
+        .dot.u6 {
+            background: var(--r3);
+        }
+
+        .dot.u7 {
+            background: none;
+            font-size: 1rem;
+            font-style: normal
+        }
+
+        .season .dot.u7 {
+            font-size: 1.6rem;
+            font-style: normal
+        }
+
+        .dot.u8 {
+            background: #000;
+            box-shadow: 0 0 0 1px var(--line)
+        }
+
+        .seg {
+            display: inline-flex;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+            align-self: flex-start
+        }
+
+        .seg button {
+            padding: 6px 16px;
+            min-height: 36px;
+            border-radius: 0;
+            border: 0;
+            background: var(--panel);
+            color: var(--chalk)
+        }
+
+        .seg button.on {
+            background: var(--r3);
+            color: #1c1503
+        }
+
+        .titleRow {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px
+        }
+
+        .titleRow .siteTitle {
+            margin: 0
+        }
+
+        .seg {
+            align-self: center;
+            flex: none
+        }
+
+
+        .chip.part {
+            background: var(--r3);
+            color: #1c1503
+        }
+
+        .hint.part {
+            background: var(--r3);
+            border-color: var(--r3)
+        }
+
+        .hint.part small {
+            color: #3b2e08
+        }
+
+        .hint.part strong {
+            color: #1c1503
+        }
+
+        @media (max-width: 380px) {
+            h1 {
+                font-size: 2.2rem
+            }
+
+            .seg button {
+                padding: 6px 10px
+            }
+        }
+
+
+        html {
+            scrollbar-gutter: stable;
+        }
+
+
+        /* ================= VISUAL PASS ================= */
+        :root {
+            --fx: rgba(255, 255, 255, .035)
+        }
+
+        :root[data-theme="Patterns"] {
+            --fx: rgba(0, 0, 0, .045)
+        }
+
+        main {
+            position: relative;
+            z-index: 1
+        }
+
+        /* ---- animated field + floating balls ---- */
+        .bgfx {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0
+        }
+
+        .bgfx::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -120px;
+            right: 0;
+            background: repeating-linear-gradient(100deg, transparent 0 60px, var(--fx) 60px 120px);
+            animation: stripes 24s linear infinite
+        }
+
+        .bgfx::after {
+            content: "";
+            position: absolute;
+            inset: -5%;
+            background:
+                radial-gradient(600px 420px at 12% 8%, rgba(59, 141, 255, .16), transparent 65%),
+                radial-gradient(520px 420px at 92% 88%, rgba(240, 185, 46, .14), transparent 65%),
+                radial-gradient(420px 360px at 80% 20%, rgba(217, 70, 239, .08), transparent 65%);
+            animation: blobs 16s ease-in-out infinite alternate
+        }
+
+        .bgfx span {
+            position: absolute;
+            top: 0;
+            z-index: 1;
+            will-change: transform;
+            animation: ballUp linear infinite
+        }
+
+        @keyframes stripes {
+            to {
+                transform: translateX(120px)
+            }
+        }
+
+        @keyframes blobs {
+            to {
+                transform: translate3d(-3%, 2%, 0) scale(1.08)
+            }
+        }
+
+        @keyframes ballUp {
+            from {
+                transform: translate3d(0, 110vh, 0) rotate(0deg)
+            }
+
+            to {
+                transform: translate3d(var(--drift), -20vh, 0) rotate(var(--spin))
+            }
+        }
+
+        /* ---- scoreboard ticker ---- */
+        .ticker {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 0 14px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--panel);
+            color: var(--dim);
+            font: 700 .72rem var(--body);
+            letter-spacing: .14em;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)
+        }
+
+        .tickerTrack {
+            display: inline-block;
+            padding: 7px 0;
+            animation: tick 30s linear infinite
+        }
+
+        .tickerTrack span {
+            padding-right: 1.4em
+        }
+
+        .ticker:hover .tickerTrack {
+            animation-play-state: paused
+        }
+
+        @keyframes tick {
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ---- shimmering title ---- */
+        .siteTitle {
+            background: linear-gradient(90deg, var(--chalk) 0%, var(--r3) 25%, var(--r1) 50%, var(--r3) 75%, var(--chalk) 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: shimmer 7s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to {
+                background-position: 200% 0
+            }
+        }
+
+        /* ---- buttons ---- */
+        button {
+            transition: transform .15s, box-shadow .2s, filter .2s, background .2s, border-color .2s
+        }
+
+        button:disabled {
+            transform: none !important;
+            box-shadow: none !important
+        }
+
+        #btn,
+        .end button {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #ffd45e, var(--r3) 55%, #d9a21a);
+            box-shadow: 0 3px 0 #9c7410, 0 8px 18px rgba(240, 185, 46, .25), inset 0 1px 0 rgba(255, 255, 255, .5)
+        }
+
+        #btn:hover,
+        .end button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.06)
+        }
+
+        #btn:active,
+        .end button:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #9c7410, 0 2px 6px rgba(0, 0, 0, .3)
+        }
+
+        #btn::after,
+        .end button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 40%;
+            left: -60%;
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .55), transparent);
+            transform: skewX(-20deg);
+            transition: left .5s
+        }
+
+        #btn:hover::after,
+        .end button:hover::after {
+            left: 130%
+        }
+
+        .actions button:hover {
+            border-color: var(--r3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, .25), 0 0 0 3px rgba(240, 185, 46, .2)
+        }
+
+        .actions button:active {
+            transform: translateY(1px)
+        }
+
+        #inf {
+            transition: transform .5s cubic-bezier(.3, 1.4, .5, 1), box-shadow .2s, border-color .2s
+        }
+
+        #inf:hover {
+            transform: translateY(-2px) rotate(180deg)
+        }
+
+        /* #daily:not([hidden]) {
+      animation: pulseGlow 2.2s ease-in-out infinite
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(240, 185, 46, .5)
+      }
+
+      50% {
+        box-shadow: 0 0 0 8px rgba(240, 185, 46, 0)
+      }
+    } */
+
+        /* sliding Pro / NCAA pill */
+        .seg {
+            display: inline-grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            background: var(--panel)
+        }
+
+        .seg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 50%;
+            background: linear-gradient(180deg, #ffd45e, var(--r3));
+            transition: transform .35s cubic-bezier(.3, 1.5, .5, 1)
+        }
+
+        .seg:has(button[data-m="ncaa"].on)::before {
+            transform: translateX(100%)
+        }
+
+        .seg button {
+            position: relative;
+            z-index: 1;
+            background: transparent;
+            transition: color .25s
+        }
+
+        .seg button.on {
+            background: transparent;
+            color: #1c1503
+        }
+
+        /* toggles */
+        .track::after {
+            transition: transform .3s cubic-bezier(.3, 1.6, .5, 1)
+        }
+
+        .switch input:checked+.track {
+            box-shadow: 0 0 12px rgba(240, 185, 46, .55)
+        }
+
+        #hard:checked+.track {
+            background: linear-gradient(90deg, #ff6a00, #f0b92e);
+            box-shadow: 0 0 14px rgba(255, 106, 0, .7)
+        }
+
+        /* info "+" turns into an "x" */
+        .info {
+            transition: transform .3s cubic-bezier(.3, 1.5, .5, 1), background .2s, border-color .2s
+        }
+
+        .info[aria-expanded="true"] {
+            transform: rotate(45deg)
+        }
+
+        /* panels slide in */
+        .notes:not([hidden]),
+        .filtPanel:not([hidden]) {
+            animation: drop .3s ease both
+        }
+
+        @keyframes drop {
+            from {
+                opacity: 0;
+                transform: translateY(-8px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* input + error shake */
+        #input {
+            transition: border-color .2s, box-shadow .2s
+        }
+
+        #input:focus {
+            border-color: var(--r3);
+            box-shadow: 0 0 0 4px rgba(240, 185, 46, .18)
+        }
+
+        .shake {
+            animation: shake .45s
+        }
+
+        @keyframes shake {
+
+            10%,
+            90% {
+                transform: translateX(-2px)
+            }
+
+            20%,
+            80% {
+                transform: translateX(4px)
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translateX(-7px)
+            }
+
+            40%,
+            60% {
+                transform: translateX(7px)
+            }
+        }
+
+        .msg:not(:empty) {
+            animation: drop .3s ease both
+        }
+
+        /* trail */
+        .trail {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .05)
+        }
+
+        .season.hidden .dot {
+            animation: breathe 2.4s ease-in-out infinite
+        }
+
+        .season.hidden:nth-child(3n) .dot {
+            animation-delay: .4s
+        }
+
+        .season.hidden:nth-child(3n+1) .dot {
+            animation-delay: .8s
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                opacity: .5
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        .season:not(.hidden) .dot {
+            transition: transform .2s cubic-bezier(.3, 1.6, .5, 1)
+        }
+
+        .season:not(.hidden) .dot:hover {
+            transform: scale(1.18)
+        }
+
+        .dot.t5,
+        .dot.u7 {
+            animation: gleam 2.6s ease-in-out infinite
+        }
+
+        @keyframes gleam {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 0 rgba(240, 185, 46, 0))
+            }
+
+            50% {
+                filter: drop-shadow(0 0 6px rgba(240, 185, 46, .95))
+            }
+        }
+
+        /* progress bar under the status line */
+        .status {
+            position: relative
+        }
+
+        .status::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            height: 3px;
+            border-radius: 3px;
+            width: calc(var(--p, 0) * 100%);
+            background: linear-gradient(90deg, var(--r1), var(--r3));
+            transition: width .6s ease
+        }
+
+        /* hints: Patterns sweep when lit */
+        .hint {
+            position: relative;
+            overflow: hidden
+        }
+
+        .hint.on::after,
+        .hint.part::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .45) 50%, transparent 70%);
+            transform: translateX(-120%);
+            animation: sweep .9s .15s ease-out forwards
+        }
+
+        @keyframes sweep {
+            to {
+                transform: translateX(120%)
+            }
+        }
+
+        /* newest guess row: slide in, then chips flip one by one */
+        .guess:last-child {
+            animation: rowIn .4s cubic-bezier(.2, 1.2, .4, 1) both
+        }
+
+        @keyframes rowIn {
+            from {
+                opacity: 0;
+                transform: translateX(-24px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .guess:last-child .chip {
+            animation: flip .55s ease both
+        }
+
+        .guess:last-child .chip:nth-child(2) {
+            animation-delay: .12s
+        }
+
+        .guess:last-child .chip:nth-child(3) {
+            animation-delay: .26s
+        }
+
+        .guess:last-child .chip:nth-child(4) {
+            animation-delay: .40s
+        }
+
+        @keyframes flip {
+            0% {
+                transform: perspective(400px) rotateX(90deg);
+                opacity: 0
+            }
+
+            60% {
+                transform: perspective(400px) rotateX(-14deg);
+                opacity: 1
+            }
+
+            100% {
+                transform: perspective(400px) rotateX(0)
+            }
+        }
+
+        /* new game / mode switch fade */
+        .swapIn {
+            animation: swap .4s ease both
+        }
+
+        @keyframes swap {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        /* legend stagger */
+        .legend span {
+            animation: legIn .4s ease both;
+            animation-delay: calc(var(--i, 0) * 45ms)
+        }
+
+        @keyframes legIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .legend .dot {
+            transition: transform .2s cubic-bezier(.3, 1.6, .5, 1)
+        }
+
+        .legend span:hover .dot {
+            transform: scale(1.35)
+        }
+
+        /* daily start card */
+        .start {
+            animation: endIn .5s cubic-bezier(.2, 1.3, .4, 1) both
+        }
+
+        .start .choices button {
+            transition: transform .2s cubic-bezier(.3, 1.6, .5, 1), border-color .2s
+        }
+
+        .start .choices button:hover {
+            transform: translateY(-4px) rotate(-.8deg)
+        }
+
+        /* end card: animated rainbow border + shimmering headline + bouncing trophy */
+        @property --ang {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: 0deg
+        }
+
+        @keyframes angle {
+            to {
+                --ang: 360deg
+            }
+        }
+
+        @keyframes endIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(.94)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .end {
+            border: 2px solid transparent;
+            background: linear-gradient(var(--panel), var(--panel)) padding-box,
+                conic-gradient(from var(--ang), var(--r3), var(--r1), var(--r4), var(--r2), var(--r3)) border-box;
+            animation: endIn .6s cubic-bezier(.2, 1.3, .4, 1) both, angle 5s linear infinite
+        }
+
+        .end h2 {
+            background: linear-gradient(90deg, var(--chalk), var(--r3), var(--chalk));
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: shimmer 3s linear infinite
+        }
+
+        .bigTrophy {
+            font-size: 3.2rem;
+            line-height: 1;
+            display: inline-block;
+            animation: trophyIn 1.2s cubic-bezier(.3, 1.6, .5, 1) both, gleam 2.4s 1.2s ease-in-out infinite
+        }
+
+        @keyframes trophyIn {
+            0% {
+                transform: translateY(-40px) scale(.2) rotate(-25deg);
+                opacity: 0
+            }
+
+            60% {
+                transform: translateY(6px) scale(1.15) rotate(8deg);
+                opacity: 1
+            }
+
+            100% {
+                transform: none
+            }
+        }
+
+        /* fewer balls on phones, and respect reduced motion */
+        @media (max-width: 600px) {
+            .bgfx span:nth-child(n+9) {
+                display: none
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important
+            }
+
+            .bgfx span {
+                display: none
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Patterns mode only: add non-color identifiers to dots */
+        :root[data-theme="Patterns"] .dot {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Keep the existing solid background colors */
+        :root[data-theme="Patterns"] .dot.t1,
+        :root[data-theme="Patterns"] .dot.t2,
+        :root[data-theme="Patterns"] .dot.t3,
+        :root[data-theme="Patterns"] .dot.t4,
+        :root[data-theme="Patterns"] .dot.t6,
+        :root[data-theme="Patterns"] .dot.u1,
+        :root[data-theme="Patterns"] .dot.u2,
+        :root[data-theme="Patterns"] .dot.u3,
+        :root[data-theme="Patterns"] .dot.u4,
+        :root[data-theme="Patterns"] .dot.u5,
+        :root[data-theme="Patterns"] .dot.u6,
+        :root[data-theme="Patterns"] .dot.u8 {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Shared pattern overlay */
+        :root[data-theme="Patterns"] .dot.t1::after,
+        :root[data-theme="Patterns"] .dot.t2::after,
+        :root[data-theme="Patterns"] .dot.t3::after,
+        :root[data-theme="Patterns"] .dot.t4::after,
+        :root[data-theme="Patterns"] .dot.u1::after,
+        :root[data-theme="Patterns"] .dot.u2::after,
+        :root[data-theme="Patterns"] .dot.u3::after,
+        :root[data-theme="Patterns"] .dot.u4::after,
+        :root[data-theme="Patterns"] .dot.u5::after,
+        :root[data-theme="Patterns"] .dot.u6::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        /* ===== T SET ===== */
+
+        /* t1: diagonal stripes */
+        :root[data-theme="Patterns"] .dot.t1::after {
+            background: repeating-linear-gradient(45deg,
+                    transparent 0 3px,
+                    rgb(0 0 0 / 38%) 3px 4px);
+        }
+
+        /* t2: dots */
+        :root[data-theme="Patterns"] .dot.t2::after {
+            background-image: radial-gradient(rgb(0 0 0 / 48%) 1px,
+                    transparent 1.5px);
+            background-size: 5px 5px;
+        }
+
+        /* t3: horizontal stripes */
+        :root[data-theme="Patterns"] .dot.t3::after {
+            background: repeating-linear-gradient(0deg,
+                    transparent 0 3px,
+                    rgb(0 0 0 / 38%) 3px 4px);
+        }
+
+        /* t4: crosshatch */
+        :root[data-theme="Patterns"] .dot.t4::after {
+            background:
+                repeating-linear-gradient(45deg,
+                    transparent 0 4px,
+                    rgb(0 0 0 / 35%) 4px 5px),
+                repeating-linear-gradient(-45deg,
+                    transparent 0 4px,
+                    rgb(0 0 0 / 35%) 4px 5px);
+        }
+
+        /* t6: retain black fill and outline; no overlay */
+        :root[data-theme="Patterns"] .dot.t6 {
+            background: #000;
+            box-shadow: 0 0 0 1px var(--line);
+        }
+
+        /* ===== U SET ===== */
+
+        /* u1: diagonal stripes */
+        :root[data-theme="Patterns"] .dot.u1::after {
+            background: repeating-linear-gradient(45deg,
+                    transparent 0 3px,
+                    rgb(0 0 0 / 38%) 3px 4px);
+        }
+
+        /* u2: dots */
+        :root[data-theme="Patterns"] .dot.u2::after {
+            background-image: radial-gradient(rgb(0 0 0 / 48%) 1px,
+                    transparent 1.5px);
+            background-size: 5px 5px;
+        }
+
+        /* u3: horizontal stripes */
+        :root[data-theme="Patterns"] .dot.u3::after {
+            background: repeating-linear-gradient(0deg,
+                    transparent 0 3px,
+                    rgb(0 0 0 / 38%) 3px 4px);
+        }
+
+        /* u4: crosshatch */
+        :root[data-theme="Patterns"] .dot.u4::after {
+            background:
+                repeating-linear-gradient(45deg,
+                    transparent 0 4px,
+                    rgb(0 0 0 / 35%) 4px 5px),
+                repeating-linear-gradient(-45deg,
+                    transparent 0 4px,
+                    rgb(0 0 0 / 35%) 4px 5px);
+        }
+
+        /* u5: vertical stripes */
+        :root[data-theme="Patterns"] .dot.u5::after {
+            background: repeating-linear-gradient(90deg,
+                    transparent 0 3px,
+                    rgb(0 0 0 / 38%) 3px 4px);
+        }
+
+        /* u6: solid fill, distinguished by a white center dot */
+        :root[data-theme="Default"] .dot.u6::after {
+            background: radial-gradient(circle,
+                    rgb(0 0 0 / 55%) 0 1.5px,
+                    transparent 2px);
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* u8: retain black fill and outline; no overlay */
+        :root[data-theme="Default"] .dot.u8 {
+            background: #000;
+            box-shadow: 0 0 0 1px var(--line);
+        }
+
+        body.party .siteTitle,
+        body.party .end h2,
+        body.party .bgfx::before,
+        body.party .bgfx::after,
+        body.party .bgfx span {
+            animation-play-state: paused
+        }
+
+        body.party .end {
+            animation-play-state: running, paused
+        }
+
+        /* keep the pop-in, pause the spinning border */
+        body.party .bigTrophy {
+            animation-play-state: running, paused
+        }
+
+        /* keep the bounce-in, pause the glow */
+
+        #daily:not([hidden]):not(.done) {
+            animation: pulseGlow 2.2s ease-in-out infinite
+        }
+
+        #daily.done {
+            opacity: .75
+        }
+
+        #daily.done::after {
+            content: " ✓"
+        }
+
+        .endHead {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px
+        }
+
+        .endHead h2 {
+            margin: 0
+        }
+
+        .bigTrophy {
+            font-size: 2.4rem
+        }
+
+        .end.lost h2 {
+            background-image: linear-gradient(90deg, var(--chalk), #ff5a4d, var(--chalk))
+        }
+
+        .end.lost {
+            background: linear-gradient(var(--panel), var(--panel)) padding-box,
+                conic-gradient(from var(--ang), #ff5a4d, #8a1c1c, #ff9a8a, #ff5a4d) border-box;
+        }
+
+        .cdot {
+            display: inline-block;
+            font-style: normal;
+            font-size: 1rem;
+            line-height: 1;
+            margin: 0 2px;
+            filter:
+                drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff);
+        }
+
+        .endBtns {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px
+        }
+
+        .endBtns button {
+            margin-top: 0
+        }
+
+        .endBtns .alt {
+            background: var(--panel);
+            color: var(--chalk);
+            border: 1px solid var(--line);
+            box-shadow: none
+        }
+
+        .endBtns .alt:hover {
+            border-color: var(--r3);
+            box-shadow: 0 0 0 3px rgba(240, 185, 46, .2)
+        }
+
+
+        .titleRow .siteTitle {
+            padding-bottom: .14em;
+            margin-bottom: -.14em;
+            margin: 0 0 2px
+        }
+
+        .actions .info {
+            position: static;
+            align-self: center;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 50%;
+            margin: 0 0 40px auto;
+            /* auto left margin pins it to the right end of the row */
+            font-style: normal;
+            font-size: 1.2rem;
+        }
+
+        .actions .info[aria-expanded="true"],
+        .actions .info[aria-expanded="true"]:hover {
+            transform: rotate(45deg)
+        }
+
+        /* keeps the + turning into an x */
+        .legend {
+            padding-right: 0
+        }
+
+        .seg {
+            grid-template-columns: repeat(3, 1fr)
+        }
+
+        .seg::before {
+            width: calc(100% / 3)
+        }
+
+        .seg:has(button[data-m="ncaa"].on)::before {
+            transform: translateX(100%)
+        }
+
+        .seg:has(button[data-m="ucl"].on)::before {
+            transform: translateX(200%)
+        }
+
+        .titleRow {
+            flex-wrap: wrap
+        }
+
+
+        .modes #statsBtn {
+            margin-left: auto
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            display: grid;
+            place-items: center;
+            padding: 16px;
+            background: rgba(0, 0, 0, .55);
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+            animation: fade .2s ease both
+        }
+
+        .modal[hidden] {
+            display: none
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        .modalCard {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            max-height: 90vh;
+            overflow: auto;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+            animation: endIn .35s cubic-bezier(.2, 1.3, .4, 1) both
+        }
+
+        .modalCard h2 {
+            font: 900 1.9rem var(--head);
+            margin: 0 0 12px
+        }
+
+        .modalClose {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--dim);
+            border: 1px solid var(--line)
+        }
+
+        /* stats */
+        .statRow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            text-align: center;
+            margin-bottom: 16px
+        }
+
+        .statRow b {
+            display: block;
+            font: 900 1.9rem/1 var(--head)
+        }
+
+        .statRow small {
+            color: var(--dim);
+            font-size: .7rem
+        }
+
+        .bar {
+            display: grid;
+            grid-template-columns: 18px 1fr;
+            gap: 8px;
+            align-items: center;
+            margin: 5px 0
+        }
+
+        .bar i {
+            font-style: normal;
+            color: var(--dim);
+            font-weight: 600;
+            text-align: right
+        }
+
+        .bar span {
+            display: block;
+            min-width: 24px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: var(--good);
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            text-align: right;
+            width: calc(var(--w) * 1%);
+            animation: grow .6s ease both
+        }
+
+        .bar span.lossbar {
+            background: var(--bad);
+            color: var(--chipbad)
+        }
+
+        @keyframes grow {
+            from {
+                width: 0
+            }
+        }
+
+        /* calendar */
+        .calHead {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 700
+        }
+
+        .calHead button {
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            background: var(--bg);
+            color: var(--chalk);
+            border: 1px solid var(--line)
+        }
+
+        .calGrid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px
+        }
+
+        .dow {
+            font-size: .7rem;
+            color: var(--dim);
+            text-align: center
+        }
+
+        .day {
+            aspect-ratio: 1;
+            display: grid;
+            place-items: center;
+            padding: 0;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: var(--bg);
+            color: var(--chalk);
+            font-weight: 700
+        }
+
+        .day:disabled {
+            opacity: .25;
+            cursor: not-allowed
+        }
+
+        .day.today {
+            border-color: var(--r3)
+        }
+
+        .day.sel {
+            outline: 2px solid var(--r3);
+            outline-offset: 1px
+        }
+
+        .day.win {
+            background: var(--good);
+            color: #fff
+        }
+
+        .day.loss {
+            background: var(--bad);
+            color: var(--chipbad)
+        }
+
+        .day.part {
+            background: var(--r3);
+            color: #1c1503
+        }
+
+        .calKey {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            margin-top: 12px;
+            font-size: .75rem;
+            color: var(--dim)
+        }
+
+        .calKey i {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            margin-right: 5px;
+            vertical-align: middle
+        }
+
+        .calKey .w {
+            background: var(--good)
+        }
+
+        .calKey .l {
+            background: var(--chipbad)
+        }
+
+        .calKey .p {
+            background: var(--r3)
+        }
+
+        #statsBtn,
+        #calBtn {
+            transition: transform .2s cubic-bezier(.3, 1.6, .5, 1), box-shadow .2s, border-color .2s;
+        }
+
+        @media (hover: hover) {
+
+            #statsBtn:hover,
+            #calBtn:hover,
+            #statsBtn:focus-visible,
+            #calBtn:focus-visible {
+                border-color: var(--r3);
+                box-shadow: 0 6px 14px rgba(0, 0, 0, .25), 0 0 0 3px rgba(240, 185, 46, .2);
+                transform: translateY(-3px) scale(1.1);
+            }
+
+            #statsBtn:hover {
+                animation: hop .5s ease
+            }
+
+            #calBtn:hover {
+                animation: wiggle .55s ease
+            }
+        }
+
+        #statsBtn:active,
+        #calBtn:active {
+            transform: translateY(0) scale(.94)
+        }
+
+        @keyframes hop {
+            0% {
+                transform: none
+            }
+
+            40% {
+                transform: translateY(-10px) scale(1.15)
+            }
+
+            70% {
+                transform: translateY(0) scale(1.06)
+            }
+
+            100% {
+                transform: translateY(-3px) scale(1.1)
+            }
+        }
+
+        @keyframes wiggle {
+            0% {
+                transform: none
+            }
+
+            20% {
+                transform: translateY(-3px) scale(1.1) rotate(-14deg)
+            }
+
+            40% {
+                transform: translateY(-3px) scale(1.1) rotate(12deg)
+            }
+
+            60% {
+                transform: translateY(-3px) scale(1.1) rotate(-8deg)
+            }
+
+            80% {
+                transform: translateY(-3px) scale(1.1) rotate(4deg)
+            }
+
+            100% {
+                transform: translateY(-3px) scale(1.1) rotate(0)
+            }
+        }
+
+
+        .acWrap {
+            position: relative;
+            flex: 1;
+            min-width: 0
+        }
+
+        .acWrap input {
+            width: 100%
+        }
+
+        .acList {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 6px);
+            z-index: 20;
+            margin: 0;
+            padding: 4px;
+            list-style: none;
+            max-height: 240px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .4);
+            animation: drop .15s ease both
+        }
+
+        .acList[hidden] {
+            display: none
+        }
+
+        .acList.up {
+            top: auto;
+            bottom: calc(100% + 6px)
+        }
+
+        /* opens upward when the keyboard leaves no room below */
+        .acList li {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            padding: 9px 12px;
+            min-height: 44px;
+            border-radius: 8px;
+            cursor: pointer
+        }
+
+        .acList li b {
+            font-weight: 600
+        }
+
+        .acList li small {
+            color: var(--dim);
+            font-size: .75rem
+        }
+
+        .acList li:hover,
+        .acList li.on {
+            background: var(--bg)
+        }
+
+        .acList {
+            transform-origin: top;
+            animation: acOpen .18s cubic-bezier(.2, 1.2, .4, 1) both
+        }
+
+        .acList.up {
+            transform-origin: bottom
+        }
+
+        .acList.closing {
+            animation: acCollapse .18s ease-in forwards;
+            pointer-events: none
+        }
+
+        @keyframes acOpen {
+            from {
+                opacity: 0;
+                transform: scaleY(.88)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        @keyframes acCollapse {
+            to {
+                opacity: 0;
+                transform: scaleY(.82)
+            }
+        }
+
+        .acWrap input {
+            padding-right: 34px
+        }
+
+        .acWrap::after {
+            content: "▾";
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dim);
+            pointer-events: none;
+            transition: transform .25s cubic-bezier(.3, 1.5, .5, 1), color .2s
+        }
+
+        .acWrap:has(.acList:not([hidden]):not(.closing))::after {
+            transform: translateY(-50%) rotate(180deg);
+            color: var(--r3)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bgfx" id="bgfx" aria-hidden="true"></div>
+    <main>
+        <div class="ticker" aria-hidden="true">
+            <div class="tickerTrack">
+                <span>🏈 NFL ★ ⚾ MLB ★ 🏀 NBA ★ 🏒 NHL ★ 🎓 NCAA ★ 21 SEASONS ★ 7 GUESSES ★ NEW TEAM EVERY DAY ★ </span>
+                <span>🏈 NFL ★ ⚾ MLB ★ 🏀 NBA ★ 🏒 NHL ★ 🎓 NCAA ★ 21 SEASONS ★ 7 GUESSES ★ NEW TEAM EVERY DAY ★ </span>
+            </div>
+        </div>
+        <div class="top">
+            <div class="titleRow">
+                <h1 class="siteTitle">Playoff Trail</h1>
+                <div class="seg" id="seg">
+                    <button type="button" data-m="pro">Pro</button>
+                    <button type="button" data-m="ncaa">NCAA</button>
+                    <button type="button" data-m="ucl">UCL</button>
+                </div>
+            </div>
+            <p class="sub">Name the franchise from its postseason history. New team every day.</p>
+
+            <div class="modes">
+                <label class="switch" title="Hard mode: 3 random seasons first, random reveal order">
+                    <input type="checkbox" id="hard"><span class="track"></span><span>Hard</span>
+                </label>
+                <label class="switch" title="Patterns / Default mode">
+                    <input type="checkbox" id="theme"><span class="track"></span><span>Patterns</span>
+                </label>
+
+                <button id="statsBtn" type="button" aria-label="Stats" title="Stats">📊</button>
+                <button id="calBtn" type="button" aria-label="Calendar" title="Calendar">📅</button>
+            </div>
+            <div class="actions">
+                <button id="inf" type="button" aria-label="New random game" title="New random game">∞</button>
+                <button class="info" id="infoBtn" type="button" aria-expanded="false" aria-controls="notes"
+                    aria-label="Notes" title="Notes">+</button>
+                <button id="filt" type="button" title="Choose leagues for practice games" hidden>Leagues</button>
+                <button id="daily" type="button" hidden>Daily</button>
+
+            </div>
+        </div>
+
+        <section class="filtPanel" id="filtPanel" hidden></section>
+
+
+        <div class="legend" id="legend" aria-label="Legend">
+            <span><i class="dot x">✕</i>Missed Playoffs</span>
+            <span><i class="dot t6"></i>Franchise Didn't Exist</span>
+            <span><i class="dot t1"></i>First Round / Wild Card</span>
+            <span><i class="dot t2"></i>Divisional / Conference Semis</span>
+            <span><i class="dot t3"></i>League/Conference Championship Game</span>
+            <span><i class="dot t4"></i>League/Conference Champion (Lost Final)</span>
+            <span><i class="dot t5">🏆</i>Won the Title</span>
+
+        </div>
+        <div class="notes" id="notes" hidden>
+            <ol>
+                <li>Year corresponds with playoff EX: 2025-26 season under 2026.</li>
+                <li>NBA Play-In not counted as a playoff appearance unless won / reached field of 16.</li>
+                <li>Rebranded or Relocated franchises will share a history under the current name.</li>
+                <li>Defunct franchises will exist under their latest name and are also possible.</li>
+            </ol>
+        </div>
+
+        <section class="start" id="start" hidden></section>
+        <div id="play">
+            <section class="trail" id="trail" aria-label="Playoff history"></section>
+
+            <div class="status"><span id="count"></span><em id="shown"></em></div>
+            <section class="hints" id="hints"></section>
+
+            <form id="form" autocomplete="off">
+                <!-- <input id="input" list="teams" placeholder="Pick a team" aria-label="Team guess">
+        <datalist id="teams"></datalist> -->
+
+                <div class="acWrap">
+                    <input id="input" placeholder="Pick a team" aria-label="Team guess" autocomplete="off"
+                        autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" role="combobox"
+                        aria-expanded="false" aria-controls="acList">
+                    <ul class="acList" id="acList" role="listbox" hidden></ul>
+                </div>
+
+                <button id="btn" type="submit">Guess</button>
+            </form>
+            <div class="msg" id="msg" role="status"></div>
+            <section id="guesses"></section>
+            <section id="end"></section>
+        </div>
+    </main>
+
+    <div class="modal" id="modal" hidden>
+        <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button class="modalClose" id="modalClose" type="button" aria-label="Close">✕</button>
+            <h2 id="modalTitle"></h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+
+        const TEAMS = [
+            // ==================== NFL ====================
+            { name: "Arizona Cardinals", sport: "NFL", conference: "NFC", division: "West", history: "00001000003100002400" },
+            { name: "Atlanta Falcons", sport: "NFL", conference: "NFC", division: "South", history: "00000000240003120100" },
+            { name: "Baltimore Ravens", sport: "NFL", conference: "AFC", division: "North", history: "02310221000205322302" }, //2018 1
+            { name: "Buffalo Bills", sport: "NFL", conference: "AFC", division: "East", history: "23222310100000000000" },
+            { name: "Carolina Panthers", sport: "NFL", conference: "NFC", division: "South", history: "10000000104220000200" },
+            { name: "Chicago Bears", sport: "NFL", conference: "NFC", division: "North", history: "20000101000000030004" },
+            { name: "Cincinnati Bengals", sport: "NFL", conference: "AFC", division: "North", history: "00034000001111101000" },
+            { name: "Cleveland Browns", sport: "NFL", conference: "AFC", division: "North", history: "00100200000000000000" },
+            { name: "Dallas Cowboys", sport: "NFL", conference: "NFC", division: "East", history: "00121002020200002021" },
+            { name: "Denver Broncos", sport: "NFL", conference: "AFC", division: "West", history: "31000000005242200000" },
+            { name: "Detroit Lions", sport: "NFL", conference: "NFC", division: "North", history: "02300000010100100000" },
+            { name: "Green Bay Packers", sport: "NFL", conference: "NFC", division: "North", history: "11202330032312251030" },
+            { name: "Houston Texans", sport: "NFL", conference: "AFC", division: "South", history: "22200021021002200000" },
+            { name: "Indianapolis Colts", sport: "NFL", conference: "AFC", division: "South", history: "00000102000321014125" },
+            { name: "Jacksonville Jaguars", sport: "NFL", conference: "AFC", division: "South", history: "10020000300000000020" },
+            { name: "Kansas City Chiefs", sport: "NFL", conference: "AFC", division: "West", history: "04553453122010010001" },
+            { name: "Las Vegas Raiders", sport: "NFL", conference: "AFC", division: "West", history: "00001000010000000000" },
+            { name: "Los Angeles Chargers", sport: "NFL", conference: "AFC", division: "West", history: "11010002000020002232" },
+            { name: "Los Angeles Rams", sport: "NFL", conference: "NFC", division: "West", history: "32105204100000000000" },
+            { name: "Miami Dolphins", sport: "NFL", conference: "AFC", division: "East", history: "00110000010000000100" },
+            { name: "Minnesota Vikings", sport: "NFL", conference: "NFC", division: "North", history: "01010020301001003100" },
+            { name: "New England Patriots", sport: "NFL", conference: "AFC", division: "East", history: "40001015452533421043" },
+            { name: "New Orleans Saints", sport: "NFL", conference: "NFC", division: "South", history: "00000213200020215003" },
+            { name: "New York Giants", sport: "NFL", conference: "NFC", division: "East", history: "00020000010000000051" },
+            { name: "New York Jets", sport: "NFL", conference: "AFC", division: "East", history: "00000000000000033001" },
+            { name: "Philadelphia Eagles", sport: "NFL", conference: "NFC", division: "East", history: "15141012500010011302" },
+            { name: "Pittsburgh Steelers", sport: "NFL", conference: "AFC", division: "North", history: "11101100232100140510" },
+            { name: "San Francisco 49ers", sport: "NFL", conference: "NFC", division: "West", history: "20433040000034300000" },
+            { name: "Seattle Seahawks", sport: "NFL", conference: "NFC", division: "West", history: "50010121022452020022" },
+            { name: "Tampa Bay Buccaneers", sport: "NFL", conference: "NFC", division: "South", history: "01212500000000000010" },
+            { name: "Tennessee Titans", sport: "NFL", conference: "AFC", division: "South", history: "00002130200000000210" },
+            { name: "Washington Commanders", sport: "NFL", conference: "NFC", division: "East", history: "03000100001001000010" },
+
+            // ==================== MLB ====================
+            { name: "Arizona Diamondbacks", sport: "MLB", conference: "NL", division: "West", history: "000400000200000200030" },
+            { name: "Atlanta Braves", sport: "MLB", conference: "NL", division: "East", history: "201225322000021020000" },
+            { name: "Baltimore Orioles", sport: "MLB", conference: "AL", division: "East", history: "001200000010302000000" },
+            { name: "Boston Red Sox", sport: "MLB", conference: "AL", division: "East", history: "110003005220050002350" },
+            { name: "Chicago Cubs", sport: "MLB", conference: "NL", division: "Central", history: "120000101353000000220" },
+            { name: "Chicago White Sox", sport: "MLB", conference: "AL", division: "Central", history: "200002100000000000200" },
+            { name: "Cincinnati Reds", sport: "MLB", conference: "NL", division: "Central", history: "010000100000012020000" },
+            { name: "Cleveland Guardians", sport: "MLB", conference: "AL", division: "Central", history: "313020102240010000030" },
+            { name: "Colorado Rockies", sport: "MLB", conference: "NL", division: "West", history: "000000002100000002040" },
+            { name: "Detroit Tigers", sport: "MLB", conference: "AL", division: "Central", history: "022000000000234300004" },
+            { name: "Houston Astros", sport: "MLB", conference: "AL", division: "West", history: "101354343502000000000" },
+            { name: "Kansas City Royals", sport: "MLB", conference: "AL", division: "Central", history: "002000000005400000000" },
+            { name: "Los Angeles Angels", sport: "MLB", conference: "AL", division: "West", history: "000000000000200003220" },
+            { name: "Los Angeles Dodgers", sport: "MLB", conference: "NL", division: "West", history: "355223524432230003302" },
+            { name: "Miami Marlins", sport: "MLB", conference: "NL", division: "East", history: "000100200000000000000" },
+            { name: "Milwaukee Brewers", sport: "MLB", conference: "NL", division: "Central", history: "331102113000000300200" },
+            { name: "Minnesota Twins", sport: "MLB", conference: "AL", division: "Central", history: "000200120100000022002" },
+            { name: "New York Mets", sport: "MLB", conference: "NL", division: "East", history: "003010000014000000003" },
+            { name: "New York Yankees", sport: "MLB", conference: "AL", division: "East", history: "224031232301003235022" },
+            { name: "Las Vegas Athletics", sport: "MLB", conference: "AL", division: "West", history: "000000211000122000003" },
+            { name: "Philadelphia Phillies", sport: "MLB", conference: "NL", division: "East", history: "122340000000000234520" },
+            { name: "Pittsburgh Pirates", sport: "MLB", conference: "NL", division: "Central", history: "000000000001120000000" },
+            { name: "San Diego Padres", sport: "MLB", conference: "NL", division: "West", history: "212030200000000000002" },
+            { name: "San Francisco Giants", sport: "MLB", conference: "NL", division: "West", history: "000002000020505050000" },
+            { name: "Seattle Mariners", sport: "MLB", conference: "AL", division: "West", history: "030020000000000000000" },
+            { name: "St. Louis Cardinals", sport: "MLB", conference: "NL", division: "Central", history: "000011130002343502005" },
+            { name: "Tampa Bay Rays", sport: "MLB", conference: "AL", division: "East", history: "300112420000020220400" },
+            { name: "Texas Rangers", sport: "MLB", conference: "AL", division: "West", history: "000500000022001440000" },
+            { name: "Toronto Blue Jays", sport: "MLB", conference: "AL", division: "East", history: "040110100033000000000" },
+            { name: "Washington Nationals", sport: "MLB", conference: "NL", division: "East", history: "000000050220202000000" },
+
+            // ==================== NBA ====================
+            { name: "Atlanta Hawks", sport: "NBA", conference: "East", division: "Southeast", history: "100113000123111222100" },
+            { name: "Boston Celtics", sport: "NBA", conference: "East", division: "Atlantic", history: "125341323311013242500" },
+            { name: "Brooklyn Nets", sport: "NBA", conference: "East", division: "Atlantic", history: "000112110001210000022" },
+            { name: "Charlotte Hornets", sport: "NBA", conference: "East", division: "Southeast", history: "000000000010100010000" },
+            { name: "Chicago Bulls", sport: "NBA", conference: "East", division: "Central", history: "000010000102121311021" },
+            { name: "Cleveland Cavaliers", sport: "NBA", conference: "East", division: "Central", history: "322100004454000023242" },
+            { name: "Dallas Mavericks", sport: "NBA", conference: "West", division: "Southwest", history: "004031100011101512114" },
+            { name: "Denver Nuggets", sport: "NBA", conference: "West", division: "Northwest", history: "122512320000011113111" },
+            { name: "Detroit Pistons", sport: "NBA", conference: "East", division: "Central", history: "210000010010000001333" },
+            { name: "Golden State Warriors", sport: "NBA", conference: "West", division: "Pacific", history: "020250045545120000020" },
+            { name: "Houston Rockets", sport: "NBA", conference: "West", division: "Southwest", history: "110000223213110002110" },
+            { name: "Indiana Pacers", sport: "NBA", conference: "East", division: "Central", history: "043000111110332100001" },
+            { name: "Los Angeles Clippers", sport: "NBA", conference: "West", division: "Pacific", history: "011103210112212000002" },
+            { name: "Los Angeles Lakers", sport: "NBA", conference: "West", division: "Pacific", history: "211301500000012255411" },
+            { name: "Memphis Grizzlies", sport: "NBA", conference: "West", division: "Southwest", history: "010121000112131200001" },
+            { name: "Miami Heat", sport: "NBA", conference: "East", division: "Southeast", history: "011431401020455411015" },
+            { name: "Milwaukee Bucks", sport: "NBA", conference: "East", division: "Central", history: "011125231101010010001" },
+            { name: "Minnesota Timberwolves", sport: "NBA", conference: "West", division: "Northwest", history: "233110001000000000000" },
+            { name: "New Orleans Pelicans", sport: "NBA", conference: "West", division: "Southwest", history: "001010002001000101200" },
+            { name: "New York Knicks", sport: "NBA", conference: "East", division: "Atlantic", history: "532201000000021100000" },
+            { name: "Oklahoma City Thunder", sport: "NBA", conference: "West", division: "Northwest", history: "352000111130324310000" },
+            { name: "Orlando Magic", sport: "NBA", conference: "East", division: "Southeast", history: "111000110000001134210" },
+            { name: "Philadelphia 76ers", sport: "NBA", conference: "East", division: "Atlantic", history: "201222122000002101100" },
+            { name: "Phoenix Suns", sport: "NBA", conference: "West", division: "Pacific", history: "101224000000000030123" },
+            { name: "Portland Trail Blazers", sport: "NBA", conference: "West", division: "Northwest", history: "100001131121200111000" },
+            { name: "Sacramento Kings", sport: "NBA", conference: "West", division: "Pacific", history: "000100000000000000001" },
+            { name: "San Antonio Spurs", sport: "NBA", conference: "West", division: "Southwest", history: "400000011321543121352" },
+            { name: "Toronto Raptors", sport: "NBA", conference: "East", division: "Atlantic", history: "100010252211100001000" },
+            { name: "Utah Jazz", sport: "NBA", conference: "West", division: "Northwest", history: "000012112200001021230" },
+            { name: "Washington Wizards", sport: "NBA", conference: "East", division: "Southeast", history: "000001001202200000111" }, //  fix
+
+            // ==================== NHL ====================
+            { name: "Anaheim Ducks", sport: "NHL", conference: "West", division: "Pacific", history: "200000001313210102153" },
+            { name: "Boston Bruins", sport: "NHL", conference: "East", division: "Atlantic", history: "102112242100241522100" },
+            { name: "Buffalo Sabres", sport: "NHL", conference: "East", division: "Atlantic", history: "200000000000000110033" },
+            { name: "Calgary Flames", sport: "NHL", conference: "West", division: "Pacific", history: "000020110102000001111" },
+            { name: "Carolina Hurricanes", sport: "NHL", conference: "East", division: "Metropolitan", history: "532322130000000003005" },
+            { name: "Chicago Blackhawks", sport: "NHL", conference: "West", division: "Central", history: "000000100115351153000" },
+            { name: "Colorado Avalanche", sport: "NHL", conference: "West", division: "Central", history: "312152221000100010202" },
+            { name: "Columbus Blue Jackets", sport: "NHL", conference: "East", division: "Metropolitan", history: "000000121100100001000" },
+            { name: "Dallas Stars", sport: "NHL", conference: "West", division: "Central", history: "133310420020100000311" },
+            { name: "Detroit Red Wings", sport: "NHL", conference: "East", division: "Atlantic", history: "000000000011121224531" },
+            { name: "Edmonton Oilers", sport: "NHL", conference: "West", division: "Pacific", history: "144231100200000000004" },
+            { name: "Florida Panthers", sport: "NHL", conference: "East", division: "Atlantic", history: "055421100010001000000" },
+            { name: "Los Angeles Kings", sport: "NHL", conference: "West", division: "Pacific", history: "111110001010535110000" },
+            { name: "Minnesota Wild", sport: "NHL", conference: "West", division: "Central", history: "210111101112210000110" },
+            { name: "Montréal Canadiens", sport: "NHL", conference: "East", division: "Atlantic", history: "310004100102310131201" },//done
+            { name: "Nashville Predators", sport: "NHL", conference: "West", division: "Central", history: "001011112421002210111" },
+            { name: "New Jersey Devils", sport: "NHL", conference: "East", division: "Metropolitan", history: "010200001000004011122" },
+            { name: "New York Islanders", sport: "NHL", conference: "East", division: "Metropolitan", history: "001103320021010000010" },
+            { name: "New York Rangers", sport: "NHL", conference: "East", division: "Metropolitan", history: "003130100213423101221" },
+            { name: "Ottawa Senators", sport: "NHL", conference: "East", division: "Atlantic", history: "110000000301021010142" },
+            { name: "Philadelphia Flyers", sport: "NHL", conference: "East", division: "Metropolitan", history: "200000201010102241301" },
+            { name: "Pittsburgh Penguins", sport: "NHL", conference: "East", division: "Metropolitan", history: "100011112551221125410" },
+            { name: "San Jose Sharks", sport: "NHL", conference: "West", division: "Pacific", history: "000000032140121331222" },
+            { name: "Seattle Kraken", sport: "NHL", conference: "West", division: "Pacific", history: "000206666666666666666" },
+            { name: "St. Louis Blues", sport: "NHL", conference: "West", division: "Central", history: "010021150231112001000" },
+            { name: "Tampa Bay Lightning", sport: "NHL", conference: "East", division: "Atlantic", history: "111145513034100300011" },
+            { name: "Toronto Maple Leafs", sport: "NHL", conference: "East", division: "Atlantic", history: "021211111100010000000" },
+            { name: "Utah Mammoth", sport: "NHL", conference: "West", division: "Central", history: "106666666666666666666" },
+            { name: "Arizona Coyotes", sport: "NHL", conference: "West", division: "Central", history: "660000100000003110000" },
+            { name: "Vancouver Canucks", sport: "NHL", conference: "West", division: "Pacific", history: "002000200001011422020" },
+            { name: "Vegas Golden Knights", sport: "NHL", conference: "West", division: "Pacific", history: "421503314666666666666" },
+            { name: "Washington Capitals", sport: "NHL", conference: "East", division: "Metropolitan", history: "021011115222012212100" },
+            { name: "Winnipeg Jets", sport: "NHL", conference: "West", division: "Central", history: "021102113001000000010" },
+
+            //lol
+
+        ];
+
+        const TEAMS2 = [
+            { name: "Illinois", sport: "NCAAM", conference: "BigTen", division: "🟠🔵", history: "524122000000020201012" },
+            { name: "Indiana", sport: "NCAAM", conference: "BigTen", division: "🔴⚪", history: "000210000032033000122" },
+            { name: "Iowa", sport: "NCAAM", conference: "BigTen", division: "⚫🟡", history: "400112020022100000001" },
+            { name: "Maryland", sport: "NCAAM", conference: "BigTen", division: "🔴🟡", history: "030202020132000022020" },
+            { name: "Michigan", sport: "NCAAM", conference: "BigTen", division: "🟡🔵", history: "730034036310461202000" },
+            { name: "Michigan State", sport: "NCAAM", conference: "BigTen", division: "🟢⚪", history: "342321052215433256321" },
+            { name: "Minnesota", sport: "NCAAM", conference: "BigTen", division: "🔴🟡", history: "000000020100020011000" },
+            { name: "Nebraska", sport: "NCAAM", conference: "BigTen", division: "🔴⚪", history: "301000000000100000000" },
+            { name: "Northwestern", sport: "NCAAM", conference: "BigTen", division: "🟣⚪", history: "002200000200000000000" },
+            { name: "Ohio State", sport: "NCAAM", conference: "BigTen", division: "🔴⚪", history: "100021022002145331062" },
+            { name: "Oregon", sport: "NCAAM", conference: "BigTen", division: "🟢🟡", history: "022003030542230000140" },
+            { name: "Penn State", sport: "NCAAM", conference: "BigTen", division: "🔵⚪", history: "000200000000000100000" },
+            { name: "Purdue", sport: "NCAAM", conference: "BigTen", division: "🟡⚫", history: "436131043311002233220" },
+            { name: "Rutgers", sport: "NCAAM", conference: "BigTen", division: "🔴⚪", history: "000012000000000000000" },
+            { name: "UCLA", sport: "NCAAM", conference: "BigTen", division: "🔵🟡", history: "220335001303310202552" },
+            { name: "Southern California", sport: "NCAAM", conference: "BigTen", division: "🔴🟡", history: "000114000210000102130" },
+            { name: "Washington", sport: "NCAAM", conference: "BigTen", division: "🟣🟡", history: "000000020000000232003" },
+            { name: "Wisconsin", sport: "NCAAM", conference: "BigTen", division: "🔴⚪", history: "121022010336513322321" },
+
+            { name: "Alabama", sport: "NCAAM", conference: "SEC", division: "🔴⚪", history: "345313002000001000002" },
+            { name: "Arkansas", sport: "NCAAM", conference: "SEC", division: "🔴⚪", history: "330344001202000000211" },
+            { name: "Auburn", sport: "NCAAM", conference: "SEC", division: "🟠🔵", history: "051220052000000000000" },
+            { name: "Florida", sport: "NCAAM", conference: "SEC", division: "🟠🔵", history: "271002022400544410077" },
+            { name: "Georgia", sport: "NCAAM", conference: "SEC", division: "🔴⚫", history: "110000000001000100100" },
+            { name: "Kentucky", sport: "NCAAM", conference: "SEC", division: "🔵⚪", history: "231210043425607540122" },
+            { name: "Lousiana State", sport: "NCAAM", conference: "SEC", division: "🟣🟡", history: "000012030001000002005" },
+            { name: "Mississippi State", sport: "NCAAM", conference: "SEC", division: "🔴⚪", history: "011100010000000001200" },
+            { name: "Missouri", sport: "NCAAM", conference: "SEC", division: "🟡⚫", history: "110201001000011124000" },
+            { name: "Ole Miss", sport: "NCAAM", conference: "SEC", division: "🔴🔵", history: "030000010001020000000" },
+            { name: "Oklahoma", sport: "NCAAM", conference: "SEC", division: "🔴⚪", history: "010002021053110004201" },
+            { name: "South Carolina", sport: "NCAAM", conference: "SEC", division: "🔴⚫", history: "001000000500000000000" },
+            { name: "Tennessee", sport: "NCAAM", conference: "SEC", division: "🟠⚪", history: "444321032000300141332" },
+            { name: "Texas", sport: "NCAAM", conference: "SEC", division: "🟠⚪", history: "312421001011201212424" },
+            { name: "Texas A&M", sport: "NCAAM", conference: "SEC", division: "🔴⚪", history: "222100003030000122232" },
+            { name: "Vanderbilt", sport: "NCAAM", conference: "SEC", division: "⚫🟡", history: "210000000110002110130" },
+
+            { name: "Boston College", sport: "NCAAM", conference: "ACC", division: "🔴🟡", history: "000000000000000001023" },
+            { name: "California", sport: "NCAAM", conference: "ACC", division: "🔵🟡", history: "000000000010021021001" },
+            { name: "Clemson", sport: "NCAAM", conference: "ACC", division: "🟠🟣", history: "114001003000000111100" },
+            { name: "Duke", sport: "NCAAM", conference: "ACC", division: "🔵⚪", history: "454250044237141374213" },
+            { name: "Florida State", sport: "NCAAM", conference: "ACC", division: "🔴🟡", history: "000003034200002311000" },
+            { name: "Georgia Tech", sport: "NCAAM", conference: "ACC", division: "🟡🔵", history: "000001000000000020010" },
+            { name: "Louisville", sport: "NCAAM", conference: "ACC", division: "🔴⚫", history: "210000010204375114420" },
+            { name: "Miami", sport: "NCAAM", conference: "ACC", division: "🟢🟠", history: "200540001130030000200" },
+            { name: "North Carolina State", sport: "NCAAM", conference: "ACC", division: "🔴⚪", history: "105100001003113000002" },
+            { name: "North Carolina", sport: "NCAAM", conference: "ACC", division: "🔵⚪", history: "113061032763224407542" },
+            { name: "Notre Dame", sport: "NCAAM", conference: "ACC", division: "🔵🟡", history: "000020000244011210210" },
+            { name: "Pittsburgh", sport: "NCAAM", conference: "ACC", division: "🔵🟡", history: "000200000010210224232" },
+            { name: "Southern Methodist", sport: "NCAAM", conference: "ACC", division: "🔴🔵", history: "100000000101000000000" },
+            { name: "Stanford", sport: "NCAAM", conference: "ACC", division: "🔴⚪", history: "000000000000300000310" },
+            { name: "Syracuse", sport: "NCAAM", conference: "ACC", division: "🟠🔵", history: "000003013050254233001" },
+            { name: "Virginia", sport: "NCAAM", conference: "ACC", division: "🟠🔵", history: "201101071242301000020" },
+            { name: "Virginia Tech", sport: "NCAAM", conference: "ACC", division: "🟠🟣", history: "000011031100000000020" },
+            { name: "Wake Forest", sport: "NCAAM", conference: "ACC", division: "⚫🟡", history: "000000000100000021000" },
+
+            { name: "Arizona", sport: "NCAAM", conference: "Big12", division: "🔴🔵", history: "533130001314430403112" },
+            { name: "Arizona State", sport: "NCAAM", conference: "Big12", division: "🟡🔴", history: "000100011000100002000" },
+            { name: "Baylor", sport: "NCAAM", conference: "Big12", division: "🟢🟡", history: "022227020311304040100" },
+            { name: "Brigham Young", sport: "NCAAM", conference: "Big12", division: "🔵⚪", history: "131001000001101321110" },
+            { name: "Cincinnati", sport: "NCAAM", conference: "Big12", division: "🔴⚫", history: "000000012212113200000" },
+            { name: "Colorado", sport: "NCAAM", conference: "Big12", division: "⚫🟡", history: "002002000010112000000" },
+            { name: "Houston", sport: "NCAAM", conference: "Big12", division: "🔴⚪", history: "363345032000000010000" },
+            { name: "Iowa State", sport: "NCAAM", conference: "Big12", division: "🔴🟡", history: "323130010231322000000" },
+            { name: "Kansas", sport: "NCAAM", conference: "Big12", division: "🔵🔴", history: "212272025442236423741" },
+            { name: "Kansas State", sport: "NCAAM", conference: "Big12", division: "🟣⚪", history: "000400014100112240200" },
+            { name: "Oklahoma State", sport: "NCAAM", conference: "Big12", division: "🟠⚫", history: "000002000101110012000" },
+            { name: "Texas Christian", sport: "NCAAM", conference: "Big12", division: "🟣⚪", history: "201220001000000000000" },
+            { name: "Texas Tech", sport: "NCAAM", conference: "Big12", division: "🔴⚫", history: "241032064010000000010" },
+            { name: "Central Florida", sport: "NCAAM", conference: "Big12", division: "⚫🟡", history: "100000020000000000000" },
+            { name: "Utah", sport: "NCAAM", conference: "Big12", division: "🔴⚪", history: "000000000023000001000" },
+            { name: "West Virginia", sport: "NCAAM", conference: "Big12", division: "🔵🟡", history: "000102003313001251303" },
+
+            { name: "Butler", sport: "NCAAM", conference: "BigEast", division: "🔵⚪", history: "000000002322020661230" },
+            { name: "Creighton", sport: "NCAAM", conference: "BigEast", division: "🔵⚪", history: "023423001100222000010" },
+            { name: "DePaul", sport: "NCAAM", conference: "BigEast", division: "🔵🔴", history: "000000000000000000000" },
+            { name: "Georgetown", sport: "NCAAM", conference: "BigEast", division: "🔵⚪", history: "000001000002012110253" },
+            { name: "Marquette", sport: "NCAAM", conference: "BigEast", division: "🔵🟡", history: "013210010100043312211" },
+            { name: "Providence", sport: "NCAAM", conference: "BigEast", division: "⚫🔵", history: "000130001121100000000" },
+            { name: "Seton Hall", sport: "NCAAM", conference: "BigEast", division: "🔵⚪", history: "000010012110000000001" },
+            { name: "St. John's", sport: "NCAAM", conference: "BigEast", division: "🔴⚪", history: "320000010001000100000" },
+            { name: "Connecticut", sport: "NCAAM", conference: "BigEast", division: "🔵⚪", history: "627711000020701705105" },
+            { name: "Villanova", sport: "NCAAM", conference: "BigEast", division: "🔵⚪", history: "100053027272210125314" },
+            { name: "Xavier", sport: "NCAAM", conference: "BigEast", division: "🔵⚪", history: "010300002423103133421" },
+
+            // MISC+
+            { name: "Davidson", sport: "NCAAM", conference: "A10", division: "🔴⚫", history: "000010001001011000411" },
+            { name: "Dayton", sport: "NCAAM", conference: "A10", division: "🔴🔵", history: "002000000112300002000" },
+            { name: "La Salle", sport: "NCAAM", conference: "A10", division: "🟡🔵", history: "000000000000030000000" },
+            { name: "Loyola Chicago", sport: "NCAAM", conference: "A10", division: "🔴🟡", history: "000013005000000000000" },
+            { name: "George Mason", sport: "NCAAM", conference: "A10", division: "🟢🟡", history: "000000000000000200105" },
+            { name: "Richmond", sport: "NCAAM", conference: "A10", division: "🔴🔵", history: "000020000000000310000" },
+            { name: "VCU", sport: "NCAAM", conference: "A10", division: "🟡⚫", history: "210101010121122501020" },
+
+            { name: "Memphis", sport: "NCAAM", conference: "AAC", division: "🔵⚪", history: "010120000000221103644" },
+            { name: "Wichita State", sport: "NCAAM", conference: "AAC", division: "🟡⚫", history: "000001001223251000003" },
+            { name: "Florida Atlantic", sport: "NCAAM", conference: "AAC", division: "🔵🔴", history: "001500000000000000000" },
+
+            { name: "FGCU", sport: "NCAAM", conference: "ASUN", division: "🔵🟢", history: "000000000110030000000" },//DNE in 7 6 
+
+            { name: "Western Kentucky", sport: "NCAAM", conference: "CUSA", division: "🔴⚪", history: "001000000000011002300" },
+
+            { name: "Princeton", sport: "NCAAM", conference: "IVY", division: "🟠⚫", history: "000300000100000100000" },
+            { name: "Cornell", sport: "NCAAM", conference: "IVY", division: "🔴⚪", history: "000000000000000031100" },
+
+            { name: "Saint Peter's", sport: "NCAAM", conference: "MAAC", division: "🔵⚪", history: "001040000000000100000" },
+
+            { name: "Ohio", sport: "NCAAM", conference: "MAC", division: "🟢⚪", history: "000002000000003020000" },
+
+            { name: "Northern Iowa", sport: "NCAAM", conference: "MVC", division: "🟣🟡", history: "100000000022000031001" },
+            { name: "Southern Illinois", sport: "NCAAM", conference: "MVC", division: "🔴⚪", history: "000000000000000000031" },
+            { name: "Bradley", sport: "NCAAM", conference: "MVC", division: "🔴⚪", history: "000000010000000000003" },
+
+            { name: "San Diego State", sport: "NCAAM", conference: "MW", division: "🔴⚫", history: "013611001002321310001" },
+            { name: "Nevada", sport: "NCAAM", conference: "MW", division: "🔵⚪", history: "001100013100000000021" },
+            { name: "UNLV", sport: "NCAAM", conference: "MW", division: "🔴⚫", history: "000000000000011110230" },
+
+            { name: "Gonzaga", sport: "NCAAM", conference: "PAC12", division: "🔵🔴", history: "223436043634222223113" },
+            { name: "Oregon State", sport: "NCAAM", conference: "PAC12", division: "🟠⚫", history: "000004000010000000000" },
+            { name: "Washington State", sport: "NCAAM", conference: "PAC12", division: "🔴⚪", history: "002000000000000000320" },
+
+            { name: "Oral Roberts", sport: "NCAAM", conference: "Summit", division: "🔵🟡", history: "000103000000000000111" },
+
+            { name: "Saint Mary's", sport: "NCAAM", conference: "WCC", division: "🔵🔴", history: "121220010200011030100" },
+
+        ];
+
+        const TEAMS3 = [
+            // ---------- ENGLAND ----------
+            { name: "Arsenal", sport: "UCL", conference: "England", division: "Premier League", history: "432000000111111123214" },
+            { name: "Aston Villa", sport: "UCL", conference: "England", division: "Premier League", history: "020000000000000000000" },
+            { name: "Chelsea", sport: "UCL", conference: "England", division: "Premier League", history: "100225101011305213431" },
+            { name: "Leicester City", sport: "UCL", conference: "England", division: "League One", history: "000000000200000000000" },
+            { name: "Liverpool", sport: "UCL", conference: "England", division: "Premier League", history: "210142154000000002341" },
+            { name: "Manchester City", sport: "UCL", conference: "England", division: "Premier League", history: "102534222131100000000" },
+            { name: "Manchester United", sport: "UCL", conference: "England", division: "Premier League", history: "000010021000210424530" },
+            { name: "Newcastle United", sport: "UCL", conference: "England", division: "Premier League", history: "100000000000000000000" },
+            { name: "Tottenham Hotspur", sport: "UCL", conference: "England", division: "Premier League", history: "100100141100000200000" },
+
+            // ---------- SPAIN ----------
+            { name: "Atlético Madrid", sport: "UCL", conference: "Spain", division: "La Liga", history: "312021210342400001000" },
+            { name: "Barcelona", sport: "UCL", conference: "Spain", division: "La Liga", history: "232001232225233535315" },
+            { name: "Málaga", sport: "UCL", conference: "Spain", division: "La Liga", history: "000000000000020000000" },
+            { name: "Real Madrid", sport: "UCL", conference: "Spain", division: "La Liga", history: "225353115553533311111" },
+            { name: "Real Sociedad", sport: "UCL", conference: "Spain", division: "La Liga", history: "001000000000000000000" },
+            { name: "Sevilla", sport: "UCL", conference: "Spain", division: "La Liga", history: "000001002100000010100" },
+            { name: "Valencia", sport: "UCL", conference: "Spain", division: "La Liga", history: "000000100000010100020" },
+            { name: "Villarreal", sport: "UCL", conference: "Spain", division: "La Liga", history: "000030000000000002003" },
+
+            // ---------- GERMANY ---------- // ALL TODO
+            { name: "Bayer Leverkusen", sport: "UCL", conference: "Germany", division: "Bundesliga", history: "1" },
+            { name: "Bayern Munich", sport: "UCL", conference: "Germany", division: "Bundesliga", history: "323222513233354142021" },
+            { name: "Borussia Dortmund", sport: "UCL", conference: "Germany", division: "Bundesliga", history: "124112111201241000000" },
+            { name: "Eintracht Frankfurt", sport: "UCL", confrence: "Germany", division: "Bundesliga", history: "000100000000000000000" },
+            { name: "RB Leipzig", sport: "UCL", conference: "Germany", division: "Bundesliga", history: "011111301000000000000" },
+            { name: "Schalke 04", sport: "UCL", conference: "Germany", division: "Bundesliga", history: "000000010001110300201" },
+            { name: "VfL Wolfsburg", sport: "UCL", conference: "Germany", division: "2. Bundesliga", history: "000010000020000010000" },
+
+            // ---------- ITALY ----------
+            { name: "Atalanta", sport: "UCL", conference: "Italy", division: "Serie A", history: "100001200000000000000" },
+            { name: "Inter Milan", sport: "UCL", conference: "Italy", division: "Serie A", history: "041410000000001251112" },
+            { name: "Juventus", sport: "UCL", conference: "Italy", division: "Serie A", history: "000011122414020001002" },
+            { name: "Lazio", sport: "UCL", conference: "Italy", division: "Serie A", history: "001001000000000000000" },
+            { name: "AC Milan", sport: "UCL", conference: "Italy", division: "Serie A", history: "000300000000112110153" },
+            { name: "Napoli", sport: "UCL", conference: "Italy", division: "Serie A", history: "001200100100001000000" },
+            { name: "Roma", sport: "UCL", conference: "Italy", division: "Serie A", history: "000000013010000101220" },
+
+            // ---------- FRANCE ----------
+            { name: "Bordeaux", sport: "UCL", conference: "France", division: "Régionale 1", history: "000000000000000020000" },
+            { name: "Lyon", sport: "UCL", conference: "France", division: "Ligue 1", history: "000000310000001131112" },
+            { name: "Marseille", sport: "UCL", conference: "France", division: "Ligue 1", history: "100101000000102111100" }, //TODO
+            { name: "Monaco", sport: "UCL", conference: "France", division: "Ligue 1", history: "000000000302000000000" },
+            { name: "Paris Saint-Germain", sport: "UCL", conference: "France", division: "Ligue 1", history: "553113411122220000000" },
+
+            // ---------- PORTUGAL ----------
+            { name: "Benfica", sport: "UCL", conference: "Portugal", division: "Primeira Liga", history: "010220000120002000002" },
+            { name: "Porto", sport: "UCL", conference: "Portugal", division: "Primeira Liga", history: "001102021102010012110" },
+            { name: "Sporting CP", sport: "UCL", conference: "Portugal", division: "Primeira Liga", history: "200010000000000001000" },
+
+            // ---------- NETHERLANDS ----------
+            { name: "Ajax", sport: "UCL", conference: "Netherlands", division: "Eredivisie", history: "000010030000000000001" },
+            { name: "PSV Eindhoven", sport: "UCL", conference: "Netherlands", division: "Eredivisie", history: "011000000010000000021" },
+
+            // ---------- TURKEY ----------
+            { name: "Fenerbahçe", sport: "UCL", conference: "Turkey", division: "Süper Lig", history: "000000000000000000200" },
+            { name: "Galatasaray", sport: "UCL", conference: "Turkey", division: "Süper Lig", history: "100000000000120000000" },
+
+            // ---------- RUSSIA ----------
+            { name: "CSKA Moscow", sport: "UCL", conference: "Russia", division: "Russian Premier League", history: "000000000000001020000" },
+            { name: "Zenit Saint Petersburg", sport: "UCL", conference: "Russia", division: "Russian Premier League", history: "000000000010101000000" },
+
+        ];
+
+
+
+
+        /* ============================================================ */
+        const START_YEAR = 2026, YEARS = 21, MAX_GUESSES = 7, STEP = 3;
+        const ICON = ["✕", "", "", "", "", "🏆", ""]; const $ = id => document.getElementById(id);
+        const today = new Date();
+        //const dayKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+        let dayKey = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+        const TODAY = dayKey;
+        const LAUNCH = new Date(2026, 9, 1);   // first playable day; month is 0-based, so 9 = October. Set your real launch date.
+        const keyOf = d => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        const dateOf = k => { const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d); };
+        function playDay(k) { dayKey = k; readDailyMode(); loadGame(0); reset(); }
+
+        const MODES = {
+            pro: {
+                teams: TEAMS, filterBy: "sport", prefix: "t", shareName: "Pro",
+                labels: ["Sport", "Conference", "Division"],
+                icons: ["✕", "", "", "", "", "🏆", ""],
+                legend: [["t1", "", "First Round / Wild Card"], ["t2", "", "Divisional / Conference Semis"],
+                ["t3", "", "League/Conference Championship Game"], ["t4", "", "League/Conference Champion (Lost Final)"],
+                ["t5", "🏆", "Won the Title"], ["x", "✕", "Missed Playoffs"], ["t6", "", "Franchise Didn't Exist"]],
+                notes: ["Relocated or renamed franchises keep their history under current name.",
+                    "NBA Play-In not counted as a playoff appearance unless won / reached field of 16.",
+                    "Years are when the playoffs happened. The Super Bowl for the 2025 season is played in 2026.",
+                    "Coyotes and Utah Mammoth have separate franchise histories."]
+            },
+            ncaa: {
+                teams: TEAMS2, filterBy: "conference", prefix: "u", shareName: "NCAA",
+                labels: ["Sport", "Conference", "Colors"],
+                icons: ["✕", "", "", "", "", "", "", "🏆", ""],
+                legend: [["u1", "", "First Four / Round of 64"], ["u2", "", "Round of 32"], ["u3", "", "Sweet 16"],
+                ["u4", "", "Elite 8"], ["u5", "", "Final Four"], ["u6", "", "National Runner-up"],
+                ["u7", "🏆", "National Champion"], ["x", "✕", "Missed Tournament"]],
+                notes: ["Eligible Teams are all from the ACC, Big10, Big12, BigEast, SEC, and any other team that has reached a Sweet16 or farther since 2006.",
+                    "The 2020 tournament was canceled and is listed as a miss for every team.",
+                    "Team color bank: ⚫🔵🟢🟠🟣🔴⚪🟡 *Yellow included for Gold & Brown"
+                ]
+            },
+            ucl: {
+                teams: TEAMS3, filterBy: "division", prefix: "t", shareName: "UCL",
+                labels: ["Sport", "Conference", "League"],
+                icons: ["✕", "", "", "", "", "🏆", ""],
+                legend: [["t1", "", "Round of 16"], ["t2", "", "Quarterfinal"],
+                ["t3", "", "Semifinal"], ["t4", "", "Runner-up (Lost Final)"],
+                ["t5", "🏆", "Champions League Winner"], ["x", "✕", "Missed UCL Round of 16"]],
+                notes: ["League is where the team plays this season",
+                    "Year is the season's end year: 2025-26 is listed under 2026.",
+                    "Teams who lose in groups or first phase KO round count as misses. Reaching round of 16 is the first level."]
+            }
+        };
+        let modeKey = "pro";
+        try { const m = localStorage.getItem("playoffTrail:mode"); if (MODES[m]) modeKey = m; } catch (e) { }
+        const cfg = () => MODES[modeKey];
+        // const NS = () => modeKey === "pro" ? "playoffTrail:" : "playoffTrail:ncaa:";   // pro keeps its old keys
+        const NS = () => modeKey === "pro" ? "playoffTrail:" : "playoffTrail:" + modeKey + ":";
+        const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+        function teamColors(t) {
+            if (t.divison) return t.divison;
+            return [...graphemes.segment(t.division || "")].map(s => s.segment);
+        }
+
+        function hash(s) { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619) } return h >>> 0 }
+
+
+        let dailyMode = null;
+        function readDailyMode() { dailyMode = null; try { const v = localStorage.getItem(NS() + "dm:" + dayKey); if (v !== null) dailyMode = v === "1"; } catch (e) { } }
+        function setDailyMode(h) { dailyMode = h; try { localStorage.setItem(NS() + "dm:" + dayKey, h ? "1" : "0"); } catch (e) { } }
+        readDailyMode();
+
+        const needsChoice = () => game === 0 && dailyMode === null;
+        // function dailyDone() {
+        //   if (dailyMode === null) return false;     // hasn't picked a difficulty yet, so not started
+        //   try {
+        //     const s = JSON.parse(localStorage.getItem(NS() + dayKey + (dailyMode ? "!hard" : "")));
+        //     return !!(s && s.over);
+        //   } catch (e) { return false; }
+        // }
+        function dailyDone() {
+            try {
+                const dm = localStorage.getItem(NS() + "dm:" + TODAY);
+                if (dm === null) return false;
+                const s = JSON.parse(localStorage.getItem(NS() + TODAY + (dm === "1" ? "!hard" : "")));
+                return !!(s && s.over);
+            } catch (e) { return false; }
+        }
+
+        const filterOpts = () => [...new Set(cfg().teams.map(t => t[cfg().filterBy]).filter(Boolean))];
+        let sports = new Set();
+        function readSports() {
+            const all = filterOpts();
+            sports = new Set(all);
+            try {
+                const s = JSON.parse(localStorage.getItem(NS() + "sports"));
+                if (Array.isArray(s)) { const ok = s.filter(x => all.includes(x)); if (ok.length) sports = new Set(ok); }
+            } catch (e) { }
+        }
+        readSports();
+
+
+        let game = 0, target, state, STORE, order, rank;
+        let hard = false;
+        try { hard = localStorage.getItem("playoffTrail:hard") === "1"; } catch (e) { }
+
+        function rng(seed) {
+            let a = seed >>> 0;
+            return () => {
+                a = a + 0x6D2B79F5 | 0;
+                let t = Math.imul(a ^ a >>> 15, 1 | a);
+                t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            };
+        }
+        // Reveal order of the 21 seasons, fixed by the seed. Normal mode = newest first.
+        function makeOrder(seed) {
+            const o = Array.from({ length: YEARS }, (_, i) => i);
+            if (!hard) return o;
+            const r = rng(hash(seed + ":order"));
+            for (let i = YEARS - 1; i > 0; i--) {
+                const j = Math.floor(r() * (i + 1));
+                [o[i], o[j]] = [o[j], o[i]];
+            }
+            return o;
+        }
+
+        function loadGame(n) {
+            game = n;
+            if (n === 0 && dailyMode !== null) hard = dailyMode;
+            $("hard").checked = hard;
+            const base = dayKey + (n ? "#" + n + "~" + [...sports].sort().join("") : "");
+            const seed = base + (hard ? "!hard" : "");
+            STORE = NS() + seed;
+            const all = cfg().teams, f = cfg().filterBy;
+            const pool = n ? all.filter(t => sports.has(t[f])) : all;
+            const P = pool.length ? pool : all;
+            target = P[hash(n ? seed : base) % P.length];
+            order = makeOrder(seed);
+            rank = [];
+            order.forEach((yr, pos) => rank[yr] = pos);
+            state = { guesses: [], over: false, won: false };
+            try { const s = JSON.parse(localStorage.getItem(STORE)); if (s) state = s; } catch (e) { }
+            if (state.t) { const f = all.find(t => t.name === state.t); if (f) target = f; } //new
+            if (n === 0 && dailyMode === null && state.guesses.length) setDailyMode(hard);
+        }
+        const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) { } };
+        loadGame(0);
+        let practiceN = 0;
+        function readPracticeN() { practiceN = 0; try { practiceN = +localStorage.getItem(NS() + "n:" + dayKey) || 0; } catch (e) { } }
+        readPracticeN();
+
+
+        const byName = n => cfg().teams.find(t => t.name.toLowerCase() === n.trim().toLowerCase());
+        const key = c => c.replace(/\uFE0F/g, "").toLowerCase();
+        //const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+        function teamColors(t) {
+            if (!t) return [];
+            if (t.colors) return t.colors;
+            return [...graphemes.segment(t.division || "")].map(s => s.segment).filter(s => s.trim());
+        }
+        // function colorScore(g) {
+        //   const tc = [...new Set(teamColors(target).map(key))];
+        //   const gc = new Set(teamColors(g).map(key));
+        //   const hits = tc.filter(c => gc.has(c)).length;
+        //   return !hits ? 0 : hits === tc.length ? 2 : 1;
+        // }
+        // function compare(g) {
+        //   const sport = g.sport === target.sport;
+        //   const conf = sport && g.conference === target.conference;
+        //   const div = conf && g.division === target.division;
+        //   return { sport, conf, div, col: colorScore(g) };
+        // }
+        function colorScore(g, tgt = target) {
+            const tc = [...new Set(teamColors(tgt).map(key))];
+            const gc = new Set(teamColors(g).map(key));
+            const hits = tc.filter(c => gc.has(c)).length;
+            return !hits ? 0 : hits === tc.length ? 2 : 1;
+        }
+        function compare(g, tgt = target) {
+            const sport = g.sport === tgt.sport;
+            const conf = sport && g.conference === tgt.conference;
+            const div = conf && g.division === tgt.division;
+            return { sport, conf, div, col: colorScore(g, tgt) };
+        }
+        function visibleYears() {
+            return state.over ? YEARS : Math.min(YEARS, STEP + STEP * state.guesses.length);
+        }
+
+        function renderTrail(prev) {
+            const n = visibleYears(), el = $("trail"); el.innerHTML = "";
+            for (let i = 0; i < YEARS; i++) {
+                //const hidden = i >= n, v = +target.history[i] || 0;
+                const hidden = rank[i] >= n, v = +target.history[i] || 0;
+
+                const d = document.createElement("div");
+
+                //d.className = "season" + (hidden ? " hidden" : "") + (!hidden && i >= prev ? " new" : "");
+                d.className = "season" + (hidden ? " hidden" : "") + (!hidden && rank[i] >= prev ? " new" : "");
+
+                d.innerHTML = `<i class="dot ${hidden ? "" : (v === 0 ? "x" : cfg().prefix + v)}">${hidden ? "?" : cfg().icons[v]}</i><b>${START_YEAR - i}</b>`;
+                el.appendChild(d);
+            }
+            $("shown").textContent = `Showing ${n} of ${YEARS} seasons`;
+            $("shown").parentElement.style.setProperty("--p", n / YEARS);
+        }
+
+        // function renderHints() {
+        //   const matched = { sport: false, conf: false, div: false };
+        //   state.guesses.forEach(n => { const c = compare(byName(n)); for (const k in matched) matched[k] ||= c[k]; });
+        //   //const cell = (cls, label, val) => `<div class="hint ${cls}"><small>${label}</small><strong>${val}</strong></div>`;
+        //   const fill = {
+        //     on: "background:var(--good);border-color:var(--good);color:#fff",
+        //     part: "background:var(--r3);border-color:var(--r3);color:#1c1503"
+        //   };
+        //   const cell = (cls, label, val) => `<div class="hint ${cls}" style="${fill[cls] || ""}"><small>${label}</small><strong>${val}</strong></div>`;
+        //   const std = (k, label, val) => cell(matched[k] ? "on" : state.over ? "reveal" : "", label, matched[k] || state.over ? val : "?");
+        //   let third;
+        //   if (modeKey === "ncaa") {
+        //     const tc = teamColors(target);
+        //     const found = new Set();
+        //     state.guesses.forEach(n => teamColors(byName(n)).forEach(c => { if (tc.includes(c)) found.add(c); }));
+        //     //const shown = tc.map(c => found.has(c) || state.over ? c : "?").join(" ");
+        //     const shown = tc.map(c => found.has(c) || state.over ? `<span class="cdot">${c}</span>` : "?").join(" ");
+        //     const all = tc.length && tc.every(c => found.has(c));
+        //     third = cell(all ? "on" : found.size ? "part" : state.over ? "reveal" : "", "Colors", shown || "?");
+        //   } else {
+        //     third = std("div", "Division", target.division || "None");
+        //   }
+        //   $("hints").innerHTML = std("sport", "Sport", target.sport) + std("conf", "Conference", target.conference) + third;
+        // }
+        function renderHints() {
+            const L = cfg().labels;                       // e.g. ["Sport", "Country", "League"]
+            const matched = { sport: false, conf: false, div: false };
+            state.guesses.forEach(n => { const c = compare(byName(n)); for (const k in matched) matched[k] ||= c[k]; });
+
+            const fill = {
+                on: "background:var(--good);border-color:var(--good);color:#fff",
+                part: "background:var(--r3);border-color:var(--r3);color:#1c1503"
+            };
+            const cell = (cls, label, val) => `<div class="hint ${cls}" style="${fill[cls] || ""}"><small>${label}</small><strong>${val}</strong></div>`;
+            const std = (k, label, val) => cell(matched[k] ? "on" : state.over ? "reveal" : "", label, matched[k] || state.over ? val : "?");
+
+            let third;
+            if (modeKey === "ncaa") {
+                const tc = teamColors(target), tk = tc.map(key);
+                const found = new Set();
+                state.guesses.forEach(n => teamColors(byName(n)).map(key).forEach(k => { if (tk.includes(k)) found.add(k); }));
+                const shown = tc.map((c, i) => found.has(tk[i]) || state.over ? `<span class="cdot">${c}</span>` : "?").join(" ");
+                const all = tk.length && tk.every(k => found.has(k));
+                third = cell(all ? "on" : found.size ? "part" : state.over ? "reveal" : "", L[2], shown || "?");
+            } else {
+                third = std("div", L[2], target.division || "None");
+            }
+
+            $("hints").innerHTML = std("sport", L[0], target.sport) + std("conf", L[1], target.conference) + third;
+        }
+
+        const CHIP = { ok: "background:var(--good);color:#fff", part: "background:var(--r3);color:#1c1503" };
+        function renderGuesses() {
+            const ncaa = modeKey === "ncaa";
+            $("guesses").innerHTML = state.guesses.map(n => {
+                const g = byName(n), c = compare(g);
+                const chip = (cls, t) => `<span class="chip ${cls}" style="${CHIP[cls] || ""}">${t || "—"}</span>`;
+                // const third = ncaa ? chip(["", "part", "ok"][c.col || 0], teamColors(g).join(" "))
+                //   : chip(c.div ? "ok" : "", g.division);
+                const third = ncaa
+                    ? chip(["", "part", "ok"][c.col || 0], teamColors(g).map(k => `<span class="cdot">${k}</span>`).join(""))
+                    : chip(c.div ? "ok" : "", g.division);
+                return `<div class="guess"><span class="n">${g.name}</span>${chip(c.sport ? "ok" : "", g.sport)}${chip(c.conf ? "ok" : "", g.conference)}${third}</div>`;
+            }).join("");
+            $("count").textContent = (!game && dayKey !== TODAY ? dateOf(dayKey).toLocaleDateString(undefined, { month: "short", day: "numeric" }) + " · " : "") + (hard ? "Hard · " : "") + (game ? `Practice ${game}: ` : "") + `Guess ${Math.min(state.guesses.length + 1, MAX_GUESSES)} of ${MAX_GUESSES}`;
+        }
+
+        // function renderEnd() {
+        //   $("end").innerHTML = !state.over ? "" : `<div class="end${state.won ? "" : " lost"}"><div class="endHead">${state.won ? '<span class="bigTrophy">🏆</span>' : ""}<h2>${state.won ? "Got it" : "Out of guesses"}</h2></div>
+        // <p>${state.won ? `Solved in ${state.guesses.length} of ${MAX_GUESSES}.` : "The team was:"}</p>
+        // <p style="color:var(--chalk);font-weight:600">${target.name}</p><p>${game ? "Press ∞ for another team." : "Come back tomorrow for a new team."}</p><button id="share" type="button" onclick="share(this)">Share result</button></div>`;
+        //   $("input").disabled = $("btn").disabled = state.over;
+        // }
+        function renderEnd() {
+            $("end").innerHTML = !state.over ? "" : `<div class="end${state.won ? "" : " lost"}"><div class="endHead">${state.won ? '<span class="bigTrophy">🏆</span>' : ""}<h2>${state.won ? "Got it" : "Out of guesses"}</h2></div>
+    <p>${state.won ? `Solved in ${state.guesses.length} of ${MAX_GUESSES}.` : "The team was:"}</p>
+    <p style="color:var(--chalk);font-weight:600">${target.name}</p>
+    <p>${game ? "Ready for another one?" : "Come back tomorrow, or keep playing in infinity mode."}</p>
+    <div class="endBtns">
+      <button id="share" type="button" onclick="share(this)">Share result</button>
+      <button class="alt" type="button" onclick="shareAll(this)">Share all</button>
+      <button class="alt" type="button" onclick="document.getElementById('inf').click()">∞ New Game</button>
+    </div></div>`;
+            $("input").disabled = $("btn").disabled = state.over;
+        }
+
+        // function renderList() {
+        //   const used = new Set(state.guesses);
+        //   $("teams").innerHTML = cfg().teams.filter(t => !used.has(t.name)).map(t => `<option value="${t.name}">${t.sport} · ${t.conference}</option>`).join("");
+        // }
+        function renderList() { closeList(); }
+
+        function renderStart() {
+            $("start").innerHTML = `<h2>${dayKey === TODAY ? "Today's Daily" : dateOf(dayKey).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}</h2><p>Pick your difficulty before the first clues appear. It locks once you start.</p>
+    <div class="choices">
+      <button type="button" data-h="0">Normal<small>Newest seasons first</small></button>
+      <button type="button" data-h="1">Hard<small>Random seasons, random order</small></button>
+    </div>`;
+            $("start").querySelectorAll("button").forEach(b => b.onclick = () => chooseDaily(b.dataset.h === "1"));
+        }
+        function chooseDaily(h) {
+            hard = h; setDailyMode(h);
+            try { localStorage.setItem("playoffTrail:hard", h ? "1" : "0"); } catch (e) { }
+            loadGame(0); reset();
+        }
+        function renderAll(prev = 0) {
+            const pending = needsChoice();
+            // $("daily").hidden = !game;
+            $("daily").hidden = !(game || dayKey !== TODAY);
+            $("daily").classList.toggle("done", dailyDone());
+
+            //new
+            //$("filt").hidden = !game;
+            if (!game) $("filtPanel").hidden = true;
+            const fl = !!game && !state.over && state.guesses.length > 0;
+            //$("filt").disabled = fl;
+            //$("filtPanel").querySelectorAll("input").forEach(i => i.disabled = fl);
+
+            //const noFilter = !game || modeKey !== "pro";
+            const noFilter = !game || filterOpts().length < 2;
+            $("filt").hidden = noFilter;
+            if (noFilter) $("filtPanel").hidden = true;
+
+            $("start").hidden = !pending;
+            $("play").hidden = pending;
+            //const locked = !state.over && (game === 0 || state.guesses.length > 0);
+            const locked = game === 0 || (!state.over && state.guesses.length > 0);
+            $("hard").disabled = locked;
+            const sw = $("hard").closest(".switch");
+            sw.classList.toggle("locked", locked);
+            sw.title = locked ? (game === 0 ? "Today's Daily difficulty is locked" : "Difficulty is locked until this game ends") : "Hard mode: 3 random seasons first, random reveal order";
+            if (pending) { renderStart(); return; }
+            renderTrail(prev); renderHints(); renderGuesses(); renderEnd(); renderList();
+        }
+        $("form").addEventListener("submit", e => {
+            e.preventDefault();
+            if (state.over) return;
+            const g = byName($("input").value);
+            if (!g) { $("msg").textContent = "Choose a team from the list."; shake(); return; }
+            if (state.guesses.includes(g.name)) { $("msg").textContent = "You already guessed that team."; shake(); return; }
+            $("msg").textContent = "";
+            const prev = visibleYears();
+            state.guesses.push(g.name);
+            if (g.name === target.name) { state.over = state.won = true; }
+            else if (state.guesses.length >= MAX_GUESSES) { state.over = true; }
+            $("input").value = "";
+            if (dayKey !== TODAY) state.late = true;
+            save(); renderAll(prev);
+            if (state.over) $("input").blur();
+            if (state.won) confetti();
+        });
+
+        //function reset() { $("msg").textContent = ""; $("input").value = ""; renderAll(0); }
+        function reset() { $("msg").textContent = ""; $("input").value = ""; renderAll(0); swapIn(); }
+        $("inf").onclick = () => {
+            if (dayKey !== TODAY) { dayKey = TODAY; readDailyMode(); readPracticeN(); }
+            practiceN++;
+            try { localStorage.setItem(NS() + "n:" + dayKey, practiceN); } catch (e) { }
+            //try { localStorage.setItem("playoffTrail:n:" + dayKey, practiceN); } catch (e) { }
+            loadGame(practiceN); reset();
+        };
+        // $("daily").onclick = () => { loadGame(0); reset(); };
+        $("daily").onclick = () => { dayKey = TODAY; readDailyMode(); loadGame(0); reset(); };
+
+        // Hard mode
+        $("hard").checked = hard;
+        $("hard").onchange = () => {
+            hard = $("hard").checked;
+            try { localStorage.setItem("playoffTrail:hard", hard ? "1" : "0"); } catch (e) { }
+            if (game === 0) setDailyMode(hard);
+            loadGame(game); reset();
+        };
+
+        // Theme
+        // function applyTheme(t) {
+        //   document.documentElement.dataset.theme = t;
+        //   $("theme").checked = t === "Patterns";
+        //   try { localStorage.setItem("playoffTrail:theme", t); } catch (e) { }
+        // }
+        // let savedTheme = null;
+        // try { savedTheme = localStorage.getItem("playoffTrail:theme"); } catch (e) { }
+        // applyTheme(savedTheme || (matchMedia("(prefers-color-scheme: Default)").matches ? "Default" : "Patterns"));
+        // $("theme").onchange = () => applyTheme($("theme").checked ? "Patterns" : "Default");
+        function applyTheme(t) {
+            document.documentElement.dataset.theme = t;
+            $("theme").checked = t === "Patterns";
+        }
+
+        let savedTheme = null;
+        try { savedTheme = localStorage.getItem("playoffTrail:theme"); } catch (e) { }
+
+        applyTheme(savedTheme === "Patterns" ? "Patterns" : "Default");
+        $("theme").onchange = () => {
+            const t = $("theme").checked ? "Patterns" : "Default";
+            applyTheme(t);
+            try { localStorage.setItem("playoffTrail:theme", t); } catch (e) { }
+        };
+
+
+        const SHARE_URL = ""; // set to your game's public URL; blank uses the current page address
+        // function shareText() {
+        //   const rows = state.guesses.map(n => {
+        //     const c = compare(byName(n));
+        //     return [c.sport, c.conf, c.div].map(ok => ok ? "🟩" : "🟥").join("");
+        //   });
+        //   if (state.won) rows[rows.length - 1] += " 🏆";
+        //   const score = state.won ? state.guesses.length : "X";
+        //   return `Playoff Trail ${game ? "Practice #" + game : dayKey} ${score}/${MAX_GUESSES}\n${rows.join("\n")}\n${SHARE_URL || location.href.split("#")[0]}`;
+        // }
+        const RANKS = ["Hall of Famer", "MVP", "All-Star", "Starter", "Role Player", "Bench Warmer", "Buzzer Beater"];
+        function shareRows(m, st, tgt) {
+            const teams = MODES[m].teams, n = st.guesses.length;
+            return st.guesses.map((name, i) => {
+                const g = teams.find(t => t.name === name);
+                if (!g) return "";
+                const c = compare(g, tgt);
+                const third = m === "ncaa" ? ["🟥", "🟨", "🟩"][c.col] : (c.div ? "🟩" : "🟥");
+                const r = (c.sport ? "🟩" : "🟥") + (c.conf ? "🟩" : "🟥") + third;
+                return i === n - 1 ? (st.won ? r + " 🏆" : st.over ? r + " ❌" : r) : r;
+            });
+        }
+        function shareText() {
+            const n = state.guesses.length;
+            const rows = shareRows(modeKey, state, target);
+            // const rows = state.guesses.map((g, i) => {
+            //   const c = compare(byName(g));
+            //   //const r = [c.sport, c.conf, c.div].map(ok => ok ? "🟩" : "🟥").join("");
+            //   const third = modeKey === "ncaa" ? ["🟥", "🟨", "🟩"][c.col] : (c.div ? "🟩" : "🟥");
+            //   const r = (c.sport ? "🟩" : "🟥") + (c.conf ? "🟩" : "🟥") + third;
+            //   //return state.won && i === n - 1 ? r + " 🏆" : r;
+            //   return i === n - 1 ? (state.won ? r + " 🏆" : state.over ? r + " ❌" : r) : r;
+            // });
+
+
+            const seen = state.won ? Math.min(YEARS, STEP + STEP * (n - 1)) : YEARS;
+            const groups = Math.ceil(YEARS / STEP), lit = Math.ceil(seen / STEP);
+            return [
+                `PLAYOFF-TRAIL · ${cfg().shareName}`,
+                `${game ? "Practice #" + game : "Daily: " + dayKey}`,
+                //`PLAYOFF TRAIL · ${game ? "Practice #" + game : dayKey}`,
+                ...(hard ? ["🔥 HARD MODE 🔥"] : []),
+                state.won ? `🏆 ${RANKS[Math.min(n, RANKS.length) - 1]} · ${n}/${MAX_GUESSES}` : `💀 · X/${MAX_GUESSES}`,
+                "",
+                ...rows,
+                "",
+                SHARE_URL || location.href.split("#")[0]
+            ].join("\n");
+        }
+
+        function dailyRecord(m) {
+            const day = typeof TODAY === "undefined" ? dayKey : TODAY;      // always today's daily, even if you're viewing a past date
+            const ns = m === "pro" ? "playoffTrail:" : "playoffTrail:" + m + ":";
+            try {
+                const dm = localStorage.getItem(ns + "dm:" + day);            // which difficulty was picked that day
+                if (dm === null) return null;
+                const hd = dm === "1";
+                const st = JSON.parse(localStorage.getItem(ns + day + (hd ? "!hard" : "")));
+                if (!st || !st.over) return null;                             // not started or not finished
+                const teams = MODES[m].teams;
+                const tgt = (st.t && teams.find(t => t.name === st.t)) || teams[hash(day) % teams.length];
+                return { st, tgt, hd };
+            } catch (e) { return null; }
+        }
+
+        function shareAllText() {
+            const day = typeof TODAY === "undefined" ? dayKey : TODAY;
+            const blocks = Object.keys(MODES).map(m => {
+                const name = m === "pro" ? "PRO" : m.toUpperCase();
+                const rec = dailyRecord(m);
+                if (!rec) return `${name}\n- - -`;
+                const { st, tgt, hd } = rec, n = st.guesses.length;
+                const status = st.won ? `🏆 ${RANKS[Math.min(n, RANKS.length) - 1]} · ${n}/${MAX_GUESSES}` : `💀 · X/${MAX_GUESSES}`;
+                return [`${name}${hd ? " 🔥" : ""}`, status, ...shareRows(m, st, tgt)].join("\n");
+            });
+            return [`PLAYOFF TRAIL · Daily ${day}`, "", blocks.join("\n\n"), "", SHARE_URL || location.href.split("#")[0]].join("\n");
+        }
+
+
+        async function copyText(t) {
+            try { await navigator.clipboard.writeText(t); }
+            catch (e) {
+                const a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select();
+                try { document.execCommand("copy"); } catch (_) { }
+                a.remove();
+            }
+        }
+        function copied(btn, label) { btn.textContent = "Copied!"; setTimeout(() => btn.textContent = label, 1800); }
+        async function share(btn) { await copyText(shareText()); copied(btn, "Share result"); }
+        async function shareAll(btn) { await copyText(shareAllText()); copied(btn, "Share all"); }
+
+
+        // async function share(btn) {
+        //   const t = shareText();
+        //   try { await navigator.clipboard.writeText(t); }
+        //   catch (e) {
+        //     const a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select();
+        //     try { document.execCommand("copy"); } catch (_) { }
+        //     a.remove();
+        //   }
+        //   btn.textContent = "Copied!"; setTimeout(() => btn.textContent = "Share result", 1800);
+        // }
+        // function confetti() {
+        //   if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+        //   const c = document.createElement("canvas"); c.id = "confetti"; document.body.appendChild(c);
+        //   //const x = c.getContext("2d"); c.width = innerWidth; c.height = innerHeight;
+        //   const x = c.getContext("2d");
+        //   const r = c.getBoundingClientRect();     // measure the CSS-sized canvas
+        //   c.width = r.width; c.height = r.height;
+
+        //   const cols = ["#f0b92e", "#3b8dff", "#34c26b", "#b07cff", "#e8efe9"];
+        //   const ps = Array.from({ length: 160 }, () => ({
+        //     x: Math.random() * c.width, y: -Math.random() * c.height * .6,
+        //     w: 6 + Math.random() * 6, h: 8 + Math.random() * 8,
+        //     vx: -1 + Math.random() * 2, vy: 2 + Math.random() * 3,
+        //     r: Math.random() * 6, vr: -.15 + Math.random() * .3,
+        //     col: cols[Math.random() * cols.length | 0],
+
+        //     em: Math.random() < .22 ? ["⚾", "🏀", "🏈", "🏒", "⚽", "🏆"][Math.random() * 6 | 0] : null,
+        //   }));
+        //   (function frame() {
+        //     x.clearRect(0, 0, c.width, c.height);
+        //     for (const p of ps) {
+        //       p.x += p.vx; p.y += p.vy; p.r += p.vr;
+        //       x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.col;
+        //       //x.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); x.restore();
+        //       if (p.em) { x.font = "22px serif"; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText(p.em, 0, 0); }
+        //       else x.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+
+        //       x.restore();                                   // <-- add this line
+        //     }
+        //     if (ps.some(p => p.y < c.height + 20)) requestAnimationFrame(frame); else c.remove();
+        //   })();
+        // }
+        function confetti() {
+            if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+            document.body.classList.add("party");
+            const c = document.createElement("canvas"); c.id = "confetti"; document.body.appendChild(c);
+            const x = c.getContext("2d");
+            const r = c.getBoundingClientRect();
+            c.width = r.width; c.height = r.height;
+
+            const cols = ["#f0b92e", "#3b8dff", "#34c26b", "#b07cff", "#e8efe9"];
+            const sprites = ["⚾", "🏀", "🏈", "🏒", "⚽", "🏆"].map(e => {
+                const s = document.createElement("canvas"); s.width = s.height = 32;
+                const g = s.getContext("2d");
+                g.font = "24px serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(e, 16, 17);
+                return s;
+            });
+            const N = innerWidth < 600 ? 90 : 140;
+            const ps = Array.from({ length: N }, () => ({
+                x: Math.random() * c.width, y: -Math.random() * c.height * .6,
+                w: 6 + Math.random() * 6, h: 8 + Math.random() * 8,
+                vx: -1 + Math.random() * 2, vy: 2 + Math.random() * 3,
+                r: Math.random() * 6, vr: -.15 + Math.random() * .3,
+                col: cols[Math.random() * cols.length | 0],
+                sp: Math.random() < .22 ? sprites[Math.random() * sprites.length | 0] : null
+            }));
+
+            let last = performance.now();
+            (function frame(now) {
+                const dt = Math.min(2.5, (now - last) / 16.67); last = now;
+                x.setTransform(1, 0, 0, 1, 0, 0);
+                x.clearRect(0, 0, c.width, c.height);
+                let alive = false;
+                for (const p of ps) {
+                    p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.vr * dt;
+                    if (p.y > c.height + 20) continue;            // off-screen: skip drawing
+                    alive = true;
+                    const cs = Math.cos(p.r), sn = Math.sin(p.r);
+                    x.setTransform(cs, sn, -sn, cs, p.x, p.y);
+                    if (p.sp) x.drawImage(p.sp, -16, -16);
+                    else { x.fillStyle = p.col; x.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
+                }
+                x.setTransform(1, 0, 0, 1, 0, 0);
+                if (alive) requestAnimationFrame(frame);
+                else { c.remove(); document.body.classList.remove("party"); }
+            })(last);
+        }
+
+        // function renderFilter() {
+        //   $("filtPanel").innerHTML = `<p>Leagues included in practice games</p><div class="opts">` +
+        //     ALL_SPORTS.map(s => `<label><input type="checkbox" value="${s}" ${sports.has(s) ? "checked" : ""}>${s}</label>`).join("") + `</div>`;
+        //   $("filtPanel").querySelectorAll("input").forEach(i => i.onchange = () => {
+        //     if (i.checked) sports.add(i.value);
+        //     else if (sports.size > 1) sports.delete(i.value);
+        //     else { i.checked = true; return; }          // keep at least one league selected
+        //     try { localStorage.setItem("playoffTrail:sports", JSON.stringify([...sports])); } catch (e) { }
+        //     $("inf").onclick();                         // fresh practice game with the new pool
+        //   });
+        // }
+        function renderFilter() {
+            $("filtPanel").innerHTML = `<p>Leagues included in practice games</p><div class="opts">` +
+                filterOpts().map(s => `<label><input type="checkbox" value="${s}" ${sports.has(s) ? "checked" : ""}>${s}</label>`).join("") + `</div>`;
+            $("filtPanel").querySelectorAll("input").forEach(i => i.onchange = () => {
+                if (i.checked) sports.add(i.value);
+                else if (sports.size > 1) sports.delete(i.value);
+                else { i.checked = true; return; }
+                try { localStorage.setItem(NS() + "sports", JSON.stringify([...sports])); } catch (e) { }
+                $("inf").onclick();
+            });
+        }
+        $("filt").onclick = () => { $("filtPanel").hidden = !$("filtPanel").hidden; };
+        renderFilter();
+
+        $("infoBtn").onclick = () => {
+            const opening = $("notes").hidden;
+            $("notes").hidden = !opening;
+            $("infoBtn").setAttribute("aria-expanded", opening);
+        };
+
+        function renderLegend() {
+            const L = $("legend");
+            L.querySelectorAll("span").forEach(s => s.remove());
+            // cfg().legend.forEach(([cls, icon, text]) => {
+            //   const s = document.createElement("span");
+            //   s.innerHTML = `<i class="dot ${cls}">${icon}</i>${text}`;
+            //   L.appendChild(s);
+            // });
+            cfg().legend.forEach(([cls, icon, text], idx) => {
+                const s = document.createElement("span");
+                s.style.setProperty("--i", idx);
+                s.innerHTML = `<i class="dot ${cls}">${icon}</i>${text}`;
+                L.appendChild(s);
+            });
+            $("notes").innerHTML = "<ol>" + cfg().notes.map(n => `<li>${n}</li>`).join("") + "</ol>";
+        }
+        function syncSeg() { $("seg").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.m === modeKey)); }
+        function setMode(m) {
+            if (m === modeKey) return;
+            modeKey = m;
+            try { localStorage.setItem("playoffTrail:mode", m); } catch (e) { }
+            readDailyMode(); readPracticeN(); readSports(); renderFilter(); $("filtPanel").hidden = true;
+            syncSeg(); renderLegend();
+            $("notes").hidden = true; $("infoBtn").setAttribute("aria-expanded", "false");
+            loadGame(0); reset();
+        }
+        $("seg").querySelectorAll("button").forEach(b => b.onclick = () => setMode(b.dataset.m));
+        renderLegend(); syncSeg();
+
+
+
+        (function balls() {
+            const L = $("bgfx"), E = ["⚾", "🏀", "🏈", "🏒", "⚽"];
+            for (let i = 0; i < 14; i++) {
+                const b = document.createElement("span");
+                b.textContent = E[i % E.length];
+                b.style.cssText = `left:${Math.random() * 100}%;font-size:${18 + Math.random() * 30}px;` +
+                    `animation-duration:${14 + Math.random() * 18}s;animation-delay:${-Math.random() * 30}s;` +
+                    `--drift:${(Math.random() * 120 - 60) | 0}px;--spin:${(Math.random() * 720 - 360) | 0}deg;` +
+                    `opacity:${(.07 + Math.random() * .1).toFixed(2)}`;
+                L.appendChild(b);
+            }
+        })();
+        function swapIn() { const p = $("play"); p.classList.remove("swapIn"); void p.offsetWidth; p.classList.add("swapIn"); }
+        function shake() { const f = $("form"); f.classList.remove("shake"); void f.offsetWidth; f.classList.add("shake"); }
+
+        function openModal() { $("modal").hidden = false; $("modalClose").focus(); }
+        function closeModal() { $("modal").hidden = true; }
+        $("modalClose").onclick = closeModal;
+        $("modal").onclick = e => { if (e.target === $("modal")) closeModal(); };
+        document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("modal").hidden) closeModal(); });
+
+        function openStats() {
+            const s = computeStats(), loss = s.played - s.wins;
+            const max = Math.max(1, loss, ...s.dist.slice(1));
+            $("modalTitle").textContent = "Stats · " + (modeKey === "pro" ? "Pro" : modeKey.toUpperCase());
+            $("modalBody").innerHTML = `
+    <div class="statRow">
+      <div><b>${s.played}</b><small>Played</small></div>
+      <div><b>${s.played ? Math.round(100 * s.wins / s.played) : 0}</b><small>Win %</small></div>
+      <div><b>${s.cur}</b><small>Streak</small></div>
+      <div><b>${s.best}</b><small>Best</small></div>
+    </div>
+    ${s.dist.slice(1).map((n, i) => `<div class="bar"><i>${i + 1}</i><span style="--w:${Math.max(8, 100 * n / max)}">${n}</span></div>`).join("")}
+    <div class="bar"><i>✕</i><span class="lossbar" style="--w:${Math.max(8, 100 * loss / max)}">${loss}</span></div>`;
+            openModal();
+        }
+
+        let calMonth = null;
+        function openCal() {
+            const t = dateOf(TODAY);
+            calMonth = new Date(t.getFullYear(), t.getMonth(), 1);
+            $("modalTitle").textContent = "Calendar · " + (modeKey === "pro" ? "Pro" : modeKey.toUpperCase());
+            renderCal(); openModal();
+        }
+        function renderCal() {
+            const days = dailyHistory(), today = dateOf(TODAY);
+            const y = calMonth.getFullYear(), m = calMonth.getMonth();
+            const startDow = new Date(y, m, 1).getDay(), count = new Date(y, m + 1, 0).getDate();
+            const canPrev = new Date(y, m, 0) >= LAUNCH, canNext = new Date(y, m + 1, 1) <= today;
+            let cells = ["S", "M", "T", "W", "T", "F", "S"].map(d => `<div class="dow">${d}</div>`).join("");
+            for (let i = 0; i < startDow; i++) cells += "<div></div>";
+            for (let d = 1; d <= count; d++) {
+                const dt = new Date(y, m, d), k = keyOf(dt), r = days[k];
+                const off = dt > today || dt < LAUNCH;                      // future (or before launch) = not clickable
+                const cls = ["day", k === TODAY ? "today" : "", k === dayKey && !game ? "sel" : "", r ? (r.over ? (r.won ? "win" : "loss") : "part") : ""].join(" ");
+                cells += `<button type="button" class="${cls}" data-k="${k}" ${off ? "disabled" : ""}>${d}</button>`;
+            }
+            $("modalBody").innerHTML = `
+    <div class="calHead"><button type="button" id="calPrev" ${canPrev ? "" : "disabled"}>‹</button>
+      <span>${new Date(y, m, 1).toLocaleDateString(undefined, { month: "long", year: "numeric" })}</span>
+      <button type="button" id="calNext" ${canNext ? "" : "disabled"}>›</button></div>
+    <div class="calGrid">${cells}</div>
+    <div class="calKey"><span><i class="w"></i>Won</span><span><i class="l"></i>Lost</span><span><i class="p"></i>In progress</span></div>`;
+            $("calPrev").onclick = () => { calMonth = new Date(y, m - 1, 1); renderCal(); };
+            $("calNext").onclick = () => { calMonth = new Date(y, m + 1, 1); renderCal(); };
+            $("modalBody").querySelectorAll(".day:not(:disabled)").forEach(b => b.onclick = () => { closeModal(); playDay(b.dataset.k); });
+        }
+        $("statsBtn").onclick = openStats;
+        $("calBtn").onclick = openCal;
+
+        function dailyHistory() {
+            const days = {};
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const k = localStorage.key(i);
+                    if (!k.startsWith(NS())) continue;
+                    const m = k.slice(NS().length).match(/^(\d{4}-\d{1,2}-\d{1,2})(!hard)?$/);   // dailies only, not practice
+                    if (!m) continue;
+                    const s = JSON.parse(localStorage.getItem(k));
+                    if (!s || !s.guesses || !s.guesses.length) continue;
+                    const cur = days[m[1]];
+                    if (!cur || (s.over && !cur.over)) days[m[1]] = { over: !!s.over, won: !!s.won, n: s.guesses.length, late: !!s.late };
+                }
+            } catch (e) { }
+            return days;
+        }
+
+        function computeStats() {
+            const days = dailyHistory();
+            const dist = Array(MAX_GUESSES + 1).fill(0);
+            let played = 0, wins = 0;
+            Object.values(days).forEach(d => { if (!d.over) return; played++; if (d.won) { wins++; dist[d.n]++; } });
+
+            const ok = new Set(Object.entries(days).filter(([, d]) => d.over && !d.late).map(([k]) => k));
+            const step = (date, n) => { const x = new Date(date); x.setDate(x.getDate() + n); return x; };
+            let cur = 0, d = dateOf(TODAY);
+            if (!ok.has(keyOf(d))) d = step(d, -1);                 // today not finished yet: don't break the streak
+            while (ok.has(keyOf(d))) { cur++; d = step(d, -1); }
+
+            let best = 0, run = 0;
+            const sorted = [...ok].map(dateOf).sort((a, b) => a - b);
+            sorted.forEach((dt, i) => { run = i && keyOf(step(sorted[i - 1], 1)) === keyOf(dt) ? run + 1 : 1; best = Math.max(best, run); });
+            return { played, wins, dist, cur, best };
+        }
+
+
+        let acItems = [], acActive = -1;
+        const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();   // "Montreal" finds "Montréal"
+        const acDetail = t => [t.sport, t.conference, t.division].filter(Boolean).join(" · ");
+
+        // function closeList() {
+        //   acItems = []; acActive = -1;
+        //   $("acList").hidden = true;
+        //   $("input").setAttribute("aria-expanded", "false");
+        // }
+        function closeList(instant) {
+            acItems = []; acActive = -1;
+            $("input").setAttribute("aria-expanded", "false");
+            const L = $("acList");
+            if (L.hidden) return;
+            if (instant || matchMedia("(prefers-reduced-motion: reduce)").matches) { L.hidden = true; L.classList.remove("closing"); return; }
+            L.classList.add("closing");                              // play the collapse, then hide
+            L.addEventListener("animationend", () => {
+                if (L.classList.contains("closing")) { L.hidden = true; L.classList.remove("closing"); }
+            }, { once: true });
+        }
+
+        // function showList() {
+        //   const q = norm($("input").value.trim());
+        //   if (!q || state.over) return closeList();
+        //   const used = new Set(state.guesses);
+        //   const rank = t => norm(t.name).startsWith(q) ? 0 : 1;
+        //   acItems = cfg().teams.filter(t => !used.has(t.name) && norm(t.name).includes(q)).sort((a, b) => rank(a) - rank(b)).slice(0, 30);
+        //   if (!acItems.length) return closeList();
+        //   acActive = -1;
+        //   const L = $("acList");
+        //   L.innerHTML = acItems.map((t, i) => `<li role="option" data-i="${i}"><b>${t.name}</b><small>${acDetail(t)}</small></li>`).join("");
+        //   L.hidden = false;
+        //   $("input").setAttribute("aria-expanded", "true");
+        //   const r = $("input").getBoundingClientRect(), vv = window.visualViewport;
+        //   const below = (vv ? vv.offsetTop + vv.height : innerHeight) - r.bottom;    // space left above the phone keyboard
+        //   L.classList.toggle("up", below < 200 && r.top > below);
+        // }
+        function showList() {
+            if (state.over) return closeList();
+            const q = norm($("input").value.trim());
+            const pc = matchMedia("(hover: hover) and (pointer: fine)").matches;
+            if (!q && !pc) return closeList();                       // phones: wait until they type
+            const used = new Set(state.guesses);
+            const rank = t => norm(t.name).startsWith(q) ? 0 : 1;
+            let items = cfg().teams.filter(t => !used.has(t.name) && (!q || norm(t.name).includes(q)));
+            if (q) items = items.sort((a, b) => rank(a) - rank(b)).slice(0, 30);   // empty box = full list, in your data order
+            if (!items.length) return closeList();
+            acItems = items; acActive = -1;
+            const L = $("acList");
+            L.classList.remove("closing");
+            L.innerHTML = acItems.map((t, i) => `<li role="option" data-i="${i}"><b>${t.name}</b><small>${acDetail(t)}</small></li>`).join("");
+            L.hidden = false; L.scrollTop = 0;
+            $("input").setAttribute("aria-expanded", "true");
+            const r = $("input").getBoundingClientRect(), vv = window.visualViewport;
+            const below = (vv ? vv.offsetTop + vv.height : innerHeight) - r.bottom;
+            L.classList.toggle("up", below < 200 && r.top > below);
+        }
+        function pick(i) { $("input").value = acItems[i].name; closeList(); }
+
+        $("input").addEventListener("input", showList);
+        $("input").addEventListener("focus", showList);
+        $("input").addEventListener("click", showList);
+        $("acList").addEventListener("mousedown", e => e.preventDefault());          // keep focus in the box on desktop
+        $("acList").addEventListener("click", e => { const li = e.target.closest("li"); if (li) pick(+li.dataset.i); });
+        document.addEventListener("pointerdown", e => { if (!e.target.closest(".acWrap")) closeList(); });
+        $("input").addEventListener("keydown", e => {
+
+            if ($("acList").hidden && e.key === "ArrowDown") { showList(); return; }
+            if ($("acList").hidden) return;
+            if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                e.preventDefault();
+                acActive = (acActive + (e.key === "ArrowDown" ? 1 : -1) + acItems.length) % acItems.length;
+                [...$("acList").children].forEach((li, i) => li.classList.toggle("on", i === acActive));
+                $("acList").children[acActive].scrollIntoView({ block: "nearest" });
+            } else if (e.key === "Enter" && acActive >= 0) { e.preventDefault(); pick(acActive); }   // pick, don't submit
+            else if (e.key === "Escape") closeList();
+        });
+
+
+        renderAll(YEARS);
+    </script>
+</body>
+
+</html>
