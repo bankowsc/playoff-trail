@@ -55,7 +55,8 @@ const settings = { mode: store.get("duel:mode", "pro"), hard: store.get("duel:ha
 
 // ---------- connection ----------
 const net = createNet({
-  url: `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`,
+  url: "wss://playoff-trail.onrender.com/ws",
+  //url: `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`,
   getName,
   onStatus: ui.setStatus,
   onMessage(m) {
