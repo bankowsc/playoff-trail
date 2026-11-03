@@ -7,8 +7,26 @@
   <title>Playoff Duel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Figtree:wght@400;600;700&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Figtree:wght@400;600;700&display=swap"
     rel="stylesheet">
+
+  <!-- NEW -->
+  <meta name="description" content="Playoff-Trail Duel" />
+  <!-- iMessage and other rich link previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Playoff Trail" />
+  <meta property="og:description" content="7 guesses. 6 modes." />
+  <meta property="og:url" content="https://www.playoff-trail.com/daily" />
+  <meta property="og:image" content="https://www.playoff-trail.onrender.com/coverphoto.jpeg" />
+  <meta property="og:image:width" content="696" />
+  <meta property="og:image:height" content="285" />
+  <meta property="og:site_name" content="Playoff Trail" />
+
+  <!-- Fallback website icon -->
+  <link rel="apple-touch-icon" href="https://www.playoff-trail.onrender.com/coverphoto.jpeg" />
+
+
   <script>
     /* runs before the first paint so a saved choice never flashes the other theme */
     try {
@@ -42,7 +60,8 @@
         <span class="pill" id="status" data-state="connecting">Connecting…</span>
       </div>
     </header>
-    <p class="sub">Two players take turns naming the franchise. 30 seconds each, and new seasons appear after every turn.</p>
+    <p class="sub">Two players take turns naming the franchise. 30 seconds each, and new seasons appear after every
+      turn.</p>
 
     <div class="banner" id="banner" hidden></div>
 
@@ -51,7 +70,8 @@
       <div class="card">
         <label class="field">
           <span>Your name</span>
-          <input id="name" maxlength="16" placeholder="Player" autocomplete="off" autocapitalize="off" spellcheck="false">
+          <input id="name" maxlength="16" placeholder="Player" autocomplete="off" autocapitalize="off"
+            spellcheck="false">
         </label>
         <div class="field">
           <span>Game</span>
@@ -65,8 +85,8 @@
         <div class="or">or play a friend</div>
         <button class="alt big" id="invite" type="button">🔗 Invite a friend</button>
         <div class="joinRow">
-          <input id="codeIn" maxlength="8" placeholder="Got a code? Type it here" autocomplete="off" autocapitalize="characters"
-            autocorrect="off" spellcheck="false" aria-label="Friend's room code">
+          <input id="codeIn" maxlength="8" placeholder="Got a code? Type it here" autocomplete="off"
+            autocapitalize="characters" autocorrect="off" spellcheck="false" aria-label="Friend's room code">
           <button class="alt" id="joinBtn" type="button">Join</button>
         </div>
       </div>
@@ -127,7 +147,8 @@
       <form id="form" autocomplete="off">
         <div class="acWrap">
           <input id="input" placeholder="Pick a team" aria-label="Team guess" autocomplete="off" autocapitalize="off"
-            autocorrect="off" spellcheck="false" enterkeyhint="go" role="combobox" aria-expanded="false" aria-controls="acList">
+            autocorrect="off" spellcheck="false" enterkeyhint="go" role="combobox" aria-expanded="false"
+            aria-controls="acList">
           <ul class="acList" id="acList" role="listbox" hidden></ul>
         </div>
         <button class="primary" id="btn" type="submit">Guess</button>
