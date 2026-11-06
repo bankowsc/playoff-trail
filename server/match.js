@@ -1,12 +1,11 @@
-// server/match.js — one match between two players.
+// server/match.js — one match between 2 to 7 players.
 // This class knows the rules and holds the match state, but it has NO sockets and NO timers.
 // The caller passes in "now" (milliseconds), so tests can drive it with a fake clock.
 // The lobby (lobby.js) owns the actual setTimeout that calls timeout() when a turn expires.
 //
 // Flow: step counts completed turns. Turn 1 shows 3 seasons, turn 2 shows 6, ... turn 7 shows all 21.
-// After the 7th turn without a correct guess the match is a draw. The player who starts gets turns
-// 1, 3, 5, 7 (4 turns) but sees the fewest clues; the other player gets 3 turns with more clues.
-// Rematches swap who starts.
+// Players take turns in order (round-robin), skipping anyone who has left. After the 7th turn without a
+// correct guess the match is a draw. With 2 players that is 4 and 3 guesses; with 7 players it is one each.
 
 import { randomUUID } from "node:crypto";
 import { MAX_STEPS, START_YEAR, YEARS, makeOrder, pickTarget, revealedSeasons, compare, teamColors, key } from "./rules.js";
@@ -18,7 +17,7 @@ export class Match {
     this.mode = mode;
     this.hard = !!hard;
     this.teams = teams;                       // every guessable team in this mode
-    this.players = players;                   // [{ id, name }, { id, name }]
+    this.players = players;                   // [{ id, name }, ...] in turn order
     this.firstTurn = firstTurn;               // index of the player who goes first
     this.turn = firstTurn;                    // index of the player on the clock
     this.turnMs = turnMs;
@@ -26,14 +25,15 @@ export class Match {
     this.target = target || pickTarget(teams, seed);   // the secret answer (never sent until the match is over)
     this.step = 0;                            // turns completed
     this.turnNo = 0;                          // bumps on every turn change; lets a stale timer recognise itself
-    this.guesses = [];                        // shared board: both players see everything
+    this.guesses = [];                        // shared board: everyone sees everything
     this.status = "waiting";                  // waiting -> playing -> over
-    this.winner = null;                       // 0 | 1 | null
+    this.winner = null;                       // player index | null
     this.reason = null;                       // "guess" | "draw" | "forfeit"
     this.deadline = 0;                        // epoch ms when the current turn ends
-    this.connected = [true, true];            // maintained by the lobby
-    this.left = [false, false];               // true once a player has walked away for good
-    this.rematch = [false, false];            // rematch votes
+    const n = players.length;
+    this.connected = Array(n).fill(true);     // maintained by the lobby
+    this.left = Array(n).fill(false);         // true once a player has walked away; they are skipped in the turn order
+    this.rematch = Array(n).fill(false);      // rematch votes (public 1v1 matches)
   }
 
   indexOf(playerId) { return this.players.findIndex(p => p.id === playerId); }
@@ -53,7 +53,7 @@ export class Match {
   submitGuess(playerId, teamName, now) {
     if (this.status !== "playing") return { ok: false, error: "not_playing" };
     const idx = this.indexOf(playerId);
-    if (idx < 0) return { ok: false, error: "not_in_match" };
+    if (idx < 0 || this.left[idx]) return { ok: false, error: "not_in_match" };
     if (idx !== this.turn) return { ok: false, error: "not_your_turn" };
     if (now >= this.deadline) {                           // the server's clock decides, not the player's
       this.timeout(now, this.turnNo);
@@ -96,15 +96,31 @@ export class Match {
       this.status = "over"; this.winner = null; this.reason = "draw"; this.deadline = 0;
       return;
     }
-    this.turn = 1 - this.turn;
+    const n = this.players.length;
+    let t = this.turn;
+    do { t = (t + 1) % n; } while (this.left[t]);          // next player who is still here
+    this.turn = t;
     this.deadline = now + this.turnMs;
   }
 
-  forfeit(playerId) {
-    if (this.status === "over") return;
+  // A player walks away. During play they are skipped from then on; if only one player is left that player wins.
+  remove(playerId, now = Date.now()) {
     const i = this.indexOf(playerId);
-    this.status = "over"; this.winner = 1 - i; this.reason = "forfeit"; this.deadline = 0;
+    if (i < 0 || this.left[i]) return;
+    this.left[i] = true;
+    if (this.status !== "playing") return;                 // after the match it only marks them as gone
+    const active = this.players.map((_, k) => k).filter(k => !this.left[k]);
+    if (active.length <= 1) {
+      this.status = "over"; this.winner = active.length ? active[0] : null; this.reason = "forfeit"; this.deadline = 0;
+      return;
+    }
+    if (i === this.turn) {                                 // they were on the clock: their turn is lost, the clues move on
+      this.guesses.push({ by: i, team: null, left: true });
+      this.advance(now);
+    }
   }
+
+  forfeit(playerId, now) { this.remove(playerId, now); }   // older name, same thing
 
   // What the hint boxes show: a value once someone has matched it (or the match is over), otherwise null.
   hints() {
@@ -125,14 +141,13 @@ export class Match {
 
   // The only thing a browser ever receives about this match. Never includes the target while playing.
   view(playerId, now) {
-    const idx = this.indexOf(playerId), opp = 1 - idx, over = this.status === "over", t = this.target;
+    const idx = this.indexOf(playerId), over = this.status === "over", t = this.target;
     return {
       matchId: this.id,
       mode: this.mode,
       hard: this.hard,
       you: idx,
-      players: this.players.map(p => p.name),
-      opponent: { name: this.players[opp].name, connected: this.connected[opp], left: this.left[opp] },
+      players: this.players.map((p, i) => ({ name: p.name, connected: this.connected[i], left: this.left[i] })),   // same order as turns
       status: this.status,
       turn: this.turn,
       yourTurn: this.status === "playing" && this.turn === idx,

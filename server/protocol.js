@@ -3,11 +3,12 @@
 // Browser -> server (every message is JSON with a "type"):
 //   hello        { playerId, name? }        first message on every connection
 //   queue        { mode, hard?, name? }     join the matchmaking queue (mode: pro | ncaa | ucl)
-//   createRoom   { mode, hard?, name? }     open a private room and get an invite code (wait for a friend)
-//   joinRoom     { code, name? }            join a friend's room by code
-//   cancel                                  leave the queue, or close your private room
+//   createRoom   { mode, hard?, name? }     open a private lobby (up to 7 players) and get an invite code
+//   joinRoom     { code, name? }            join a lobby by code
+//   start                                   host only: start the game with everyone who is ready (needs 2+)
+//   cancel                                  leave the queue, or leave your lobby
 //   guess        { team }                   your guess, only accepted on your turn
-//   rematch                                 vote to play the same opponent again (after a match ends)
+//   rematch                                 "Play again": 1v1 = vote for a rematch; lobby = you are ready for the next game
 //   newOpponent                             leave the finished match and re-queue with the same settings
 //   leave                                   forfeit / leave everything and go idle
 //   ping                                    optional keep-alive; answered with pong
@@ -15,7 +16,7 @@
 // Server -> browser:
 //   welcome      { playerId, serverNow, resumed }
 //   queued       { mode, hard }
-//   room         { code, mode, hard }       your private room is open; share the code or link
+//   room         { room }                   you are in a lobby's waiting room (members, wins, who is ready, canStart ...)
 //   idle                                    you are not queued and not in a match
 //   state        { state }                  a full snapshot of your match (see Match.view in match.js)
 //   error        { code }                   e.g. not_your_turn, unknown_team, already_guessed, too_late, bad_mode
@@ -44,6 +45,7 @@ export function check(m) {
     case "queue": return MODE_NAMES.includes(m.mode) ? null : "bad_mode";
     case "createRoom": return MODE_NAMES.includes(m.mode) ? null : "bad_mode";
     case "joinRoom": return typeof m.code === "string" && /^[A-Za-z0-9]{4,8}$/.test(m.code) ? null : "bad_code";
+    case "start": return null;
     case "guess": return typeof m.team === "string" && m.team.length > 0 && m.team.length <= 80 ? null : "bad_team";
     case "cancel": case "rematch": case "newOpponent": case "leave": case "ping": return null;
     default: return "unknown_type";

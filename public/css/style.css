@@ -1606,3 +1606,170 @@ body.party .bigTrophy {
     color: #d6f2e0;
     background: #12261c
 }
+
+
+/* ================= PRIVATE LOBBY (up to 7 players) ================= */
+:root {
+    --p0: #3b8dff;
+    --p1: #ff8a3d;
+    --p2: #34c26b;
+    --p3: #b07cff;
+    --p4: #ef4444;
+    --p5: #f0b92e;
+    --p6: #a97142
+}
+
+:root[data-theme="Patterns"] {
+    --p0: #56B4E9;
+    --p1: #E69F00;
+    --p2: #009E73;
+    --p3: #CC79A7;
+    --p4: #D55E00;
+    --p5: #F0E442;
+    --p6: #8d6e63
+}
+
+.center {
+    text-align: center
+}
+
+.card:has(.members) {
+    gap: 12px
+}
+
+.roomHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px
+}
+
+.roomHead h2 {
+    margin: 0
+}
+
+.members {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px
+}
+
+.member {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg)
+}
+
+.member.you {
+    border-color: var(--r3)
+}
+
+.member.away {
+    opacity: .55
+}
+
+.mName {
+    font-weight: 700;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left
+}
+
+.mName small {
+    color: var(--dim);
+    font-weight: 400
+}
+
+.mRight {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none
+}
+
+.mWins {
+    font-weight: 700;
+    font-size: .85rem
+}
+
+.mReady {
+    font-size: .7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--dim)
+}
+
+.mReady.yes {
+    color: #7dffa8;
+    border-color: #2f9e5a
+}
+
+.members.board {
+    margin: 10px 0
+}
+
+.lobbyHint {
+    color: var(--dim);
+    font-size: .85rem;
+    margin: 6px 0
+}
+
+/* the bar at the top of a game: one chip per player, each with its own colour */
+.vs {
+    flex-wrap: wrap;
+    justify-content: center
+}
+
+.who {
+    padding: 5px 10px
+}
+
+.pmark {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--pc, var(--line));
+    flex: none
+}
+
+.who.gone {
+    opacity: .35;
+    text-decoration: line-through
+}
+
+.who .wins {
+    color: var(--r3);
+    font-weight: 700
+}
+
+.guess .n {
+    border-left-color: var(--pc, var(--line))
+}
+
+.turnRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px
+}
+
+.turnRow .turnMsg {
+    margin-top: 0
+}
+
+button.tiny {
+    padding: 5px 12px;
+    font-size: .8rem
+}

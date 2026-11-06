@@ -116,7 +116,7 @@ test("a player who drops and never returns forfeits after the grace period", asy
   a.send({ type: "queue", mode: "pro", hard: true }); b.send({ type: "queue", mode: "pro", hard: true });
   await a.waitFor(c => c.state()); await b.waitFor(c => c.state());
   a.ws.close();
-  await b.waitFor(c => c.state().opponent.connected === false);
+  await b.waitFor(c => c.state().players.some(pl => !pl.connected));
   await b.waitFor(c => c.state().status === "over", 4000);
   assert.equal(b.state().reason, "forfeit");
   assert.equal(b.state().winner, b.state().you);
@@ -141,23 +141,43 @@ test("the first message on a connection must be hello", async () => {
   ws.close();
 });
 
-test("private room over real sockets: host gets a code, a friend joins it, both are in the host's game", async () => {
-  const a = await client("player-hhhh", "Hal"), b = await client("player-iiii", "Ida");
-  await a.waitFor(c => c.last("welcome")); await b.waitFor(c => c.last("welcome"));
+test("a private lobby over real sockets: three join, the host starts, everyone plays, wins are counted", async () => {
+  const [a, b, c] = await Promise.all([client("player-hhhh", "Hal"), client("player-iiii", "Ida"), client("player-kkkk", "Kit")]);
+  await Promise.all([a, b, c].map(x => x.waitFor(y => y.last("welcome"))));
   a.send({ type: "createRoom", mode: "pro", name: "Hal" });
-  const room = await a.waitFor(c => c.last("room"));
-  assert.match(room.code, /^[A-HJ-NP-Z2-9]{5}$/);
-  b.send({ type: "joinRoom", code: room.code.toLowerCase(), name: "Ida" });
-  await a.waitFor(c => c.state()); await b.waitFor(c => c.state());
-  assert.deepEqual(a.state().players.sort(), ["Hal", "Ida"]);
+  const code = (await a.waitFor(x => x.last("room"))).room.code;
+  assert.match(code, /^[A-HJ-NP-Z2-9]{5}$/);
+  b.send({ type: "joinRoom", code: code.toLowerCase(), name: "Ida" });
+  c.send({ type: "joinRoom", code, name: "Kit" });
+  await a.waitFor(x => x.last("room").room.members.length === 3);
+  assert.equal(a.last("room").room.isHost, true);
+
+  b.send({ type: "start" });                              // not the host
+  await b.waitFor(x => x.last("error"));
+  assert.equal(b.last("error").code, "not_host");
+
+  a.send({ type: "start" });
+  await Promise.all([a, b, c].map(x => x.waitFor(y => y.state())));
+  assert.equal(a.state().players.length, 3);
   assert.equal(a.state().answer, null);
-  b.send({ type: "joinRoom", code: room.code });          // the same code again is dead
-  await b.waitFor(c => c.last("error"));
-  assert.ok(["room_not_found", "in_match"].includes(b.last("error").code));
-  a.ws.close(); b.ws.close();
+  assert.ok(a.state().lobby.members.length === 3);
+
+  // whoever is on the clock guesses Alpha, then Beta: with two teams, the answer is found within two guesses
+  const all = [a, b, c];
+  for (const name of ["Alpha", "Beta"]) {
+    if (a.state().status === "over") break;
+    const mover = all.find(x => x.state().yourTurn);
+    mover.send({ type: "guess", team: name });
+    await a.waitFor(y => y.state().guesses.length >= (name === "Alpha" ? 1 : 2) || y.state().status === "over");
+  }
+  await a.waitFor(y => y.state().status === "over");
+  const wins = a.state().lobby.members.map(m => m.wins);
+  assert.equal(wins.reduce((x, y) => x + y, 0), 1);       // exactly one win recorded
+  assert.equal(a.state().lobby.status, "waiting");
+  a.ws.close(); b.ws.close(); c.ws.close();
 });
 
-test("a malformed room code is refused", async () => {
+test("a malformed lobby code is refused", async () => {
   const a = await client("player-jjjj", "Jo");
   await a.waitFor(c => c.last("welcome"));
   a.send({ type: "joinRoom", code: "!!" });

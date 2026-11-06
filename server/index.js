@@ -109,6 +109,7 @@ wss.on("connection", socket => {
       case "joinRoom": lobby.joinRoom(id, m.code, m.name === undefined ? undefined : cleanName(m.name)); break;
       case "guess": lobby.guess(id, m.team); break;
       case "rematch": lobby.rematch(id); break;
+      case "start": lobby.startRoom(id); break;
       case "newOpponent": lobby.newOpponent(id); break;
       case "leave": lobby.leave(id); break;
       case "ping": conn.send({ type: "pong", serverNow: Date.now() }); break;

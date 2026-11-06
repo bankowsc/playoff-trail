@@ -145,3 +145,65 @@ test("ncaa hints reveal colors one at a time", () => {
     assert.deepEqual(m.hints().third, ["🔵", null]);
     assert.equal(m.guesses[0].result.third, 1);
 });
+
+// ---------------- 3+ players ----------------
+const P3 = [{ id: "p1", name: "Ann" }, { id: "p2", name: "Bo" }, { id: "p3", name: "Cy" }];
+const make3 = (extra = {}) => {
+    const m = new Match({ mode: "pro", teams: TEAMS, players: P3, target: TEAMS[0], turnMs: 30000, seed: "s", ...extra });
+    m.start(1000);
+    return m;
+};
+
+test("three players take turns in order and the first player can be anyone", () => {
+    const m = make3({ firstTurn: 1 });
+    assert.equal(m.view("p2", 0).yourTurn, true);
+    m.submitGuess("p2", "T1", 2000); assert.equal(m.turn, 2);
+    m.submitGuess("p3", "T3", 3000); assert.equal(m.turn, 0);
+    m.submitGuess("p1", "X0", 4000); assert.equal(m.turn, 1);
+    assert.equal(m.view("p3", 0).players.length, 3);
+    assert.equal(m.view("p3", 0).you, 2);
+});
+
+test("a player who leaves is skipped in the turn order", () => {
+    const m = make3();
+    m.remove("p2", 1500);                                    // not their turn: nothing else changes
+    assert.equal(m.turn, 0); assert.equal(m.status, "playing");
+    m.submitGuess("p1", "T1", 2000);
+    assert.equal(m.turn, 2);                                 // Bo is skipped
+    assert.equal(m.view("p1", 0).players[1].left, true);
+    assert.equal(m.submitGuess("p2", "T3", 2500).error, "not_in_match");
+});
+
+test("leaving on your own turn loses the turn and reveals more clues", () => {
+    const m = make3();
+    m.submitGuess("p1", "T1", 2000);                         // Bo is on the clock
+    m.remove("p2", 3000);
+    assert.equal(m.turn, 2);
+    assert.equal(m.step, 2);
+    assert.equal(m.guesses[1].left, true);
+    assert.equal(m.view("p3", 3000).revealed.length, 9);
+    assert.equal(m.deadline, 3000 + 30000);
+});
+
+test("when only one player is left they win by forfeit", () => {
+    const m = make3();
+    m.remove("p1", 2000);
+    assert.equal(m.status, "playing");
+    m.remove("p3", 2100);
+    assert.equal(m.status, "over");
+    assert.equal(m.winner, 1);
+    assert.equal(m.reason, "forfeit");
+    const none = make3();
+    none.remove("p1", 1); none.remove("p2", 1);
+    assert.equal(none.winner, 2);
+});
+
+test("with seven players, seven turns give everyone exactly one guess before a draw", () => {
+    const seven = Array.from({ length: 7 }, (_, i) => ({ id: `q${i}`, name: `Q${i}` }));
+    const m = new Match({ mode: "pro", teams: TEAMS, players: seven, target: TEAMS[0], turnMs: 30000, seed: "s" });
+    m.start(0);
+    const wrongTeams = ["T1", "T2", "T3", "X0", "X1", "X2", "X3"];
+    seven.forEach((p, i) => assert.equal(m.submitGuess(p.id, wrongTeams[i], 1000 + i).ok, true));
+    assert.equal(m.status, "over");
+    assert.equal(m.reason, "draw");
+});

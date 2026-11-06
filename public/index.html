@@ -10,23 +10,6 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Figtree:wght@400;600;700&display=swap"
     rel="stylesheet">
-
-  <!-- NEW -->
-  <meta name="description" content="Playoff-Trail Duel" />
-  <!-- iMessage and other rich link previews -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Playoff Trail" />
-  <meta property="og:description" content="7 guesses. 6 modes." />
-  <meta property="og:url" content="https://www.playoff-trail.com/daily" />
-  <meta property="og:image" content="https://www.playoff-trail.onrender.com/coverphoto.jpeg" />
-  <meta property="og:image:width" content="696" />
-  <meta property="og:image:height" content="285" />
-  <meta property="og:site_name" content="Playoff Trail" />
-
-  <!-- Fallback website icon -->
-  <link rel="apple-touch-icon" href="https://www.playoff-trail.onrender.com/coverphoto.jpeg" />
-
-
   <script>
     /* runs before the first paint so a saved choice never flashes the other theme */
     try {
@@ -83,7 +66,7 @@
         </label>
         <button class="primary big" id="find" type="button">Find match</button>
         <div class="or">or play a friend</div>
-        <button class="alt big" id="invite" type="button">🔗 Invite a friend</button>
+        <button class="alt big" id="invite" type="button">🔗 Invite friends (private lobby)</button>
         <div class="joinRow">
           <input id="codeIn" maxlength="8" placeholder="Got a code? Type it here" autocomplete="off"
             autocapitalize="characters" autocorrect="off" spellcheck="false" aria-label="Friend's room code">
@@ -92,10 +75,11 @@
       </div>
 
       <ol class="how">
-        <li>You are matched with another player in the same game and difficulty.</li>
+        <li>Find match pairs you with a stranger. Invite friends opens a private lobby for up to 7 people.</li>
         <li>On your turn you have a limited time to name the franchise from the seasons shown.</li>
-        <li>After every turn, a guess or a timeout, three more seasons appear and the other player is on the clock.</li>
-        <li>First correct guess wins. Both players can play again, or look for a new opponent.</li>
+        <li>After every turn, a guess or a timeout, three more seasons appear and the next player is on the clock.</li>
+        <li>First correct guess wins. In a lobby the wins are counted, and after each game everyone chooses to play
+          again or leave.</li>
       </ol>
     </section>
 
@@ -105,25 +89,29 @@
         <div class="spinner" aria-hidden="true"></div>
         <h2 id="searchTitle">Looking for an opponent…</h2>
         <p class="dim" id="searchInfo"></p>
-        <button class="primary" id="inviteInstead" type="button">🔗 Nobody here? Invite a friend instead</button>
+        <button class="primary" id="inviteInstead" type="button">🔗 Nobody here? Open a private lobby</button>
         <button class="alt" id="cancel" type="button">Cancel</button>
       </div>
     </section>
 
-    <!-- ============ PRIVATE ROOM (waiting for a friend) ============ -->
+    <!-- ============ PRIVATE LOBBY (waiting room) ============ -->
     <section id="screen-room" hidden>
-      <div class="card center">
-        <h2>Invite a friend</h2>
-        <p class="dim" id="roomInfo"></p>
-        <div class="roomCode" id="roomCode" aria-label="Room code"></div>
+      <div class="card">
+        <div class="roomHead">
+          <h2>Private lobby</h2>
+          <span class="pill" id="roomCount">1 / 7</span>
+        </div>
+        <p class="dim center" id="roomInfo"></p>
+        <div class="roomCode" id="roomCode" aria-label="Lobby code"></div>
         <input id="roomLink" readonly aria-label="Invite link">
         <div class="endBtns">
           <button class="primary" id="shareLink" type="button">Share invite</button>
           <button class="alt" id="copyLink" type="button">Copy link</button>
         </div>
-        <div class="spinner" aria-hidden="true"></div>
-        <p class="dim">Waiting for your friend to open the link…</p>
-        <button class="alt" id="cancelRoom" type="button">Cancel</button>
+        <ul class="members" id="members"></ul>
+        <button class="primary big" id="startBtn" type="button">Start game</button>
+        <p class="dim center" id="roomHint"></p>
+        <button class="alt" id="cancelRoom" type="button">Leave lobby</button>
       </div>
     </section>
 
@@ -135,7 +123,10 @@
           <span id="clockNum" aria-live="off"></span>
           <div class="clockTrack"><i id="clockBar"></i></div>
         </div>
-        <div class="turnMsg" id="turnMsg"></div>
+        <div class="turnRow">
+          <div class="turnMsg" id="turnMsg"></div>
+          <button class="alt tiny" id="leaveGame" type="button">Leave</button>
+        </div>
       </div>
 
       <div class="legend" id="legend" aria-label="Legend"></div>

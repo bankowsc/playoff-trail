@@ -37,7 +37,7 @@ async function copyText(t) {
 let teams = {};                                             // { pro: [{name, sport, conference, division}], ... } from /teams.json
 let available = [];
 let snap = null;                                            // the latest match snapshot from the server
-let room = null;                                            // { code, mode, hard, link } while you wait for a friend
+let lobbyInfo = null;                                       // the private lobby you are in (members, wins, who is ready), or null
 let joining = false;                                        // true while a "join this room" request is in flight
 const inviteLink = code => `${location.origin}${location.pathname}?room=${code}`;
 
@@ -55,8 +55,7 @@ const settings = { mode: store.get("duel:mode", "pro"), hard: store.get("duel:ha
 
 // ---------- connection ----------
 const net = createNet({
-  url: "wss://playoff-trail.onrender.com/ws",
-  //url: `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`,
+  url: `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`,
   getName,
   onStatus: ui.setStatus,
   onMessage(m) {
@@ -71,22 +70,22 @@ const net = createNet({
         break;
       case "idle":
         if (joining) break;                                     // the server says "idle" right after "welcome"; ignore it while joining
-        snap = null; room = null; ui.resetMatchView(); document.title = "Playoff Duel";
+        snap = null; lobbyInfo = null; ui.resetMatchView(); document.title = "Playoff Duel";
         showLobby();
         break;
       case "queued":
-        joining = false; snap = null; room = null;
+        joining = false; snap = null; lobbyInfo = null;
         ui.renderSearching({ mode: m.mode, hard: m.hard });
         ui.showScreen("searching");
         break;
-      case "room":
-        joining = false; snap = null;
-        room = { code: m.code, mode: m.mode, hard: m.hard, link: inviteLink(m.code) };
-        ui.renderRoom(room);
+      case "room":                                             // the waiting room of a private lobby
+        joining = false; snap = null; lobbyInfo = m.room;
+        ui.resetMatchView();
+        ui.renderRoom(lobbyInfo, inviteLink(lobbyInfo.code));
         ui.showScreen("room");
         break;
       case "state":
-        joining = false; room = null;
+        joining = false; lobbyInfo = m.state.lobby || null;     // lobby games carry the lobby info with them
         onState(m.state);
         break;
       case "error":
@@ -164,6 +163,16 @@ $("find").addEventListener("click", () => {
 });
 $("cancel").addEventListener("click", () => net.send("cancel"));
 
+// "Leave" during a game takes two taps within 3 seconds, so a stray tap can't forfeit by accident.
+let leaveArmedUntil = 0, leaveTimer;
+$("leaveGame").addEventListener("click", () => {
+  const b = $("leaveGame");
+  if (Date.now() < leaveArmedUntil) { leaveArmedUntil = 0; clearTimeout(leaveTimer); b.textContent = "Leave"; net.send("leave"); return; }
+  leaveArmedUntil = Date.now() + 3000;
+  b.textContent = "Tap again to leave";
+  leaveTimer = setTimeout(() => { b.textContent = "Leave"; leaveArmedUntil = 0; }, 3000);
+});
+
 // ---------- invite a friend ----------
 function makeRoom() {
   if (!available.includes(settings.mode)) return ui.toast("That game isn't available right now.");
@@ -181,23 +190,26 @@ function joinTyped() {
 $("joinBtn").addEventListener("click", joinTyped);
 $("codeIn").addEventListener("keydown", e => { if (e.key === "Enter") joinTyped(); });
 
-$("roomLink").addEventListener("focus", () => $("roomLink").select());
-$("cancelRoom").addEventListener("click", () => net.send("cancel"));
-$("copyLink").addEventListener("click", async () => {
-  if (!room) return;
-  await copyText(room.link);
-  const b = $("copyLink"); b.textContent = "Copied!";
-  setTimeout(() => { b.textContent = "Copy link"; }, 1800);
-});
-$("shareLink").addEventListener("click", async () => {          // phones get the real share sheet (messages, WhatsApp, ...)
-  if (!room) return;
-  const text = "Think you know your playoff history? Duel me!";
+// ---------- the lobby's waiting room ----------
+async function shareInvite() {                                  // phones get the real share sheet (messages, WhatsApp, ...)
+  if (!lobbyInfo) return;
+  const url = inviteLink(lobbyInfo.code), text = "Think you know your playoff history? Join my lobby!";
   if (navigator.share) {
-    try { await navigator.share({ title: "Playoff Duel", text, url: room.link }); return; }
+    try { await navigator.share({ title: "Playoff Duel", text, url }); return; }
     catch (e) { if (e && e.name === "AbortError") return; }       // closed the sheet: do nothing; any other failure falls back to copying
   }
-  await copyText(`${text} ${room.link}`);
-  ui.toast("Invite copied. Paste it to a friend.", true);
+  await copyText(`${text} ${url}`);
+  ui.toast("Invite copied. Paste it to your friends.", true);
+}
+$("roomLink").addEventListener("focus", () => $("roomLink").select());
+$("cancelRoom").addEventListener("click", () => net.send("leave"));
+$("startBtn").addEventListener("click", () => net.send("start"));
+$("shareLink").addEventListener("click", shareInvite);
+$("copyLink").addEventListener("click", async () => {
+  if (!lobbyInfo) return;
+  await copyText(inviteLink(lobbyInfo.code));
+  const b = $("copyLink"); b.textContent = "Copied!";
+  setTimeout(() => { b.textContent = "Copy link"; }, 1800);
 });
 
 // ---------- match controls ----------
@@ -215,7 +227,9 @@ $("form").addEventListener("submit", e => {
 $("end").addEventListener("click", async e => {              // the end-card buttons are re-rendered, so listen on the parent
   const b = e.target.closest("button[id]");
   if (!b || b.disabled) return;
-  if (b.id === "rematch") net.send("rematch");
+  if (b.id === "rematch") net.send("rematch");                  // 1v1: vote for a rematch. Lobby: "I'm in for the next game"
+  else if (b.id === "startNext") net.send("start");             // lobby host
+  else if (b.id === "inviteMore") shareInvite();
   else if (b.id === "newOpp") net.send("newOpponent");
   else if (b.id === "toLobby") net.send("leave");
   else if (b.id === "share" && snap) {

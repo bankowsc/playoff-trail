@@ -35,3 +35,6 @@ export const MODES = {
     ],
   },
 };
+
+// Each player in a game keeps one colour (the --p0..--p6 variables in style.css), in turn order.
+export const MAX_PLAYERS = 7;
