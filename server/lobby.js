@@ -11,6 +11,7 @@
 
 import { randomInt } from "node:crypto";
 import { Match } from "./match.js";
+import { TeamPicker } from "./picker.js";
 
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // no I, O, 0 or 1, so codes are easy to read out loud
 export const ROOM_MAX = 7;
@@ -25,6 +26,7 @@ export class Lobby {
     this.setTimer = setTimer;
     this.clearTimer = clearTimer;
     this.random = random;
+    this.picker = new TeamPicker(teamsByMode);   // chooses each game's secret team, spreading the sports evenly
     this.players = new Map();                 // playerId -> { id, name, conn, status, mode, hard, matchId, roomCode, graceTimer }
     this.queues = new Map();                  // "mode:hard" -> [playerId, ...] in arrival order
     this.matches = new Map();                 // matchId -> Match
@@ -160,6 +162,7 @@ export class Lobby {
       teams: this.teamsByMode[mode],
       players: [{ id: a.id, name: a.name }, { id: b.id, name: b.name }],
       firstTurn: prev ? 1 - prev.firstTurn : (this.random() < 0.5 ? 0 : 1),   // rematches swap who starts
+      target: this.picker.pick(mode),
       turnMs: this.turnMs,
     });
     m.start(this.now());
@@ -246,6 +249,7 @@ export class Lobby {
       teams: this.teamsByMode[room.mode],
       players: parts.map(pp => ({ id: pp.id, name: pp.name })),
       firstTurn: first,
+      target: this.picker.pick(room.mode),
       turnMs: this.turnMs,
     });
     m.roomCode = room.code;
